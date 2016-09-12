@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="InflateParams">
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/CambioEstudioAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/ConsentimientoChikAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/ConsentimientoZikaAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/EncuestaSatisfaccionAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/MenuInfoAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/MenuPrincipalAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/MenuReviewAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/ParticipanteAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/zikacluster/MenuInfoZikaAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/zikacluster/MenuZikaClusterAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/zikacluster/ParticipanteZikaClusterAdapter.java" />
+    </issue>
+    <issue id="OldTargetApi">
+        <ignore path="AndroidManifest.xml" />
+    </issue>
+    <issue id="SimpleDateFormat">
+        <ignore path="src/ni/org/ics/estudios/cohorte/bebe/domain/Participante.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/ListBHCsActivity.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/ListPinchazosActivity.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/ListRojosActivity.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/ListTempPbmcActivity.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/ListTempRojoBhcActivity.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/PinchazoActivity.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/RecepcionBhcActivity.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/RecepcionSeroActivity.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/TempPbmcActivity.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/TempRojoActivity.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/ParticipanteAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/zikacluster/ParticipanteZikaClusterAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/database/CohorteAdapterGetObjects.java" />
+    </issue>
+</lint>

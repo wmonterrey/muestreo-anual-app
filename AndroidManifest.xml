@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ni.org.ics.estudios.cohorte.muestreoanual"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="17" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="ni.org.ics.estudios.cohorte.muestreoanual.LoginActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateVisible"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.MainActivity" />
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.MenuInfoActivity" />
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.ReviewActivity" />
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.ListReviewActivity" android:screenOrientation="portrait"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.DownloadAllActivity" />
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.DownloadUsersActivity" />
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.DownloadParticipanteActivity" />
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.UploadAllActivity" />
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.preferences.PreferencesActivity" />
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.SelecPartActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.SelecPartRecepcionActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.MenuRecepcionActivity" />
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.MenuReviewActivity" />
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.ListParticipantesCasaActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewEcActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewEpActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewElActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewPtActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewEsActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewSampleActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewObActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewVaccActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewVisitaActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewRecActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewRec2015Activity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewZikaActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewRecFlu2015Activity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewConsChikActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.NewCambEstActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.MapaActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.MenuSupervisorActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.RecepcionBhcActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.ListBHCsActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.RecepcionSeroActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.ListRojosActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.PinchazoActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.ListPinchazosActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.TempPbmcActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.ListTempPbmcActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.TempRojoActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.ListTempRojoBhcActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.RazonNoDataActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.MenuZikaClusterActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.NewCasoIndiceActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.SelecPartZikaActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.MenuInfoZikaActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.MiembrosClusterZikaActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.NewMiembroClusterActivity"/>
+        <uses-library android:name="com.google.android.maps" />
+    </application>
+
+</manifest>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="preferences">Configuración</string>
+    
+    <string name="server_preferences">Configuración Servidor</string>
+    <string name="default_server_url">http://192.168.1.98:8080/muestreo-anual</string>
+    <string name="server_url">URL de servidor</string>
+    <string name="check_server">Verificar en el servidor</string>
+    <string name="url_error">Error en la dirección</string>
+    <string name="change_server_url">Cambiar URL de servidor</string>
+    
+    <string name="client">Aplicación</string>
+    <string name="complete_form">Acción al completar el formulario</string>
+    <string name="send_noask">Enviar sin preguntar</string>
+    <string name="send_ask">Preguntar antes de enviar</string>
+    <string name="no_send">No enviar</string>
+    <string name="activos">Descargar solo activos</string>
+    <string name="terreno">Descargar solo participantes</string>
+    
+    
+</resources>
