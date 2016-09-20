@@ -5,6 +5,7 @@ import java.util.List;
 
 import ni.org.ics.estudios.cohorte.muestreoanual.MainActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.R;
+import ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.nuevos.NewMiembroClusterActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.zikacluster.ParticipanteZikaClusterAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.database.CohorteAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.ParticipanteZikaCluster;
@@ -38,7 +39,8 @@ public class MiembrosClusterZikaActivity extends ListActivity {
 	private List<ParticipanteZikaCluster> mParticipantesZikaCluster = new ArrayList<ParticipanteZikaCluster>();
 	private ParticipanteZikaCluster mParticipante = new ParticipanteZikaCluster();
 	
-	private Integer codigo;	
+	private Integer codigo;
+	private Integer miembro;	
 	
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -119,6 +121,16 @@ public class MiembrosClusterZikaActivity extends ListActivity {
 			Intent intent) {
 		super.onActivityResult(requestCode, resultCode, intent);
 	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+	}
 
 	public void llenarDatos(Integer codigo){
 		String filtro = "";
@@ -160,10 +172,10 @@ public class MiembrosClusterZikaActivity extends ListActivity {
 			long id) {
 
 		ParticipanteZikaCluster mParticipanteZikaCluster = (ParticipanteZikaCluster) getListAdapter().getItem(position);
-		codigo = mParticipanteZikaCluster.getCodigo();
+		miembro = mParticipanteZikaCluster.getCodigo();
 		Intent i = new Intent(getApplicationContext(),
 				MenuInfoZikaActivity.class);
-		i.putExtra(ConstantsDB.CODIGO, codigo);
+		i.putExtra(ConstantsDB.CODIGO, miembro);
 		startActivity(i);
 	}
 }

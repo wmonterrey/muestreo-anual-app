@@ -77,11 +77,13 @@
         <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.ListTempRojoBhcActivity"/>
         <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.RazonNoDataActivity"/>
         <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.MenuZikaClusterActivity"/>
-        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.NewCasoIndiceActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.nuevos.NewCasoIndiceActivity"/>
         <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.SelecPartZikaActivity"/>
         <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.MenuInfoZikaActivity"/>
         <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.MiembrosClusterZikaActivity"/>
-        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.NewMiembroClusterActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.nuevos.NewMiembroClusterActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.MenuSintomasZikaActivity"/>
+        <activity android:name="ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.nuevos.NewSintomaClusterActivity"/>
         <uses-library android:name="com.google.android.maps" />
     </application>
 

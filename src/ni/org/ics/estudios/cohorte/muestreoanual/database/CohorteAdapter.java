@@ -39,9 +39,11 @@ import ni.org.ics.estudios.cohorte.muestreoanual.domain.Vacuna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.VisitaTerreno;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.CasaZikaCluster;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.ParticipanteZikaCluster;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.SintomasZikaCluster;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.TamizajeZikaCluster;
 import ni.org.ics.estudios.cohorte.muestreoanual.helpers.zikacluster.CasaZikaClusterHelper;
 import ni.org.ics.estudios.cohorte.muestreoanual.helpers.zikacluster.ParticipanteZikaClusterHelper;
+import ni.org.ics.estudios.cohorte.muestreoanual.helpers.zikacluster.SintomasZikaClusterHelper;
 import ni.org.ics.estudios.cohorte.muestreoanual.helpers.zikacluster.TamizajeZikaClusterHelper;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.ConstantsDB;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.FileUtils;
@@ -98,6 +100,7 @@ public class CohorteAdapter {
 			db.execSQL(ConstantsDB.CREATE_TAM_ZIKA_TABLE);
 			db.execSQL(ConstantsDB.CREATE_CASA_ZIKA_TABLE);
 			db.execSQL(ConstantsDB.CREATE_PART_ZIKA_TABLE);
+			db.execSQL(ConstantsDB.CREATE_SINT_ZIKA_TABLE);
 		}
 
 		@Override
@@ -134,6 +137,7 @@ public class CohorteAdapter {
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.TAM_ZIKA_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.CASA_ZIKA_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.PART_ZIKA_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.SINT_ZIKA_TABLE);
 			
 			onCreate(db);
 		}
@@ -3529,6 +3533,82 @@ public class CohorteAdapter {
 		if (!cursorParticipanteZikaCluster.isClosed()) cursorParticipanteZikaCluster.close();
 		return mParticipanteZikaClusters;
 	}
+	
+	
+	/**METODOS PARA SintomasZikaCluster**/
+	
+	/**
+	 * Inserta una SintomasZikaCluster en la base de datos
+	 * 
+	 * @param SintomasZikaCluster
+	 *            Objeto SintomasZikaCluster que contiene la informacion
+	 *
+	 */
+	public void crearSintomasZikaCluster(SintomasZikaCluster sintomas) {
+		ContentValues cv = SintomasZikaClusterHelper.crearSintomasZikaClusterContentValues(sintomas);
+		mDb.insert(ConstantsDB.SINT_ZIKA_TABLE, null, cv);
+	}
+	
+	/**
+	 * Edita una SintomasZikaCluster en la base de datos
+	 * 
+	 * @param SintomasZikaCluster
+	 *            Objeto SintomasZikaCluster que contiene la informacion
+	 *
+	 */
+	public boolean editarSintomasZikaCluster(SintomasZikaCluster sintomas) {
+		ContentValues cv = SintomasZikaClusterHelper.crearSintomasZikaClusterContentValues(sintomas);
+		return mDb.update(ConstantsDB.SINT_ZIKA_TABLE, cv, ConstantsDB.idSintoma + "='" 
+				+ sintomas.getIdSintoma()+"'", null) > 0;
+	}
+	
+	/**
+	 * Borra todos los SintomasZikaCluster de la base de datos
+	 * 
+	 * @return verdadero o falso
+	 */
+	public boolean borrarSintomasZikaCluster() {
+		return mDb.delete(ConstantsDB.SINT_ZIKA_TABLE, null, null) > 0;
+	}
+	
+	/**
+	 * Obtiene una SintomasZikaCluster de la base de datos
+	 * 
+	 * @return SintomasZikaCluster
+	 */
+	public SintomasZikaCluster getSintomasZikaCluster(String filtro, String orden) throws SQLException {
+		SintomasZikaCluster mSintomasZikaCluster = null;
+		Cursor cursorSintomasZikaCluster = crearCursor(ConstantsDB.SINT_ZIKA_TABLE, filtro, null, orden);
+		if (cursorSintomasZikaCluster != null && cursorSintomasZikaCluster.getCount() > 0) {
+			cursorSintomasZikaCluster.moveToFirst();
+			mSintomasZikaCluster=SintomasZikaClusterHelper.crearSintomasZikaCluster(cursorSintomasZikaCluster);
+		}
+		if (!cursorSintomasZikaCluster.isClosed()) cursorSintomasZikaCluster.close();
+		return mSintomasZikaCluster;
+	}
+	
+	/**
+	 * Obtiene una lista de SintomasZikaCluster de la base de datos
+	 * 
+	 * @return List<SintomasZikaCluster>
+	 */
+	public List<SintomasZikaCluster> getSintomasZikaClusters(String filtro, String orden) throws SQLException {
+		List<SintomasZikaCluster> mSintomasZikaClusters = new ArrayList<SintomasZikaCluster>();
+		Cursor cursorSintomasZikaCluster = crearCursor(ConstantsDB.SINT_ZIKA_TABLE, filtro, null, orden);
+		if (cursorSintomasZikaCluster != null && cursorSintomasZikaCluster.getCount() > 0) {
+			cursorSintomasZikaCluster.moveToFirst();
+			mSintomasZikaClusters.clear();
+			do{
+				SintomasZikaCluster mSintomasZikaCluster = null;
+				mSintomasZikaCluster = SintomasZikaClusterHelper.crearSintomasZikaCluster(cursorSintomasZikaCluster);
+				mSintomasZikaClusters.add(mSintomasZikaCluster);
+			} while (cursorSintomasZikaCluster.moveToNext());
+		}
+		if (!cursorSintomasZikaCluster.isClosed()) cursorSintomasZikaCluster.close();
+		return mSintomasZikaClusters;
+	}
+	
+	
 
 	/**
 	 * Crea un cursor desde la base de datos

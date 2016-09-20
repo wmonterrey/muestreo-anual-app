@@ -176,11 +176,41 @@
     <string name="zika_act_servidor">Enviar Datos</string>
     
     <string name="zika_miembros">Miembros cluster</string>
+    <string name="zika_sint">Sintomas iniciales</string>
     <string name="zika_followup">Seguimiento</string>
     <string name="zika_encuesta_ind">Encuesta</string>
     <string name="zika_datos_tam">Datos tamizaje</string>
     <string name="zika_datos_part">Datos participante</string>
     <string name="zika_datos_casa">Datos casa</string>
+    
+    <string name="zika_d1">Día 1</string>
+    <string name="zika_d2">Día 2</string>
+    <string name="zika_d3">Día 3</string>
+    <string name="zika_d4">Día 4</string>
+    <string name="zika_d5">Día 5</string>
+    <string name="zika_d6">Día 6</string>
+    <string name="zika_d7">Día 7</string>
+    <string name="zika_d8">Día 8</string>
+    <string name="zika_d9">Día 9</string>
+    <string name="zika_d10">Día 10</string>
+    <string name="zika_d11">Día 11</string>
+    <string name="zika_d12">Día 12</string>
+    <string name="zika_d13">Día 13</string>
+    <string name="zika_d14">Día 14</string>
+    <string name="zika_d15">Día 15</string>
+    <string name="zika_d16">Día 16</string>
+    <string name="zika_d17">Día 17</string>
+    <string name="zika_d18">Día 18</string>
+    <string name="zika_d19">Día 19</string>
+    <string name="zika_d20">Día 20</string>
+    <string name="zika_d21">Día 21</string>
+    <string name="zika_d22">Día 22</string>
+    <string name="zika_d23">Día 23</string>
+    <string name="zika_d24">Día 24</string>
+    <string name="zika_d25">Día 25</string>
+    <string name="zika_d26">Día 26</string>
+    <string name="zika_d27">Día 27</string>
+    <string name="zika_d28">Día 28</string>
     
     <string name="verify_nz">Agregar caso índice de cluster de Zika?</string>
     <string name="verify_mh">Agregar nuevo miembro de cluster?</string>

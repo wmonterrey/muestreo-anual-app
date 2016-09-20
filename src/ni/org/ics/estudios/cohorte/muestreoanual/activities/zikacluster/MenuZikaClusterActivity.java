@@ -4,6 +4,7 @@ package ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster;
 
 import ni.org.ics.estudios.cohorte.muestreoanual.MainActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.R;
+import ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.nuevos.NewCasoIndiceActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.zikacluster.MenuZikaClusterAdapter;
 import android.os.Build;
 import android.os.Bundle;

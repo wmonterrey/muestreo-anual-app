@@ -61,6 +61,7 @@ public class ConstantsDB {
 	public static final String TAM_ZIKA_TABLE = "tamizajes_zika";
 	public static final String CASA_ZIKA_TABLE = "casas_zika";
 	public static final String PART_ZIKA_TABLE = "participantes_zika";
+	public static final String SINT_ZIKA_TABLE = "sintomas_zika";
 
 	//Campos roles
 	public static final String AUTH = "authority";
@@ -686,6 +687,13 @@ public class ConstantsDB {
 	public static final String sint26 = "sint26";
 	public static final String sint27 = "sint27";
 	public static final String sint28 = "sint28";
+
+	//Campos zika tabla participantes
+	public static final String idSintoma = "idSintoma";		
+	public static final String fechaSint = "fechaSint";	
+	public static final String diaSint = "diaSint";	
+	public static final String fiebre = "fiebre";	
+	public static final String astenia = "astenia";	
 	
 
 	public static final String CREATE_USER_TABLE = "create table "
@@ -1824,5 +1832,31 @@ public class ConstantsDB {
 			+ REC1    + " integer, " 
 			+ REC2    + " integer, "
 			+ "primary key (" + codigo_casa + "));";
+	
+
+	
+	public static final String CREATE_SINT_ZIKA_TABLE = "create table "
+			+ SINT_ZIKA_TABLE + " ("
+			+ idSintoma + " text not null, " 
+			+ codigo + " integer not null," 
+			+ fechaSint  + " date, "
+			+ diaSint + " integer," 
+			+ fiebre  + " text, "
+			+ astenia  + " text, "
+			+ ID_INSTANCIA + " integer not null," 
+			+ FILE_PATH + " text not null," 
+			+ STATUS + " text not null, "
+			+ WHEN_UPDATED + " text not null, " 
+			+ START  + " text, "
+			+ END  + " text, "
+			+ DEVICE_ID  + " text, "
+			+ SIM_SERIAL + " text, "
+			+ PHONE_NUMBER  + " text, "
+			+ TODAY  + " date, "
+			+ USUARIO  + " text, " 
+			+ DELETED  + " boolean, "
+			+ REC1    + " integer, " 
+			+ REC2    + " integer, "
+			+ "primary key (" + idSintoma + "));";
 
 }

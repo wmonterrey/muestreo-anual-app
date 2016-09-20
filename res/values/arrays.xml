@@ -46,10 +46,41 @@
     </string-array>
     <string-array name="menu_zika_info">
         <item>@string/zika_miembros</item>
+        <item>@string/zika_sint</item>
         <item>@string/zika_followup</item>
         <item>@string/zika_encuesta_ind</item>
         <item>@string/zika_datos_tam</item>
         <item>@string/zika_datos_part</item>
         <item>@string/zika_datos_casa</item>
+    </string-array>
+    <string-array name="menu_zika_sint">
+        <item>@string/zika_d1</item>
+        <item>@string/zika_d2</item>
+        <item>@string/zika_d3</item>
+        <item>@string/zika_d4</item>
+        <item>@string/zika_d5</item>
+        <item>@string/zika_d6</item>
+        <item>@string/zika_d7</item>
+        <item>@string/zika_d8</item>
+        <item>@string/zika_d9</item>
+        <item>@string/zika_d10</item>
+        <item>@string/zika_d11</item>
+        <item>@string/zika_d12</item>
+        <item>@string/zika_d13</item>
+        <item>@string/zika_d14</item>
+        <item>@string/zika_d15</item>
+        <item>@string/zika_d16</item>
+        <item>@string/zika_d17</item>
+        <item>@string/zika_d18</item>
+        <item>@string/zika_d19</item>
+        <item>@string/zika_d20</item>
+        <item>@string/zika_d21</item>
+        <item>@string/zika_d22</item>
+        <item>@string/zika_d23</item>
+        <item>@string/zika_d24</item>
+        <item>@string/zika_d25</item>
+        <item>@string/zika_d26</item>
+        <item>@string/zika_d27</item>
+        <item>@string/zika_d28</item>
     </string-array>
 </resources>

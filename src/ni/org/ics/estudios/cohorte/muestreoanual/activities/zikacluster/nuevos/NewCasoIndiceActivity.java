@@ -1,4 +1,4 @@
-package ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster;
+package ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.nuevos;
 
 import java.io.File;
 import java.util.Date;
@@ -8,6 +8,7 @@ import ni.org.ics.estudios.cohorte.muestreoanual.AbstractAsyncActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.MainActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.R;
 import ni.org.ics.estudios.cohorte.muestreoanual.activities.SelecPartActivity;
+import ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.MenuInfoZikaActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.database.CohorteAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.database.CohorteAdapterGetObjects;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Casa;

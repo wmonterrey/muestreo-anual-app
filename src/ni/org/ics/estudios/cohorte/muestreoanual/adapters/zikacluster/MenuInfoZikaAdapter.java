@@ -18,12 +18,26 @@ import android.widget.TextView;
 public class MenuInfoZikaAdapter extends ArrayAdapter<String> {
 
 	private final String[] values;
+	private final boolean esIndice;
+	private final ParticipanteZikaCluster participante;
 
 	public MenuInfoZikaAdapter(Context context, int textViewResourceId,
-			String[] values, ParticipanteZikaCluster part) {
+			String[] values, boolean esIndice, ParticipanteZikaCluster participante) {
 		super(context, textViewResourceId, values);
 		this.values = values;
+		this.esIndice = esIndice;
+		this.participante = participante;
 	}
+	
+	@Override
+    public boolean isEnabled(int position) {
+        // Disable the first item of GridView
+        if (position == 0 && !esIndice) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -37,31 +51,39 @@ public class MenuInfoZikaAdapter extends ArrayAdapter<String> {
 		textView.setTypeface(null, Typeface.NORMAL);
 		textView.setTextColor(Color.BLACK);
 		textView.setText(values[position]);
-
+		
 		// Change icon based on position
 		Drawable img = null;
 		switch (position){
 		case 0: 
 			img=getContext().getResources().getDrawable( R.drawable.ic_cohorte);
 			textView.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null);
+			if (!esIndice) textView.setTextColor(Color.GRAY);
 			break;
 		case 1: 
-			img=getContext().getResources().getDrawable( R.drawable.ic_usersat);
+			img=getContext().getResources().getDrawable( R.drawable.ic_fever);
 			textView.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null);
 			break;
 		case 2: 
-			img=getContext().getResources().getDrawable( R.drawable.ic_survey_persona);
+			img=getContext().getResources().getDrawable( R.drawable.ic_usersat);
 			textView.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null);
 			break;
 		case 3: 
+			img=getContext().getResources().getDrawable( R.drawable.ic_survey_persona);
+			textView.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null);
+			if(String.valueOf(participante.getEncuesta()).matches("0")){
+				textView.setTextColor(Color.RED);
+			}
+			break;
+		case 4: 
 			img=getContext().getResources().getDrawable( R.drawable.ic_consentimiento);
 			textView.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null);
 			break;
-		case 4: 
+		case 5: 
 			img=getContext().getResources().getDrawable( R.drawable.ic_data_persona);
 			textView.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null);
 			break;
-		case 5: 
+		case 6: 
 			img=getContext().getResources().getDrawable( R.drawable.ic_casa);
 			textView.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null);
 			break;

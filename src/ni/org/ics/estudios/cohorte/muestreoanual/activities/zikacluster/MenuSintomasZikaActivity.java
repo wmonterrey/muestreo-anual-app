@@ -7,13 +7,10 @@ import java.util.Date;
 
 import ni.org.ics.estudios.cohorte.muestreoanual.MainActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.R;
-import ni.org.ics.estudios.cohorte.muestreoanual.activities.ReviewActivity;
-import ni.org.ics.estudios.cohorte.muestreoanual.adapters.zikacluster.MenuInfoZikaAdapter;
+import ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.nuevos.NewSintomaClusterActivity;
+import ni.org.ics.estudios.cohorte.muestreoanual.adapters.zikacluster.MenuSintomasZikaAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.database.CohorteAdapter;
-import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.CasaZikaCluster;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.ParticipanteZikaCluster;
-import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.TamizajeZikaCluster;
-import ni.org.ics.estudios.cohorte.muestreoanual.utils.Constants;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.ConstantsDB;
 
 
@@ -36,12 +33,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 
-public class MenuInfoZikaActivity extends Activity {
+public class MenuSintomasZikaActivity extends Activity {
 
 	private Integer codigo;
 	private static ParticipanteZikaCluster mParticipante = new ParticipanteZikaCluster();
-	private static TamizajeZikaCluster mTamizaje = new TamizajeZikaCluster();
-	private static CasaZikaCluster mCasa = new CasaZikaCluster();
 	private GridView gridView;
 	private TextView textView;
 	private AlertDialog alertDialog;
@@ -69,60 +64,28 @@ public class MenuInfoZikaActivity extends Activity {
 		codigo = getIntent().getIntExtra(ConstantsDB.CODIGO,-1);
 		textView = (TextView) findViewById(R.id.label);
 		getParticipanteData();
-		String[] menu_zika_info = getResources().getStringArray(R.array.menu_zika_info);;
+		String[] menu_zika_sint = getResources().getStringArray(R.array.menu_zika_sint);;
 		gridView = (GridView) findViewById(R.id.gridView1);
-		boolean esIndice = mParticipante.getIndice().matches("1");
-		gridView.setAdapter(new MenuInfoZikaAdapter(this, R.layout.menu_item_2, menu_zika_info,esIndice, mParticipante));
+		
+		gridView.setAdapter(new MenuSintomasZikaAdapter(this, R.layout.menu_item_2, menu_zika_sint, mParticipante));
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v,
 					int position, long id) {
-				Bundle arguments = new Bundle();
 				Intent i;
 				switch(position){
 				
 				case 0:
 					i = new Intent(getApplicationContext(),
-							MiembrosClusterZikaActivity.class);
+							NewSintomaClusterActivity.class);
 					i.putExtra(ConstantsDB.CODIGO, codigo);
 					startActivity(i);
 					break;
-				case 2:
-					i = new Intent(getApplicationContext(),
-							MenuSintomasZikaActivity.class);
-					i.putExtra(ConstantsDB.CODIGO, codigo);
-					startActivity(i);
-					break;
-				case 4:
-					arguments.putString(Constants.TITLE, getString(R.string.zika_datos_tam));
-					if (mTamizaje!=null) arguments.putSerializable(Constants.OBJECTO , mTamizaje);
-					i = new Intent(getApplicationContext(),
-							ReviewActivity.class);
-					i.putExtras(arguments);
-					startActivity(i);	
-					break;
-				case 5:
-					arguments.putString(Constants.TITLE, getString(R.string.zika_datos_part));
-					if (mParticipante!=null) arguments.putSerializable(Constants.OBJECTO , mParticipante);
-					i = new Intent(getApplicationContext(),
-							ReviewActivity.class);
-					i.putExtras(arguments);
-					startActivity(i);
-					break;
-				case 6:
-					arguments.putString(Constants.TITLE, getString(R.string.zika_datos_casa));
-					if (mCasa!=null) arguments.putSerializable(Constants.OBJECTO , mCasa);
-					i = new Intent(getApplicationContext(),
-							ReviewActivity.class);
-					i.putExtras(arguments);
-					startActivity(i);
-					break;
+				
 				default:
-					arguments.putString(Constants.TITLE, getString(R.string.info_participante));
-					if (mParticipante!=null) arguments.putSerializable(Constants.OBJECTO , mParticipante);
 					i = new Intent(getApplicationContext(),
-							ReviewActivity.class);
-					i.putExtras(arguments);
+							NewSintomaClusterActivity.class);
+					i.putExtra(ConstantsDB.CODIGO, codigo);
 					startActivity(i);					
 					break;
 				}
@@ -136,8 +99,6 @@ public class MenuInfoZikaActivity extends Activity {
 		CohorteAdapter ca = new CohorteAdapter();
 		ca.open();
 			mParticipante = ca.getParticipanteZikaCluster(ConstantsDB.CODIGO  + "=" + codigo, null);
-			mCasa = ca.getCasaZikaCluster(ConstantsDB.codigo_casa  + "=" + mParticipante.getCodigo_casa(), null);
-			mTamizaje = ca.getTamizajeZikaCluster(ConstantsDB.idTamizaje  + "='" + mParticipante.getIdTamizaje()+"'", null);
 		ca.close();
 		refreshView();
 	}	

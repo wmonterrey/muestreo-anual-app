@@ -1,4 +1,4 @@
-package ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster;
+package ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.nuevos;
 
 import java.io.File;
 import java.util.Date;

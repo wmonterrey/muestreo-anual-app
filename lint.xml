@@ -10,6 +10,7 @@
         <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/MenuReviewAdapter.java" />
         <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/ParticipanteAdapter.java" />
         <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/zikacluster/MenuInfoZikaAdapter.java" />
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/zikacluster/MenuSintomasZikaAdapter.java" />
         <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/zikacluster/MenuZikaClusterAdapter.java" />
         <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/zikacluster/ParticipanteZikaClusterAdapter.java" />
     </issue>
