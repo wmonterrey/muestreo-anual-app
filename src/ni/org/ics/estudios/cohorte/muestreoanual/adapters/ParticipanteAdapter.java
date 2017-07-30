@@ -39,6 +39,9 @@ public class ParticipanteAdapter extends ArrayAdapter<Participante> {
 			TextView textView = (TextView) v.findViewById(R.id.identifier_text);
 			if (textView != null) {
 				textView.setText(this.getContext().getString(R.string.code) + " " + participante.getCodigo());
+				if(participante.getCasaCHF()!=null){
+					textView.setText(textView.getText().toString()+ "-CHF:" + participante.getCasaCHF());
+				}
 			}
 
 			textView = (TextView) v.findViewById(R.id.name_text);
@@ -67,31 +70,26 @@ public class ParticipanteAdapter extends ArrayAdapter<Participante> {
 			
 			labelHeader = labelHeader + "Estudio: " + participante.getEstudio()+"<br />";
 			labelHeader = labelHeader + "Barrio: " + participante.getBarrioDesc()+"<br />";
-			labelHeader = labelHeader + "Dirección: " + participante.getDirecFicha1()+"<br />";
+			labelHeader = labelHeader + "DirecciÃ³n: " + participante.getDirecFicha1()+"<br />";
 			labelHeader = labelHeader + "Manzana: " + participante.getManzFicha1()+"<br />";
-			labelHeader = labelHeader + "Personas en la casa: " + participante.getAsiste()+"<br />";
+			labelHeader = labelHeader + "Personas en la casa: " + participante.getCuantasPers()+"<br />";
 			labelHeader = labelHeader + "------------<br />";
 			if (participante.getEstPart().equals(0)){
 				labelHeader = labelHeader + "<br /><font color='red'>Participante retirado</font>";
 			}
 			else{
-				if (participante.getConsDeng().matches("Si")) labelHeader = labelHeader + "<font color='red'><b>Participante positivo a ZIKA</b></font><br />";
+				if (participante.getPosZika().matches("Si")) labelHeader = labelHeader + "<font color='red'><b>Participante positivo a ZIKA</b></font><br />";
+				if (participante.getMi().matches("Si")) labelHeader = labelHeader + "<font color='red'><b>Participante en monitoreo intensivo CHF</b></font><br />";
+				if (participante.getCand().matches("Si")) labelHeader = labelHeader + "<font color='red'><b>Participante candidato a CHF</b></font><br />";
 				if (participante.getConsFlu().matches("Si")|| participante.getPesoTalla().matches("Si")
 						|| participante.getEnCasa().matches("Si")||participante.getEncPart().matches("Si")
-						|| participante.getEncLacMat().matches("Si")||participante.getInfoVacuna().matches("No")
-						|| participante.getReConsDeng().matches("Si") || participante.getObsequio().matches("Si")
+						|| participante.getEncLacMat().matches("Si")||participante.getInfoVacuna().matches("Si")
+						|| participante.getConsDeng().matches("Si") || participante.getObsequio().matches("Si")
 						|| participante.getConmx().matches("No") || participante.getConmxbhc().matches("No")|| participante.getZika().matches("Si")
-						|| participante.getAdn().matches("No")){
+						|| participante.getAdn().matches("Si")|| participante.getDatosParto().matches("Si")|| participante.getDatosVisita().matches("Si")){
 					labelHeader = labelHeader + "<font color='red'>Pendiente: <br /></font>";
-					if (participante.getConsFlu().matches("Si")) labelHeader = labelHeader + "Reconsentimiento Influenza <br />";
-					if (participante.getPesoTalla().matches("Si")) labelHeader = labelHeader + "Peso y Talla <br />";
-					if (participante.getEnCasa().matches("Si")) labelHeader = labelHeader + "Encuesta de Casa<br />";
-					if (participante.getEncPart().matches("Si")) labelHeader = labelHeader + "Encuesta de Participante<br />";
-					if (participante.getEncLacMat().matches("Si")) labelHeader = labelHeader + "Encuesta de Lactancia Materna<br />";
-					if (participante.getInfoVacuna().matches("No")) labelHeader = labelHeader + "Información de Vacunas<br />";
-					if (participante.getReConsDeng().matches("Si")) labelHeader = labelHeader + "Consentimiento Dengue<br />";
-					if (participante.getZika().matches("Si")) labelHeader = labelHeader + "Consentimiento Zika<br />";
-					if (participante.getAdn().matches("No")) labelHeader = labelHeader + "<font color='red'><b>Participante pendiente de ADN, Informar a LAB para toma.</b></font><br />";
+					
+					//Primero muestras
 					//'#B941E0'purple
 					//'#11BDF7' blue
 					//'#32B507' green
@@ -249,9 +247,23 @@ public class ParticipanteAdapter extends ArrayAdapter<Participante> {
 							}
 						}
 					}
+					
+					//Nuevo orden
+					
+					if (participante.getEnCasa().matches("Si")) labelHeader = labelHeader + "Encuesta de Casa<br />";
+					if (participante.getEncPart().matches("Si")) labelHeader = labelHeader + "Encuesta de Participante<br />";
+					if (participante.getConsFlu().matches("Si")) labelHeader = labelHeader + "Consentimiento Influenza <br />";
+					if (participante.getConsDeng().matches("Si")) labelHeader = labelHeader + "Consentimiento Dengue<br />";
+					if (participante.getZika().matches("Si")) labelHeader = labelHeader + "Consentimiento Zika<br />";
+					if (participante.getEncLacMat().matches("Si")) labelHeader = labelHeader + "Encuesta de Lactancia Materna<br />";
+					if (participante.getPesoTalla().matches("Si")) labelHeader = labelHeader + "Peso y Talla <br />";
+					if (participante.getDatosParto().matches("Si")) labelHeader = labelHeader + "Datos Parto BB<br />";
+					if (participante.getInfoVacuna().matches("Si")) labelHeader = labelHeader + "Vacunas<br />";
+					if (participante.getDatosVisita().matches("Si")) labelHeader = labelHeader + "Pendiente datos de casa<br />";
 					if ((participante.getObsequio().matches("Si"))){
 						labelHeader = labelHeader + "<font color='blue'>" + this.getContext().getString(R.string.gift_missing) + "</font><br />";
 					}
+					if (participante.getAdn().matches("Si")) labelHeader = labelHeader + "<font color='red'><b>Participante pendiente de ADN, Informar a LAB para toma.</b></font><br />";
 					if ((participante.getRetoma()!=null && participante.getVolRetoma()!=null)){
 						if ((participante.getRetoma().matches("Si"))){
 							labelHeader = labelHeader + "<font color='red'>" + this.getContext().getString(R.string.retoma) +": " + participante.getVolRetoma() + "cc </font><br/>";

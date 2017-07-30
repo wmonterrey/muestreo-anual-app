@@ -207,6 +207,8 @@ public class NewSampleActivity extends AbstractAsyncActivity {
 			mMuestra.setCodPax(em.getCodPax());
 			
 			mMuestra.setPinchazos(em.getPinchazos());
+			mMuestra.setOtrorecurso1(em.getOtrorecurso1());
+			mMuestra.setOtrorecurso2(em.getOtrorecurso2());
 			mMuestra.setMovilInfo(new MovilInfo(idInstancia,
 					instanceFilePath,
 					Constants.STATUS_NOT_SUBMITTED,

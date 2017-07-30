@@ -8,16 +8,19 @@ import ni.org.ics.estudios.cohorte.muestreoanual.R;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.MenuReviewAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.database.CohorteAdapterGetObjects;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoZika;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosPartoBB;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosVisitaTerreno;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.Documentos;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaCasa;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaParticipante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaSatisfaccion;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.LactanciaMaterna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Muestra;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.NewVacuna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Obsequio;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.PesoyTalla;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ReConsentimientoDen2015;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ReConsentimientoFlu2015;
-import ni.org.ics.estudios.cohorte.muestreoanual.domain.Vacuna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.VisitaTerreno;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.Constants;
 
@@ -47,12 +50,15 @@ public class MenuReviewActivity extends Activity {
 	private ArrayList<EncuestaCasa> mEncuestasCasas = new ArrayList<EncuestaCasa>();
 	private ArrayList<EncuestaParticipante> mEncuestasParticipantes = new ArrayList<EncuestaParticipante>();
 	private ArrayList<LactanciaMaterna> mEncuestasLactancias = new ArrayList<LactanciaMaterna>();
-	private ArrayList<Vacuna> mVacunas = new ArrayList<Vacuna>();
+	private ArrayList<NewVacuna> mVacunas = new ArrayList<NewVacuna>();
 	private ArrayList<EncuestaSatisfaccion> mEncuestasS = new ArrayList<EncuestaSatisfaccion>();
 	private ArrayList<ReConsentimientoDen2015> mReConsentimientoDen = new ArrayList<ReConsentimientoDen2015>();
 	private ArrayList<Muestra> mMuestras = new ArrayList<Muestra>();
 	private ArrayList<Obsequio> mObsequios = new ArrayList<Obsequio>();
 	private ArrayList<ConsentimientoZika> mConsentimientoZika = new ArrayList<ConsentimientoZika>();
+	private ArrayList<DatosPartoBB> mDatosPartoBBs = new ArrayList<DatosPartoBB>();
+	private ArrayList<DatosVisitaTerreno> mDatosVisitaTerreno = new ArrayList<DatosVisitaTerreno>();
+	private ArrayList<Documentos> mDocumentos = new ArrayList<Documentos>();
 	private GridView gridView;
 	private TextView textView;
 
@@ -75,7 +81,7 @@ public class MenuReviewActivity extends Activity {
 		gridView = (GridView) findViewById(R.id.gridView1);
 		gridView.setAdapter(new MenuReviewAdapter(this, R.layout.menu_item_2, menu_info, mReConsentimientoFlu.size()
 				,mVisitasTerreno.size(),mPyTs.size(),mEncuestasCasas.size(),mEncuestasParticipantes.size(),
-				mEncuestasLactancias.size(),mVacunas.size(),mEncuestasS.size(),mReConsentimientoDen.size(),mMuestras.size(), mObsequios.size(),mConsentimientoZika.size()));
+				mEncuestasLactancias.size(),mVacunas.size(),mEncuestasS.size(),mReConsentimientoDen.size(),mMuestras.size(), mObsequios.size(),mConsentimientoZika.size(), mDatosPartoBBs.size(), mDatosVisitaTerreno.size(), mDocumentos.size()));
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v,
@@ -156,6 +162,24 @@ public class MenuReviewActivity extends Activity {
 					i = new Intent(getApplicationContext(),
 							ListReviewActivity.class);
 					break;
+				case 12:
+					arguments.putString(Constants.TITLE, getString(R.string.datos_parto));
+					if (mDatosPartoBBs!=null) arguments.putSerializable(Constants.OBJECTO , mDatosPartoBBs);
+					i = new Intent(getApplicationContext(),
+							ListReviewActivity.class);
+					break;
+				case 13:
+					arguments.putString(Constants.TITLE, getString(R.string.datos_casa));
+					if (mDatosVisitaTerreno!=null) arguments.putSerializable(Constants.OBJECTO , mDatosVisitaTerreno);
+					i = new Intent(getApplicationContext(),
+							ListReviewActivity.class);
+					break;					
+				case 14:
+					arguments.putString(Constants.TITLE, getString(R.string.info_docs));
+					if (mDocumentos!=null) arguments.putSerializable(Constants.OBJECTO , mDocumentos);
+					i = new Intent(getApplicationContext(),
+							ListReviewActivity.class);
+					break;	
 				default:
 					i = new Intent(getApplicationContext(),
 							MenuReviewActivity.class);
@@ -177,12 +201,15 @@ public class MenuReviewActivity extends Activity {
 		mEncuestasCasas = ca.getListaEncuestaCasasHoy();
 		mEncuestasParticipantes = ca.getListaEncuestaParticipantesHoy();
 		mEncuestasLactancias = ca.getListaLactanciaMaternasHoy();
-		mVacunas=ca.getListaVacunasHoy();
+		mVacunas=ca.getListaNewVacunasHoy();
 		mReConsentimientoDen=ca.getListaReConsentimientoDen2015Hoy();
 		mMuestras=ca.getListaMuestrasHoy();
+		mDatosPartoBBs = ca.getListaDatosPartoBBHoy();
 		mObsequios=ca.getListaObsequiosHoy();
 		mConsentimientoZika=ca.getListaConsentimientoZikaHoy();
 		mEncuestasS = ca.getEncuestaSatisfaccionHoy();
+		mDocumentos = ca.getListaDocumentosHoy();
+		mDatosVisitaTerreno = ca.getListaDatosVisitaTerrenoHoy();
 		ca.close();	
 	}	
 

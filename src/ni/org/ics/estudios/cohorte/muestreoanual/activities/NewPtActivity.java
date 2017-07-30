@@ -197,6 +197,8 @@ public class NewPtActivity extends AbstractAsyncActivity {
 			mPyT.setImc3(em.getImc3());
 			mPyT.setDifPeso(em.getDifPeso());
 			mPyT.setDifTalla(em.getDifTalla());
+			mPyT.setOtrorecurso1(em.getOtrorecurso1());
+			mPyT.setOtrorecurso2(em.getOtrorecurso2());
 			mPyT.setMovilInfo(new MovilInfo(idInstancia,
 					instanceFilePath,
 					Constants.STATUS_NOT_SUBMITTED,

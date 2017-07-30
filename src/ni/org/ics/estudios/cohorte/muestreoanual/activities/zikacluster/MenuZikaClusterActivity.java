@@ -2,10 +2,14 @@ package ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster;
 
 
 
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
 import ni.org.ics.estudios.cohorte.muestreoanual.MainActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.R;
 import ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.nuevos.NewCasoIndiceActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.zikacluster.MenuZikaClusterAdapter;
+import ni.org.ics.estudios.cohorte.muestreoanual.parsers.TR_EncuestasCasas;
 import android.os.Build;
 import android.os.Bundle;
 import android.annotation.TargetApi;
@@ -20,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.Toast;
 
 public class MenuZikaClusterActivity extends Activity {
 
@@ -61,7 +66,23 @@ public class MenuZikaClusterActivity extends Activity {
 					i = new Intent(getApplicationContext(),
 							SelecPartZikaActivity.class);
 					startActivity(i);
-				break;
+					break;
+				case 4:
+					try {
+						Serializer serializer = new Persister();
+				        //File example = new File("D:\test.xml");
+				        TR_EncuestasCasas all = serializer.read(TR_EncuestasCasas.class, "<?xml version='1.0' ?><TR_EncuestasCasas id='TR_EncuestasCasas'>" +
+				        		"<cuartos_c><sensor_cuarto>1</sensor_cuarto><sensor_cuartoCod>253</sensor_cuartoCod><camas_cuarto>2</camas_cuarto><camas_c><personas_cama>2</personas_cama></camas_c><camas_c><personas_cama>1</personas_cama></camas_c></cuartos_c>" +
+				        		"<cuartos_c><sensor_cuarto>1</sensor_cuarto><sensor_cuartoCod>254</sensor_cuartoCod><camas_cuarto>4</camas_cuarto><camas_c><personas_cama>2</personas_cama></camas_c><camas_c><personas_cama>5</personas_cama></camas_c></cuartos_c>" +
+				        		"<cuartos_c><sensor_cuarto>1</sensor_cuarto><sensor_cuartoCod>255</sensor_cuartoCod><camas_cuarto>1</camas_cuarto><camas_c><personas_cama>2</personas_cama></camas_c><camas_c><personas_cama>8</personas_cama></camas_c></cuartos_c>" +
+				        		"</TR_EncuestasCasas>");
+						Toast.makeText(getApplicationContext(), all.toString(), Toast.LENGTH_LONG).show();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					break;
 				default:
 					
 					break;

@@ -25,15 +25,39 @@ public class VisitaTerreno implements Serializable {
 	private String acomp;
 	private Integer relacionFam;
 	private Integer asentimiento;
-	private Integer cDom;
-	private Integer barrio;
-	private Integer manzana;
-	private String direccion;
-	private String coordenadas;
-	private Double latitud;
-	private Double longitud;
+	
 	private MovilInfo movilInfo;
+	private Integer otrorecurso1;
+	private Integer otrorecurso2;
+	
+	private String otraRelacionFam;
+	private String carnetSN;
+	
 
+
+	public MovilInfo getMovilInfo() {
+		return movilInfo;
+	}
+
+	public void setMovilInfo(MovilInfo movilInfo) {
+		this.movilInfo = movilInfo;
+	}
+
+	public Integer getOtrorecurso1() {
+		return otrorecurso1;
+	}
+
+	public void setOtrorecurso1(Integer otrorecurso1) {
+		this.otrorecurso1 = otrorecurso1;
+	}
+
+	public Integer getOtrorecurso2() {
+		return otrorecurso2;
+	}
+
+	public void setOtrorecurso2(Integer otrorecurso2) {
+		this.otrorecurso2 = otrorecurso2;
+	}
 
 	public VisitaTerrenoId getVisitaId() {
 		return visitaId;
@@ -83,67 +107,21 @@ public class VisitaTerreno implements Serializable {
 		this.asentimiento = asentimiento;
 	}
 
-	public Integer getcDom() {
-		return cDom;
+	public String getOtraRelacionFam() {
+		return otraRelacionFam;
 	}
 
-	public void setcDom(Integer cDom) {
-		this.cDom = cDom;
+	public void setOtraRelacionFam(String otraRelacionFam) {
+		this.otraRelacionFam = otraRelacionFam;
 	}
 
-	public Integer getBarrio() {
-		return barrio;
+	public String getCarnetSN() {
+		return carnetSN;
 	}
 
-	public void setBarrio(Integer barrio) {
-		this.barrio = barrio;
+	public void setCarnetSN(String carnetSN) {
+		this.carnetSN = carnetSN;
 	}
 
-	public String getDireccion() {
-		return direccion;
-	}
 
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
-	}
-
-	public Integer getManzana() {
-		return manzana;
-	}
-
-	public void setManzana(Integer manzana) {
-		this.manzana = manzana;
-	}
-
-	public String getCoordenadas() {
-		return coordenadas;
-	}
-
-	public void setCoordenadas(String coordenadas) {
-		this.coordenadas = coordenadas;
-	}
-
-	public MovilInfo getMovilInfo() {
-		return movilInfo;
-	}
-
-	public void setMovilInfo(MovilInfo movilInfo) {
-		this.movilInfo = movilInfo;
-	}
-	
-	public Double getLatitud() {
-		return latitud;
-	}
-
-	public void setLatitud(Double latitud) {
-		this.latitud = latitud;
-	}
-
-	public Double getLongitud() {
-		return longitud;
-	}
-
-	public void setLongitud(Double longitud) {
-		this.longitud = longitud;
-	}
 }

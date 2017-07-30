@@ -75,6 +75,13 @@ public class Participante implements Serializable {
 	private String conPto;
 	private String telefono;
 	private MovilInfo movilInfo;
+	private Integer cuantasPers;
+	private String datosParto;
+	private String posZika;
+	private String datosVisita;
+	private String mi;
+	private String cand;
+	private String casaCHF;
 
 	public Integer getCodCasa() {
 		return codCasa;
@@ -506,6 +513,62 @@ public class Participante implements Serializable {
 
 	public void setAdn(String adn) {
 		this.adn = adn;
+	}
+
+	public Integer getCuantasPers() {
+		return cuantasPers;
+	}
+
+	public void setCuantasPers(Integer cuantasPers) {
+		this.cuantasPers = cuantasPers;
+	}
+
+	public String getDatosParto() {
+		return datosParto;
+	}
+
+	public void setDatosParto(String datosParto) {
+		this.datosParto = datosParto;
+	}
+
+	public String getPosZika() {
+		return posZika;
+	}
+
+	public void setPosZika(String posZika) {
+		this.posZika = posZika;
+	}
+
+	public String getDatosVisita() {
+		return datosVisita;
+	}
+
+	public void setDatosVisita(String datosVisita) {
+		this.datosVisita = datosVisita;
+	}
+
+	public String getMi() {
+		return mi;
+	}
+
+	public void setMi(String mi) {
+		this.mi = mi;
+	}
+
+	public String getCand() {
+		return cand;
+	}
+
+	public void setCand(String cand) {
+		this.cand = cand;
+	}
+
+	public String getCasaCHF() {
+		return casaCHF;
+	}
+
+	public void setCasaCHF(String casaCHF) {
+		this.casaCHF = casaCHF;
 	}
 	
 	

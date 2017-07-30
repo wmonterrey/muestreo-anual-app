@@ -17,11 +17,15 @@ import ni.org.ics.estudios.cohorte.muestreoanual.domain.Casa;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.CodigosCasas;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoChik;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoZika;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosPartoBB;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosVisitaTerreno;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.Documentos;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaCasa;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaParticipante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaSatisfaccion;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.LactanciaMaterna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Muestra;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.NewVacuna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Obsequio;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Participante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.PesoyTalla;
@@ -41,6 +45,9 @@ import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.CasaZikaClus
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.ParticipanteZikaCluster;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.SintomasZikaCluster;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.TamizajeZikaCluster;
+import ni.org.ics.estudios.cohorte.muestreoanual.helpers.DatosPartoBBHelper;
+import ni.org.ics.estudios.cohorte.muestreoanual.helpers.DocumentosHelper;
+import ni.org.ics.estudios.cohorte.muestreoanual.helpers.NewVacunaHelper;
 import ni.org.ics.estudios.cohorte.muestreoanual.helpers.zikacluster.CasaZikaClusterHelper;
 import ni.org.ics.estudios.cohorte.muestreoanual.helpers.zikacluster.ParticipanteZikaClusterHelper;
 import ni.org.ics.estudios.cohorte.muestreoanual.helpers.zikacluster.SintomasZikaClusterHelper;
@@ -81,6 +88,7 @@ public class CohorteAdapter {
 			db.execSQL(ConstantsDB.CREATE_OB_TABLE);
 			db.execSQL(ConstantsDB.CREATE_VAC_TABLE);
 			db.execSQL(ConstantsDB.CREATE_VIS_TABLE);
+			db.execSQL(ConstantsDB.CREATE_DAT_VIS_TABLE);
 			db.execSQL(ConstantsDB.CREATE_RECONS_TABLE);
 			db.execSQL(ConstantsDB.CREATE_CONSCHIK_TABLE);
 			db.execSQL(ConstantsDB.CREATE_CEST_TABLE);
@@ -96,11 +104,15 @@ public class CohorteAdapter {
 			db.execSQL(ConstantsDB.CREATE_RECONSFLU_TABLE_2015);
 			db.execSQL(ConstantsDB.CREATE_CC_TABLE);
 			db.execSQL(ConstantsDB.CREATE_CAMBCASA_TABLE);
+			db.execSQL(ConstantsDB.CREATE_DATOSPARTOBB_TABLE);
+			db.execSQL(ConstantsDB.CREATE_NEWVAC_TABLE);
+			db.execSQL(ConstantsDB.CREATE_DOCS_TABLE);
 			//ZIKA
 			db.execSQL(ConstantsDB.CREATE_TAM_ZIKA_TABLE);
 			db.execSQL(ConstantsDB.CREATE_CASA_ZIKA_TABLE);
 			db.execSQL(ConstantsDB.CREATE_PART_ZIKA_TABLE);
 			db.execSQL(ConstantsDB.CREATE_SINT_ZIKA_TABLE);
+			db.execSQL(ConstantsDB.CREATE_SINT_INIZIKA_TABLE);
 		}
 
 		@Override
@@ -118,6 +130,7 @@ public class CohorteAdapter {
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.OB_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.VAC_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.VIS_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.DAT_VIS_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.RECONS_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.CONSCHIK_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.CEST_TABLE);
@@ -133,11 +146,15 @@ public class CohorteAdapter {
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.ZIKA_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.COD_REL_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.CAMB_CASA_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.DATOSPARTOBB_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.NEWVAC_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.DOCS_TABLE);
 			//ZIKA CLUSTER
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.TAM_ZIKA_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.CASA_ZIKA_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.PART_ZIKA_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.SINT_ZIKA_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + ConstantsDB.SINT_INIZIKA_TABLE);
 			
 			onCreate(db);
 		}
@@ -343,6 +360,13 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.NOMMADRE, participante.getNombreMadre());
 		cv.put(ConstantsDB.ASISTE, participante.getAsiste());
 		cv.put(ConstantsDB.telefono, participante.getTelefono());
+		cv.put(ConstantsDB.datosParto, participante.getDatosParto());
+		cv.put(ConstantsDB.posZika, participante.getPosZika());
+		cv.put(ConstantsDB.datosVisita, participante.getDatosVisita());
+		cv.put(ConstantsDB.mi, participante.getMi());
+		cv.put(ConstantsDB.cand, participante.getCand());
+		cv.put(ConstantsDB.casaCHF, participante.getCasaCHF());
+		cv.put(ConstantsDB.NUMPERS, participante.getCuantasPers());
 		cv.put(ConstantsDB.US, participante.getUs());
 		cv.put(ConstantsDB.HIDENG, participante.getHiDeng());
 		if (participante.getCuanDeng() != null){
@@ -452,6 +476,13 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.NOMMADRE, participante.getNombreMadre());
 		cv.put(ConstantsDB.ASISTE, participante.getAsiste());
 		cv.put(ConstantsDB.telefono, participante.getTelefono());
+		cv.put(ConstantsDB.datosParto, participante.getDatosParto());
+		cv.put(ConstantsDB.posZika, participante.getPosZika());
+		cv.put(ConstantsDB.datosVisita, participante.getDatosVisita());
+		cv.put(ConstantsDB.mi, participante.getMi());
+		cv.put(ConstantsDB.cand, participante.getCand());
+		cv.put(ConstantsDB.casaCHF, participante.getCasaCHF());
+		cv.put(ConstantsDB.NUMPERS, participante.getCuantasPers());
 		cv.put(ConstantsDB.US, participante.getUs());
 		cv.put(ConstantsDB.HIDENG, participante.getHiDeng());
 		if (participante.getCuanDeng() != null){
@@ -518,6 +549,7 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.CVIVEN4, enccasa.getCvivencasa4());
 		cv.put(ConstantsDB.CVIVEN5, enccasa.getCvivencasa5());
 		cv.put(ConstantsDB.CVIVEN6, enccasa.getCvivencasa6());
+		cv.put(ConstantsDB.CVIVEN7, enccasa.getCvivencasa7());
 		cv.put(ConstantsDB.CCUARTOS, enccasa.getCcuartos());
 		cv.put(ConstantsDB.GRIFO, enccasa.getGrifo());
 		cv.put(ConstantsDB.GRIFOCOM, enccasa.getGrifoComSN());
@@ -545,7 +577,9 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.GATOS, enccasa.getGatos());
 		cv.put(ConstantsDB.GATOSCASA, enccasa.getGatoscasa());
 		cv.put(ConstantsDB.CERDOS, enccasa.getCerdos());
-		cv.put(ConstantsDB.CERDOSCASA, enccasa.getCerdoscasa());		
+		cv.put(ConstantsDB.CERDOSCASA, enccasa.getCerdoscasa());
+		cv.put(ConstantsDB.otrorecurso1, enccasa.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, enccasa.getOtrorecurso2());
 		cv.put(ConstantsDB.ID_INSTANCIA, enccasa.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, enccasa.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, enccasa.getMovilInfo().getEstado());
@@ -589,6 +623,7 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.CVIVEN4, enccasa.getCvivencasa4());
 		cv.put(ConstantsDB.CVIVEN5, enccasa.getCvivencasa5());
 		cv.put(ConstantsDB.CVIVEN6, enccasa.getCvivencasa6());
+		cv.put(ConstantsDB.CVIVEN7, enccasa.getCvivencasa7());
 		cv.put(ConstantsDB.CCUARTOS, enccasa.getCcuartos());
 		cv.put(ConstantsDB.GRIFO, enccasa.getGrifo());
 		cv.put(ConstantsDB.GRIFOCOM, enccasa.getGrifoComSN());
@@ -616,7 +651,9 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.GATOS, enccasa.getGatos());
 		cv.put(ConstantsDB.GATOSCASA, enccasa.getGatoscasa());
 		cv.put(ConstantsDB.CERDOS, enccasa.getCerdos());
-		cv.put(ConstantsDB.CERDOSCASA, enccasa.getCerdoscasa());		
+		cv.put(ConstantsDB.CERDOSCASA, enccasa.getCerdoscasa());
+		cv.put(ConstantsDB.otrorecurso1, enccasa.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, enccasa.getOtrorecurso2());
 		cv.put(ConstantsDB.ID_INSTANCIA, enccasa.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, enccasa.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, enccasa.getMovilInfo().getEstado());
@@ -756,6 +793,8 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.nombmama2, encpar.getNombmama2());
 		cv.put(ConstantsDB.apellimama1, encpar.getApellimama1());
 		cv.put(ConstantsDB.apellimama2, encpar.getApellimama2());
+		cv.put(ConstantsDB.otrorecurso1, encpar.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, encpar.getOtrorecurso2());
 		
 		cv.put(ConstantsDB.ID_INSTANCIA, encpar.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, encpar.getMovilInfo().getInstancePath());
@@ -901,6 +940,9 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.nombmama2, encpar.getNombmama2());
 		cv.put(ConstantsDB.apellimama1, encpar.getApellimama1());
 		cv.put(ConstantsDB.apellimama2, encpar.getApellimama2());
+		
+		cv.put(ConstantsDB.otrorecurso1, encpar.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, encpar.getOtrorecurso2());
 	
 		
 		cv.put(ConstantsDB.ID_INSTANCIA, encpar.getMovilInfo().getIdInstancia());
@@ -951,6 +993,8 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.MESLIQDP, enclac.getMesDioLiqDisPecho());
 		cv.put(ConstantsDB.EDADALIMS, enclac.getEdAlimSolidos());
 		cv.put(ConstantsDB.MESALIMS, enclac.getMesDioAlimSol());
+		cv.put(ConstantsDB.otrorecurso1, enclac.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, enclac.getOtrorecurso2());
 		cv.put(ConstantsDB.ID_INSTANCIA, enclac.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, enclac.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, enclac.getMovilInfo().getEstado());
@@ -1020,6 +1064,8 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.MESLIQDP, enclac.getMesDioLiqDisPecho());
 		cv.put(ConstantsDB.EDADALIMS, enclac.getEdAlimSolidos());
 		cv.put(ConstantsDB.MESALIMS, enclac.getMesDioAlimSol());
+		cv.put(ConstantsDB.otrorecurso1, enclac.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, enclac.getOtrorecurso2());
 		cv.put(ConstantsDB.ID_INSTANCIA, enclac.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, enclac.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, enclac.getMovilInfo().getEstado());
@@ -1063,6 +1109,8 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.IMC3, pt.getImc3());
 		cv.put(ConstantsDB.DIFPESO, pt.getDifPeso());
 		cv.put(ConstantsDB.DIFTALLA, pt.getDifTalla());
+		cv.put(ConstantsDB.otrorecurso1, pt.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, pt.getOtrorecurso2());
 		cv.put(ConstantsDB.ID_INSTANCIA, pt.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, pt.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, pt.getMovilInfo().getEstado());
@@ -1111,6 +1159,8 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.IMC3, pt.getImc3());
 		cv.put(ConstantsDB.DIFPESO, pt.getDifPeso());
 		cv.put(ConstantsDB.DIFTALLA, pt.getDifTalla());
+		cv.put(ConstantsDB.otrorecurso1, pt.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, pt.getOtrorecurso2());
 		cv.put(ConstantsDB.ID_INSTANCIA, pt.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, pt.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, pt.getMovilInfo().getEstado());
@@ -1153,6 +1203,7 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.BARRIO, ob.getBarrio());
 		cv.put(ConstantsDB.DIRECCION, ob.getDire());
 		cv.put(ConstantsDB.OBS, ob.getObservaciones());
+		cv.put(ConstantsDB.otrorecurso1, ob.getOtrorecurso1());
 		cv.put(ConstantsDB.ID_INSTANCIA, ob.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, ob.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, ob.getMovilInfo().getEstado());
@@ -1200,6 +1251,7 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.BARRIO, ob.getBarrio());
 		cv.put(ConstantsDB.DIRECCION, ob.getDire());
 		cv.put(ConstantsDB.OBS, ob.getObservaciones());
+		cv.put(ConstantsDB.otrorecurso1, ob.getOtrorecurso1());
 		cv.put(ConstantsDB.ID_INSTANCIA, ob.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, ob.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, ob.getMovilInfo().getEstado());
@@ -1269,6 +1321,7 @@ public class CohorteAdapter {
 		if (vacuna.getFechaInf10() != null){
 			cv.put(ConstantsDB.FECHAINF10, vacuna.getFechaInf10().getTime());
 		}
+		cv.put(ConstantsDB.otrorecurso1, vacuna.getOtrorecurso1());
 		cv.put(ConstantsDB.ID_INSTANCIA, vacuna.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, vacuna.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, vacuna.getMovilInfo().getEstado());
@@ -1343,6 +1396,7 @@ public class CohorteAdapter {
 		if (vacuna.getFechaInf10() != null){
 			cv.put(ConstantsDB.FECHAINF10, vacuna.getFechaInf10().getTime());
 		}
+		cv.put(ConstantsDB.otrorecurso1, vacuna.getOtrorecurso1());
 		cv.put(ConstantsDB.ID_INSTANCIA, vacuna.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, vacuna.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, vacuna.getMovilInfo().getEstado());
@@ -1371,6 +1425,159 @@ public class CohorteAdapter {
 	 *            Objeto VisitaTerreno que contiene la informacion
 	 *
 	 */
+	public void crearDatosVisita(DatosVisitaTerreno visita) {
+		ContentValues cv = new ContentValues();
+		cv.put(ConstantsDB.CODIGO, visita.getVisitaId().getCodigo());
+		cv.put(ConstantsDB.FECHA_VISITA, visita.getVisitaId().getFechaVisita().getTime());
+		cv.put(ConstantsDB.COD_CASA, visita.getCodCasa());
+		cv.put(ConstantsDB.CDOM_VIS, visita.getcDom());
+		cv.put(ConstantsDB.BARRIO_VIS, visita.getBarrio());
+		cv.put(ConstantsDB.MANZ_VIS, visita.getManzana());
+		cv.put(ConstantsDB.DIRE_VIS, visita.getDireccion());
+		cv.put(ConstantsDB.COORD_VIS, visita.getCoordenadas());
+		cv.put(ConstantsDB.LAT_VIS, visita.getLatitud());
+		cv.put(ConstantsDB.LON_VIS, visita.getLongitud());
+		cv.put(ConstantsDB.telefonoClasif1, visita.getTelefonoClasif1());
+		cv.put(ConstantsDB.telefonoConv1, visita.getTelefonoConv1());
+		cv.put(ConstantsDB.telefonoCel1, visita.getTelefonoCel1());
+		cv.put(ConstantsDB.telefonoEmpresa1, visita.getTelefonoEmpresa1());
+		cv.put(ConstantsDB.telefono2SN, visita.getTelefono2SN());
+		cv.put(ConstantsDB.telefonoClasif2, visita.getTelefonoClasif2());
+		cv.put(ConstantsDB.telefonoConv2, visita.getTelefonoConv2());
+		cv.put(ConstantsDB.telefonoCel2, visita.getTelefonoCel2());
+		cv.put(ConstantsDB.telefonoEmpresa2, visita.getTelefonoEmpresa2());
+		cv.put(ConstantsDB.telefono3SN, visita.getTelefono3SN());
+		cv.put(ConstantsDB.telefonoClasif3, visita.getTelefonoClasif3());
+		cv.put(ConstantsDB.telefonoConv3, visita.getTelefonoConv3());
+		cv.put(ConstantsDB.telefonoCel3, visita.getTelefonoCel3());
+		cv.put(ConstantsDB.telefonoEmpresa3, visita.getTelefonoEmpresa3());
+		cv.put(ConstantsDB.telefono4SN, visita.getTelefono4SN());
+		cv.put(ConstantsDB.telefonoClasif4, visita.getTelefonoClasif4());
+		cv.put(ConstantsDB.telefonoConv4, visita.getTelefonoConv4());
+		cv.put(ConstantsDB.telefonoCel4, visita.getTelefonoCel4());
+		cv.put(ConstantsDB.telefonoEmpresa4, visita.getTelefonoEmpresa4());
+		cv.put(ConstantsDB.candidatoNI, visita.getCandidatoNI());
+		cv.put(ConstantsDB.nombreCandNI1, visita.getNombreCandNI1());
+		cv.put(ConstantsDB.nombreCandNI2, visita.getNombreCandNI2());
+		cv.put(ConstantsDB.apellidoCandNI1, visita.getApellidoCandNI1());
+		cv.put(ConstantsDB.apellidoCandNI2, visita.getApellidoCandNI2());
+		cv.put(ConstantsDB.nombreptTutorCandNI, visita.getNombreptTutorCandNI());
+		cv.put(ConstantsDB.nombreptTutorCandNI2, visita.getNombreptTutorCandNI2());
+		cv.put(ConstantsDB.apellidoptTutorCandNI, visita.getApellidoptTutorCandNI());
+		cv.put(ConstantsDB.apellidoptTutorCandNI2, visita.getApellidoptTutorCandNI2());
+		cv.put(ConstantsDB.relacionFamCandNI, visita.getRelacionFamCandNI());
+		cv.put(ConstantsDB.otraRelacionFamCandNI, visita.getOtraRelacionFamCandNI());
+		
+		
+		
+		cv.put(ConstantsDB.otrorecurso1, visita.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, visita.getOtrorecurso2());
+		cv.put(ConstantsDB.ID_INSTANCIA, visita.getMovilInfo().getIdInstancia());
+		cv.put(ConstantsDB.FILE_PATH, visita.getMovilInfo().getInstancePath());
+		cv.put(ConstantsDB.STATUS, visita.getMovilInfo().getEstado());
+		cv.put(ConstantsDB.WHEN_UPDATED, visita.getMovilInfo().getUltimoCambio());
+		cv.put(ConstantsDB.START, visita.getMovilInfo().getStart());
+		cv.put(ConstantsDB.END, visita.getMovilInfo().getEnd());
+		cv.put(ConstantsDB.DEVICE_ID, visita.getMovilInfo().getDeviceid());
+		cv.put(ConstantsDB.SIM_SERIAL, visita.getMovilInfo().getSimserial());
+		cv.put(ConstantsDB.PHONE_NUMBER, visita.getMovilInfo().getPhonenumber());
+		cv.put(ConstantsDB.TODAY, visita.getMovilInfo().getToday().getTime());
+		cv.put(ConstantsDB.USUARIO, visita.getMovilInfo().getUsername());
+		cv.put(ConstantsDB.DELETED, visita.getMovilInfo().getEliminado());
+		cv.put(ConstantsDB.REC1, visita.getMovilInfo().getRecurso1());
+		cv.put(ConstantsDB.REC2, visita.getMovilInfo().getRecurso2());
+		mDb.insert(ConstantsDB.DAT_VIS_TABLE, null, cv);
+	}
+
+	/**
+	 * Borra todas las DatosVisitaTerreno de la base de datos
+	 * 
+	 * @return verdadero o falso
+	 */
+	public boolean borrarTodasDatosVisitaTerrenos() {
+		return mDb.delete(ConstantsDB.DAT_VIS_TABLE, null, null) > 0;
+	}
+
+	/**
+	 * Actualiza una DatosVisitaTerreno en la base de datos.
+	 * 
+	 * @param DatosVisitaTerreno
+	 *            Objeto que contiene la info
+	 * @return verdadero o falso
+	 */
+	public boolean actualizaDatosVisitaTerreno(DatosVisitaTerreno visita) {
+		ContentValues cv = new ContentValues();
+		cv.put(ConstantsDB.CODIGO, visita.getVisitaId().getCodigo());
+		cv.put(ConstantsDB.FECHA_VISITA, visita.getVisitaId().getFechaVisita().getTime());
+		cv.put(ConstantsDB.COD_CASA, visita.getCodCasa());
+		cv.put(ConstantsDB.CDOM_VIS, visita.getcDom());
+		cv.put(ConstantsDB.BARRIO_VIS, visita.getBarrio());
+		cv.put(ConstantsDB.MANZ_VIS, visita.getManzana());
+		cv.put(ConstantsDB.DIRE_VIS, visita.getDireccion());
+		cv.put(ConstantsDB.COORD_VIS, visita.getCoordenadas());
+		cv.put(ConstantsDB.LAT_VIS, visita.getLatitud());
+		cv.put(ConstantsDB.LON_VIS, visita.getLongitud());
+		cv.put(ConstantsDB.otrorecurso1, visita.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, visita.getOtrorecurso2());
+		cv.put(ConstantsDB.telefonoClasif1, visita.getTelefonoClasif1());
+		cv.put(ConstantsDB.telefonoConv1, visita.getTelefonoConv1());
+		cv.put(ConstantsDB.telefonoCel1, visita.getTelefonoCel1());
+		cv.put(ConstantsDB.telefonoEmpresa1, visita.getTelefonoEmpresa1());
+		cv.put(ConstantsDB.telefono2SN, visita.getTelefono2SN());
+		cv.put(ConstantsDB.telefonoClasif2, visita.getTelefonoClasif2());
+		cv.put(ConstantsDB.telefonoConv2, visita.getTelefonoConv2());
+		cv.put(ConstantsDB.telefonoCel2, visita.getTelefonoCel2());
+		cv.put(ConstantsDB.telefonoEmpresa2, visita.getTelefonoEmpresa2());
+		cv.put(ConstantsDB.telefono3SN, visita.getTelefono3SN());
+		cv.put(ConstantsDB.telefonoClasif3, visita.getTelefonoClasif3());
+		cv.put(ConstantsDB.telefonoConv3, visita.getTelefonoConv3());
+		cv.put(ConstantsDB.telefonoCel3, visita.getTelefonoCel3());
+		cv.put(ConstantsDB.telefonoEmpresa3, visita.getTelefonoEmpresa3());
+		cv.put(ConstantsDB.telefono4SN, visita.getTelefono4SN());
+		cv.put(ConstantsDB.telefonoClasif4, visita.getTelefonoClasif4());
+		cv.put(ConstantsDB.telefonoConv4, visita.getTelefonoConv4());
+		cv.put(ConstantsDB.telefonoCel4, visita.getTelefonoCel4());
+		cv.put(ConstantsDB.telefonoEmpresa4, visita.getTelefonoEmpresa4());
+		cv.put(ConstantsDB.candidatoNI, visita.getCandidatoNI());
+		cv.put(ConstantsDB.nombreCandNI1, visita.getNombreCandNI1());
+		cv.put(ConstantsDB.nombreCandNI2, visita.getNombreCandNI2());
+		cv.put(ConstantsDB.apellidoCandNI1, visita.getApellidoCandNI1());
+		cv.put(ConstantsDB.apellidoCandNI2, visita.getApellidoCandNI2());
+		cv.put(ConstantsDB.nombreptTutorCandNI, visita.getNombreptTutorCandNI());
+		cv.put(ConstantsDB.nombreptTutorCandNI2, visita.getNombreptTutorCandNI2());
+		cv.put(ConstantsDB.apellidoptTutorCandNI, visita.getApellidoptTutorCandNI());
+		cv.put(ConstantsDB.apellidoptTutorCandNI2, visita.getApellidoptTutorCandNI2());
+		cv.put(ConstantsDB.relacionFamCandNI, visita.getRelacionFamCandNI());
+		cv.put(ConstantsDB.otraRelacionFamCandNI, visita.getOtraRelacionFamCandNI());
+		cv.put(ConstantsDB.ID_INSTANCIA, visita.getMovilInfo().getIdInstancia());
+		cv.put(ConstantsDB.FILE_PATH, visita.getMovilInfo().getInstancePath());
+		cv.put(ConstantsDB.STATUS, visita.getMovilInfo().getEstado());
+		cv.put(ConstantsDB.WHEN_UPDATED, visita.getMovilInfo().getUltimoCambio());
+		cv.put(ConstantsDB.START, visita.getMovilInfo().getStart());
+		cv.put(ConstantsDB.END, visita.getMovilInfo().getEnd());
+		cv.put(ConstantsDB.DEVICE_ID, visita.getMovilInfo().getDeviceid());
+		cv.put(ConstantsDB.SIM_SERIAL, visita.getMovilInfo().getSimserial());
+		cv.put(ConstantsDB.PHONE_NUMBER, visita.getMovilInfo().getPhonenumber());
+		cv.put(ConstantsDB.TODAY, visita.getMovilInfo().getToday().getTime());
+		cv.put(ConstantsDB.USUARIO, visita.getMovilInfo().getUsername());
+		cv.put(ConstantsDB.DELETED, visita.getMovilInfo().getEliminado());
+		cv.put(ConstantsDB.REC1, visita.getMovilInfo().getRecurso1());
+		cv.put(ConstantsDB.REC2, visita.getMovilInfo().getRecurso2());
+		return mDb.update(ConstantsDB.DAT_VIS_TABLE, cv, ConstantsDB.CODIGO + "=" 
+				+ visita.getVisitaId().getCodigo() + " and " +ConstantsDB.FECHA_VISITA + "="
+				+ visita.getVisitaId().getFechaVisita().getTime(), null) > 0;
+	}
+	
+	
+	/**METODOS PARA VISITAS**/
+
+	/**
+	 * Inserta una visita en la base de datos
+	 * 
+	 * @param visita
+	 *            Objeto VisitaTerreno que contiene la informacion
+	 *
+	 */
 	public void crearVisita(VisitaTerreno visita) {
 		ContentValues cv = new ContentValues();
 		cv.put(ConstantsDB.CODIGO, visita.getVisitaId().getCodigo());
@@ -1380,13 +1587,10 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.ACOMP_VIS, visita.getAcomp());
 		cv.put(ConstantsDB.REL_VIS, visita.getRelacionFam());
 		cv.put(ConstantsDB.ASENT_VIS, visita.getAsentimiento());
-		cv.put(ConstantsDB.CDOM_VIS, visita.getcDom());
-		cv.put(ConstantsDB.BARRIO_VIS, visita.getBarrio());
-		cv.put(ConstantsDB.MANZ_VIS, visita.getManzana());
-		cv.put(ConstantsDB.DIRE_VIS, visita.getDireccion());
-		cv.put(ConstantsDB.COORD_VIS, visita.getCoordenadas());
-		cv.put(ConstantsDB.LAT_VIS, visita.getLatitud());
-		cv.put(ConstantsDB.LON_VIS, visita.getLongitud());
+		cv.put(ConstantsDB.otraRelacionFam, visita.getOtraRelacionFam());
+		cv.put(ConstantsDB.carnetSN, visita.getCarnetSN());
+		cv.put(ConstantsDB.otrorecurso1, visita.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, visita.getOtrorecurso2());
 		cv.put(ConstantsDB.ID_INSTANCIA, visita.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, visita.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, visita.getMovilInfo().getEstado());
@@ -1429,13 +1633,10 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.ACOMP_VIS, visita.getAcomp());
 		cv.put(ConstantsDB.REL_VIS, visita.getRelacionFam());
 		cv.put(ConstantsDB.ASENT_VIS, visita.getAsentimiento());
-		cv.put(ConstantsDB.CDOM_VIS, visita.getcDom());
-		cv.put(ConstantsDB.BARRIO_VIS, visita.getBarrio());
-		cv.put(ConstantsDB.MANZ_VIS, visita.getManzana());
-		cv.put(ConstantsDB.DIRE_VIS, visita.getDireccion());
-		cv.put(ConstantsDB.COORD_VIS, visita.getCoordenadas());
-		cv.put(ConstantsDB.LAT_VIS, visita.getLatitud());
-		cv.put(ConstantsDB.LON_VIS, visita.getLongitud());
+		cv.put(ConstantsDB.otrorecurso1, visita.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, visita.getOtrorecurso2());
+		cv.put(ConstantsDB.otraRelacionFam, visita.getOtraRelacionFam());
+		cv.put(ConstantsDB.carnetSN, visita.getCarnetSN());
 		cv.put(ConstantsDB.ID_INSTANCIA, visita.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, visita.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, visita.getMovilInfo().getEstado());
@@ -2321,6 +2522,7 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.DENCONIMP, enssat.getDenConImp());
 		cv.put(ConstantsDB.EXPLPELIGENF, enssat.getExplPeligEnf());
 		cv.put(ConstantsDB.EXPMEDCUID, enssat.getExpMedCuid());
+		cv.put(ConstantsDB.otrorecurso1, enssat.getOtrorecurso1());
 		cv.put(ConstantsDB.ID_INSTANCIA, enssat.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, enssat.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, enssat.getMovilInfo().getEstado());
@@ -2372,6 +2574,7 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.DENCONIMP, encsat.getDenConImp());
 		cv.put(ConstantsDB.EXPLPELIGENF, encsat.getExplPeligEnf());
 		cv.put(ConstantsDB.EXPMEDCUID, encsat.getExpMedCuid());
+		cv.put(ConstantsDB.otrorecurso1, encsat.getOtrorecurso1());
 		cv.put(ConstantsDB.ID_INSTANCIA, encsat.getMovilInfo().getIdInstancia());
 		cv.put(ConstantsDB.FILE_PATH, encsat.getMovilInfo().getInstancePath());
 		cv.put(ConstantsDB.STATUS, encsat.getMovilInfo().getEstado());
@@ -2456,6 +2659,7 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.U_CONS, user.getConsentimiento());
 		cv.put(ConstantsDB.U_CASAZIKA, user.getCasazika());
 		cv.put(ConstantsDB.U_TAMZIKA, user.getTamizajezika());
+		cv.put(ConstantsDB.U_PARTO, user.getDatosparto());
 		mDb.insert(ConstantsDB.USER_TABLE, null, cv);
 	}
 	
@@ -2486,6 +2690,7 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.U_CONS, user.getConsentimiento());
 		cv.put(ConstantsDB.U_CASAZIKA, user.getCasazika());
 		cv.put(ConstantsDB.U_TAMZIKA, user.getTamizajezika());
+		cv.put(ConstantsDB.U_PARTO, user.getDatosparto());
 		mDb.insert(ConstantsDB.USER_TABLE, null, cv);
 	}
 
@@ -2523,6 +2728,7 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.U_CONS, user.getConsentimiento());
 		cv.put(ConstantsDB.U_CASAZIKA, user.getCasazika());
 		cv.put(ConstantsDB.U_TAMZIKA, user.getTamizajezika());
+		cv.put(ConstantsDB.U_PARTO, user.getDatosparto());
 		return mDb.update(ConstantsDB.USER_TABLE, cv, ConstantsDB.USERNAME + "='"
 				+ user.getUsername() + "'", null) > 0;
 	}
@@ -2552,6 +2758,7 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.U_CONS, user.getConsentimiento());
 		cv.put(ConstantsDB.U_CASAZIKA, user.getCasazika());
 		cv.put(ConstantsDB.U_TAMZIKA, user.getTamizajezika());
+		cv.put(ConstantsDB.U_PARTO, user.getDatosparto());
 		return mDb.update(ConstantsDB.USER_TABLE, cv, ConstantsDB.USERNAME + "='"
 				+ user.getUsername() + "'", null) > 0;
 	}
@@ -2591,6 +2798,8 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.codPax, muestra.getCodPax());
 		cv.put(ConstantsDB.terreno, muestra.getTerreno());
 		
+		cv.put(ConstantsDB.otrorecurso1, muestra.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, muestra.getOtrorecurso2());
 		
 		cv.put(ConstantsDB.PIN, muestra.getPinchazos());
 		cv.put(ConstantsDB.ID_INSTANCIA, muestra.getMovilInfo().getIdInstancia());
@@ -2651,6 +2860,9 @@ public class CohorteAdapter {
 		cv.put(ConstantsDB.horaFinPax, muestra.getHoraFinPax());
 		cv.put(ConstantsDB.codPax, muestra.getCodPax());
 		cv.put(ConstantsDB.terreno, muestra.getTerreno());
+		
+		cv.put(ConstantsDB.otrorecurso1, muestra.getOtrorecurso1());
+		cv.put(ConstantsDB.otrorecurso2, muestra.getOtrorecurso2());
 		
 		cv.put(ConstantsDB.PIN, muestra.getPinchazos());
 		cv.put(ConstantsDB.ID_INSTANCIA, muestra.getMovilInfo().getIdInstancia());
@@ -3608,6 +3820,242 @@ public class CohorteAdapter {
 		return mSintomasZikaClusters;
 	}
 	
+	/**METODOS PARA DatosPartoBB**/
+	
+	/**
+	 * Inserta una DatosPartoBB en la base de datos
+	 * 
+	 * @param DatosPartoBB
+	 *            Objeto DatosPartoBB que contiene la informacion
+	 *
+	 */
+	public void crearDatosPartoBB(DatosPartoBB datosPartoBB) {
+		ContentValues cv = DatosPartoBBHelper.crearDatosPartoBBContentValues(datosPartoBB);
+		mDb.insert(ConstantsDB.DATOSPARTOBB_TABLE, null, cv);
+	}
+	
+	/**
+	 * Edita una DatosPartoBB en la base de datos
+	 * 
+	 * @param DatosPartoBB
+	 *            Objeto DatosPartoBB que contiene la informacion
+	 *
+	 */
+	public boolean editarDatosPartoBB(DatosPartoBB datosPartoBB) {
+		ContentValues cv = DatosPartoBBHelper.crearDatosPartoBBContentValues(datosPartoBB);
+		return mDb.update(ConstantsDB.DATOSPARTOBB_TABLE, cv, ConstantsDB.codigo + "=" 
+				+ datosPartoBB.getDatosPartoId().getCodigo() + " and " +ConstantsDB.fechaDatosParto + "="
+						+ datosPartoBB.getDatosPartoId().getFechaDatosParto().getTime(), null) > 0;
+	}
+	
+	/**
+	 * Borra todos los DatosPartoBB de la base de datos
+	 * 
+	 * @return verdadero o falso
+	 */
+	public boolean borrarDatosPartoBB() {
+		return mDb.delete(ConstantsDB.DATOSPARTOBB_TABLE, null, null) > 0;
+	}
+	
+	/**
+	 * Obtiene una DatosPartoBB de la base de datos
+	 * 
+	 * @return DatosPartoBB
+	 */
+	public DatosPartoBB getDatosPartoBB(String filtro, String orden) throws SQLException {
+		DatosPartoBB mDatosPartoBB = null;
+		Cursor cursorDatosPartoBB = null;
+		cursorDatosPartoBB = mDb.query(true, ConstantsDB.DATOSPARTOBB_TABLE, null,
+				filtro, null, null, null, null, null);
+		if (cursorDatosPartoBB != null && cursorDatosPartoBB.getCount() > 0) {
+			cursorDatosPartoBB.moveToFirst();
+			mDatosPartoBB=DatosPartoBBHelper.crearDatosPartoBB(cursorDatosPartoBB);
+		}
+		if (!cursorDatosPartoBB.isClosed()) cursorDatosPartoBB.close();
+		return mDatosPartoBB;
+	}
+	
+	/**
+	 * Obtiene una lista de DatosPartoBB de la base de datos
+	 * 
+	 * @return List<DatosPartoBB>
+	 */
+	public ArrayList<DatosPartoBB> getDatosPartoBBs(String filtro, String orden) throws SQLException {
+		ArrayList<DatosPartoBB> mDatosPartoBBs = new ArrayList<DatosPartoBB>();
+		Cursor cursorDatosPartoBB = null;
+		cursorDatosPartoBB = mDb.query(true, ConstantsDB.DATOSPARTOBB_TABLE, null,
+				filtro, null, null, null, null, null);
+		if (cursorDatosPartoBB != null && cursorDatosPartoBB.getCount() > 0) {
+			cursorDatosPartoBB.moveToFirst();
+			mDatosPartoBBs.clear();
+			do{
+				DatosPartoBB mDatosPartoBB = null;
+				mDatosPartoBB = DatosPartoBBHelper.crearDatosPartoBB(cursorDatosPartoBB);
+				mDatosPartoBBs.add(mDatosPartoBB);
+			} while (cursorDatosPartoBB.moveToNext());
+		}
+		if (!cursorDatosPartoBB.isClosed()) cursorDatosPartoBB.close();
+		return mDatosPartoBBs;
+	}	
+	
+
+	
+	
+	/**METODOS PARA NewVacuna**/
+	
+	/**
+	 * Inserta una NewVacuna en la base de datos
+	 * 
+	 * @param NewVacuna
+	 *            Objeto NewVacuna que contiene la informacion
+	 *
+	 */
+	public void crearNewVacuna(NewVacuna newVacuna) {
+		ContentValues cv = NewVacunaHelper.crearNewVacunaContentValues(newVacuna);
+		mDb.insert(ConstantsDB.NEWVAC_TABLE, null, cv);
+	}
+	
+	public void crearNewVacunaWithImage(ContentValues cv) {
+		mDb.insert(ConstantsDB.NEWVAC_TABLE, null, cv);
+	}
+	
+	/**
+	 * Edita una NewVacuna en la base de datos
+	 * 
+	 * @param NewVacuna
+	 *            Objeto NewVacuna que contiene la informacion
+	 *
+	 */
+	public boolean editarNewVacuna(NewVacuna newVacuna) {
+		ContentValues cv = NewVacunaHelper.crearNewVacunaContentValues(newVacuna);
+		return mDb.update(ConstantsDB.NEWVAC_TABLE, cv, ConstantsDB.codigo + "=" 
+				+ newVacuna.getVacunaId().getCodigo() + " and " +ConstantsDB.fechaRegistroVacuna + "="
+						+ newVacuna.getVacunaId().getFechaRegistroVacuna().getTime(), null) > 0;
+	}
+	
+	/**
+	 * Borra todos los NewVacuna de la base de datos
+	 * 
+	 * @return verdadero o falso
+	 */
+	public boolean borrarNewVacuna() {
+		return mDb.delete(ConstantsDB.NEWVAC_TABLE, null, null) > 0;
+	}
+	
+	/**
+	 * Obtiene una NewVacuna de la base de datos
+	 * 
+	 * @return NewVacuna
+	 */
+	public NewVacuna getNewVacuna(String filtro, String orden) throws SQLException {
+		NewVacuna mNewVacuna = null;
+		Cursor cursorNewVacuna = crearCursor(ConstantsDB.NEWVAC_TABLE, filtro, null, orden);
+		if (cursorNewVacuna != null && cursorNewVacuna.getCount() > 0) {
+			cursorNewVacuna.moveToFirst();
+			mNewVacuna=NewVacunaHelper.crearNewVacuna(cursorNewVacuna);
+		}
+		if (!cursorNewVacuna.isClosed()) cursorNewVacuna.close();
+		return mNewVacuna;
+	}
+	
+	/**
+	 * Obtiene una lista de NewVacuna de la base de datos
+	 * 
+	 * @return List<NewVacuna>
+	 */
+	public ArrayList<NewVacuna> getNewVacunas(String filtro, String orden) throws SQLException {
+		ArrayList<NewVacuna> mNewVacunas = new ArrayList<NewVacuna>();
+		Cursor cursorNewVacuna = crearCursor(ConstantsDB.NEWVAC_TABLE, filtro, null, orden);
+		if (cursorNewVacuna != null && cursorNewVacuna.getCount() > 0) {
+			cursorNewVacuna.moveToFirst();
+			mNewVacunas.clear();
+			do{
+				NewVacuna mNewVacuna = null;
+				mNewVacuna = NewVacunaHelper.crearNewVacuna(cursorNewVacuna);
+				mNewVacunas.add(mNewVacuna);
+			} while (cursorNewVacuna.moveToNext());
+		}
+		if (!cursorNewVacuna.isClosed()) cursorNewVacuna.close();
+		return mNewVacunas;
+	}	
+	
+	
+	/**METODOS PARA Documentos**/
+	
+	/**
+	 * Inserta una Documentos en la base de datos
+	 * 
+	 * @param Documentos
+	 *            Objeto Documentos que contiene la informacion
+	 *
+	 */
+	public void crearDocumentos(Documentos newDocumentos) {
+		ContentValues cv = DocumentosHelper.crearDocumentosContentValues(newDocumentos);
+		mDb.insert(ConstantsDB.DOCS_TABLE, null, cv);
+	}
+
+	
+	/**
+	 * Edita una Documentos en la base de datos
+	 * 
+	 * @param Documentos
+	 *            Objeto Documentos que contiene la informacion
+	 *
+	 */
+	public boolean editarDocumentos(Documentos documento) {
+		ContentValues cv = DocumentosHelper.crearDocumentosContentValues(documento);
+		return mDb.update(ConstantsDB.DOCS_TABLE, cv, ConstantsDB.codigo + "=" 
+				+ documento.getDocsId().getCodigo() + " and " +ConstantsDB.fechaDocumento + "="
+						+ documento.getDocsId().getFechaDocumento().getTime(), null) > 0;
+	}
+	
+	/**
+	 * Borra todos los Documentos de la base de datos
+	 * 
+	 * @return verdadero o falso
+	 */
+	public boolean borrarDocumentos() {
+		return mDb.delete(ConstantsDB.DOCS_TABLE, null, null) > 0;
+	}
+	
+	/**
+	 * Obtiene una Documentos de la base de datos
+	 * 
+	 * @return Documentos
+	 */
+	public Documentos getDocumentos(String filtro, String orden) throws SQLException {
+		Documentos mDocumentos = null;
+		Cursor cursorDocumentos = crearCursor(ConstantsDB.DOCS_TABLE, filtro, null, orden);
+		if (cursorDocumentos != null && cursorDocumentos.getCount() > 0) {
+			cursorDocumentos.moveToFirst();
+			mDocumentos=DocumentosHelper.crearDocumentos(cursorDocumentos);
+		}
+		if (!cursorDocumentos.isClosed()) cursorDocumentos.close();
+		return mDocumentos;
+	}
+	
+	/**
+	 * Obtiene una lista de Documentos de la base de datos
+	 * 
+	 * @return List<Documentos>
+	 */
+	public ArrayList<Documentos> getDocumentoss(String filtro, String orden) throws SQLException {
+		ArrayList<Documentos> mDocumentos = new ArrayList<Documentos>();
+		//Cursor cursorDocumentos = crearCursor(ConstantsDB.DOCS_TABLE, filtro, null, orden);
+		Cursor cursorDocumentos = mDb.rawQuery("SELECT codigo,fechaDocumento,tipoDoc,username,estado,fechaRecepcion,fecha_registro FROM documentacion where " + filtro , null);
+		if (cursorDocumentos != null && cursorDocumentos.getCount() > 0) {
+			cursorDocumentos.moveToFirst();
+			mDocumentos.clear();
+			do{
+				Documentos mDocumento = null;
+				mDocumento = DocumentosHelper.crearDocumentos2(cursorDocumentos);
+				mDocumentos.add(mDocumento);
+			} while (cursorDocumentos.moveToNext());
+		}
+		if (!cursorDocumentos.isClosed()) cursorDocumentos.close();
+		return mDocumentos;
+	}	
+		
 	
 
 	/**
@@ -3621,5 +4069,5 @@ public class CohorteAdapter {
 		qb.setTables(tabla);
 		c = qb.query(mDb,projection,whereString,null,null,null,ordenString);
 		return c;
-	}
+	}	
 }

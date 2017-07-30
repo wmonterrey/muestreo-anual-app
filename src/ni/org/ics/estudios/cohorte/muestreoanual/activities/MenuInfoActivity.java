@@ -5,25 +5,29 @@ package ni.org.ics.estudios.cohorte.muestreoanual.activities;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
 import ni.org.ics.estudios.cohorte.muestreoanual.MainActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.R;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.MenuInfoAdapter;
+import ni.org.ics.estudios.cohorte.muestreoanual.database.CohorteAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.database.CohorteAdapterGetObjects;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoZika;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosPartoBB;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosVisitaTerreno;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.Documentos;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaCasa;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaParticipante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.LactanciaMaterna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Muestra;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.NewVacuna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Obsequio;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Participante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.PesoyTalla;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ReConsentimientoDen2015;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ReConsentimientoFlu2015;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.User;
-import ni.org.ics.estudios.cohorte.muestreoanual.domain.Vacuna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.VisitaTerreno;
 import ni.org.ics.estudios.cohorte.muestreoanual.preferences.PreferencesActivity;
+import ni.org.ics.estudios.cohorte.muestreoanual.ui.GridViewWithHeaderAndFooter;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.Constants;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.ConstantsDB;
 
@@ -41,12 +45,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,14 +65,17 @@ public class MenuInfoActivity extends Activity {
 	private ArrayList<EncuestaCasa> mEncuestasCasas = new ArrayList<EncuestaCasa>();
 	private ArrayList<EncuestaParticipante> mEncuestasParticipantes = new ArrayList<EncuestaParticipante>();
 	private ArrayList<LactanciaMaterna> mEncuestasLactancias = new ArrayList<LactanciaMaterna>();
-	private ArrayList<Vacuna> mVacunas = new ArrayList<Vacuna>();
+	private ArrayList<NewVacuna> mVacunas = new ArrayList<NewVacuna>();
 	private ArrayList<ReConsentimientoDen2015> mReConsentimientoDen = new ArrayList<ReConsentimientoDen2015>();
 	private ArrayList<Muestra> mMuestras = new ArrayList<Muestra>();
 	private ArrayList<Obsequio> mObsequios = new ArrayList<Obsequio>();
 	private ArrayList<ConsentimientoZika> mConsentimientoZikas = new ArrayList<ConsentimientoZika>();
+	private ArrayList<DatosPartoBB> mDatosPartoBBs = new ArrayList<DatosPartoBB>();
+	private ArrayList<DatosVisitaTerreno> mDatosVisitaTerreno = new ArrayList<DatosVisitaTerreno>();
+	private ArrayList<Documentos> mDocumentos = new ArrayList<Documentos>();
 	private String username;
 	private SharedPreferences settings;
-	private GridView gridView;
+	private GridViewWithHeaderAndFooter gridView;
 	private TextView textView;
 	private AlertDialog alertDialog;
 	private static final int EXIT = 1;
@@ -88,6 +95,8 @@ public class MenuInfoActivity extends Activity {
 	private MenuItem muestraItem;
 	private MenuItem obsequioItem;
 	private MenuItem zikaItem;
+	private MenuItem partoItem;
+	private MenuItem datosCasaItem;
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
@@ -113,13 +122,19 @@ public class MenuInfoActivity extends Activity {
 		}
 		codigo = getIntent().getIntExtra(ConstantsDB.CODIGO,-1);
 		visExitosa = getIntent().getBooleanExtra(ConstantsDB.VIS_EXITO,false);
+		
+		String[] menu_info = getResources().getStringArray(R.array.menu_info);
+		gridView = (GridViewWithHeaderAndFooter) findViewById(R.id.gridView1);
+		LayoutInflater layoutInflater = LayoutInflater.from(this);
+		View headerView = layoutInflater.inflate(R.layout.test_header_view, null);
+		gridView.addHeaderView(headerView);
 		textView = (TextView) findViewById(R.id.label);
 		getParticipanteData();
-		String[] menu_info = getResources().getStringArray(R.array.menu_info);
-		gridView = (GridView) findViewById(R.id.gridView1);
+		
+		
 		gridView.setAdapter(new MenuInfoAdapter(this, R.layout.menu_item_2, menu_info, mReConsentimientoFlu.size()
 				,mVisitasTerreno.size(),mPyTs.size(),mEncuestasCasas.size(),mEncuestasParticipantes.size(),
-				mEncuestasLactancias.size(),mVacunas.size(),mReConsentimientoDen.size(),mMuestras.size(),mObsequios.size(),mConsentimientoZikas.size()));
+				mEncuestasLactancias.size(),mVacunas.size(),mReConsentimientoDen.size(),mMuestras.size(),mObsequios.size(),mConsentimientoZikas.size(), mDatosPartoBBs.size(), mDatosVisitaTerreno.size() , mDocumentos.size()));
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v,
@@ -207,6 +222,24 @@ public class MenuInfoActivity extends Activity {
 					i = new Intent(getApplicationContext(),
 							ListReviewActivity.class);
 					break;
+				case 13:
+					arguments.putString(Constants.TITLE, getString(R.string.datos_parto));
+					if (mDatosPartoBBs!=null) arguments.putSerializable(Constants.OBJECTO , mDatosPartoBBs);
+					i = new Intent(getApplicationContext(),
+							ListReviewActivity.class);
+					break;
+				case 14:
+					arguments.putString(Constants.TITLE, getString(R.string.datos_casa));
+					if (mDatosVisitaTerreno!=null) arguments.putSerializable(Constants.OBJECTO , mDatosVisitaTerreno);
+					i = new Intent(getApplicationContext(),
+							ListReviewActivity.class);
+					break;					
+				case 15:
+					arguments.putString(Constants.TITLE, getString(R.string.info_docs));
+					if (mDocumentos!=null) arguments.putSerializable(Constants.OBJECTO , mDocumentos);
+					i = new Intent(getApplicationContext(),
+							ListReviewActivity.class);
+					break;					
 				default:
 					arguments.putString(Constants.TITLE, getString(R.string.info_participante));
 					if (mParticipante!=null) arguments.putSerializable(Constants.OBJECTO , mParticipante);
@@ -231,13 +264,20 @@ public class MenuInfoActivity extends Activity {
 		if(mParticipante.getCodCasa()!=9999) mEncuestasCasas = ca.getListaEncuestaCasas(mParticipante.getCodCasa());
 		mEncuestasParticipantes = ca.getListaEncuestaParticipantes(codigo);
 		mEncuestasLactancias = ca.getListaLactanciaMaternas(codigo);
-		mVacunas=ca.getListaVacunas(codigo);
 		mReConsentimientoDen=ca.getListaReConsentimientoDen2015(codigo);
 		mMuestras=ca.getListaMuestras(codigo);
 		mObsequios=ca.getListaObsequios(codigo);
 		mConsentimientoZikas=ca.getListaConsentimientoZika(codigo);
+		mDatosVisitaTerreno = ca.getListaDatosVisitaTerreno(codigo);
 		mUser = ca.getUser(username);
 		ca.close();
+		CohorteAdapter caTemp = new CohorteAdapter();
+		caTemp.open();
+		String filtro = ConstantsDB.CODIGO + "=" + codigo;
+		mDatosPartoBBs = caTemp.getDatosPartoBBs(filtro, null);
+		mVacunas=caTemp.getNewVacunas(filtro, null);
+		mDocumentos =caTemp.getDocumentoss(filtro, null);
+		caTemp.close();
 		refreshView();
 	}	
 
@@ -282,231 +322,256 @@ public class MenuInfoActivity extends Activity {
 		default:
 			relacion = "Sin Relación Familiar";
 		}
-		labelHeader = labelHeader + "<br /><medium><font color='black'>"+mParticipante.getNombrePt1();
-		labelHeader = labelHeader +" - ("+ relacion +")" +"</font></medium><br />";
-		labelHeader = labelHeader + "<medium><font color='black'>Personas en casa: "+mParticipante.getAsiste()+"</font></medium><br />";
+		labelHeader = labelHeader + "<small><font color='black'>"+mParticipante.getNombrePt1();
+		labelHeader = labelHeader +" - ("+ relacion +")" +"</font></small><br />";
+		labelHeader = labelHeader + "<small><font color='black'>Personas en casa: "+mParticipante.getCuantasPers()+"</font></small><br />";
 
 		if (mParticipante.getEstPart().equals(0)){
 			labelHeader = labelHeader + "<small><font color='red'>" + getString(R.string.retired_error) + "</font></small><br />";
 		}
 		else{
-			if (mParticipante.getConsDeng().matches("Si")) labelHeader = labelHeader + "<font color='red'><b>Participante positivo a ZIKA</b></font><br />";
-			if ((mParticipante.getConsFlu().matches("Si")) && mUser.getConsentimiento()) {
-				labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.reconsflu_missing) + "</font></small><br />";
-				pendiente=true;
-			}
-			if (mParticipante.getPesoTalla().matches("Si") && mUser.getPesoTalla()) {
-				labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.weigth_heigth_missing) + "</font></small><br />";
-				pendiente=true;
-			}
-			if (mParticipante.getEnCasa().matches("Si") && mUser.getEncuestaCasa()) {
-				labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.house_survey_missing) + "</font></small><br />";
-				pendiente=true;
-			}
-			if (mParticipante.getEncPart().matches("Si") && mUser.getEncuestaParticipante()) {
-				labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.part_survey_missing) + "</font></small><br />";
-				pendiente=true;
-			}
-			if (mParticipante.getEncLacMat().matches("Si") && mUser.getEncuestaLactancia()) {
-				labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.maternal_survey_missing) + "</font></small><br />";
-				pendiente=true;
-			}
-			if ((mParticipante.getInfoVacuna().matches("No")) && mUser.getVacunas()) {
-				labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.vaccines_missing) + "</font></small><br />";
-				pendiente=true;
-			}
+			if (mParticipante.getPosZika().matches("Si")) labelHeader = labelHeader + "<small><font color='red'>Participante positivo a ZIKA</font></small><br />";
 			
-			if ((mParticipante.getReConsDeng().matches("Si")) && mUser.getConsentimiento()) {
-				labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.recons_missing) + "</font></small><br />";
-				pendiente=true;
-			}
-			
-			if ((mParticipante.getZika().matches("Si")) && mUser.getConsentimiento()) {
-				labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.zika_missing) + "</font></small><br />";
-				pendiente=true;
-			}
-			
-			if ((mParticipante.getAdn().matches("No"))) {
-				labelHeader = labelHeader + "<font color='red'><b>Participante pendiente de ADN, Informar a LAB para toma.</b></font><br />";
-				pendiente=true;
-			}
-			
-			///Muestras
-			if(mUser.getMuestra()){
-				if (mParticipante.getConvalesciente().matches("Na")){	
-					labelHeader = labelHeader + "<font color='red'>" + getString(R.string.convless14) + "</font><br />";
+			if (mParticipante.getConsFlu().matches("Si")|| mParticipante.getPesoTalla().matches("Si")
+					|| mParticipante.getEnCasa().matches("Si")||mParticipante.getEncPart().matches("Si")
+					|| mParticipante.getEncLacMat().matches("Si")||mParticipante.getInfoVacuna().matches("Si")
+					|| mParticipante.getConsDeng().matches("Si") || mParticipante.getObsequio().matches("Si")
+					|| mParticipante.getConmx().matches("No") || mParticipante.getConmxbhc().matches("No")|| mParticipante.getZika().matches("Si")
+					|| mParticipante.getAdn().matches("Si")|| mParticipante.getDatosParto().matches("Si")|| mParticipante.getDatosVisita().matches("Si")){
+				labelHeader = labelHeader + "<small><font color='red'>Pendiente: <br /></font></small>";
+
+				//Primero muestras
+				//'#B941E0'purple
+				//'#11BDF7' blue
+				//'#32B507' green
+				if(mUser.getMuestra()){
+					if (mParticipante.getConvalesciente().matches("Na")){	
+						labelHeader = labelHeader + "<small><font color='red'>" + getString(R.string.convless14) + "</font></small><br />";
+					}
+					else{
+						if(mParticipante.getEstudio().equals("Cohorte BB")){
+							if (mParticipante.getEdad()>=6){
+								if (mParticipante.getConmx().matches("No")){
+									if (mParticipante.getPbmc().matches("Si")){
+										labelHeader = labelHeader + "<small><font color='#11BDF7'>Tomar 2cc en tubo PBMC<br /></font></small>";
+									}
+									else{
+										labelHeader = labelHeader + "<small><font color='red'>Tomar 2cc en tubo Rojo<br /></font></small>";
+									}
+									pendiente =true;
+								}
+								if (mParticipante.getConmxbhc().matches("No")){
+									if (mParticipante.getPaxgene().matches("Si")){
+										labelHeader = labelHeader + "<small><font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font></small>";
+									}
+									else{
+										labelHeader = labelHeader + "<small><font color='#B941E0'>Tomar 1cc para BHC<br /></font></small>";
+									}
+									pendiente =true;
+								}
+							}
+						}
+						else if(mParticipante.getEstudio().equals("Influenza")){
+							if(mParticipante.getEdad()>=6 && mParticipante.getEdad()<24){
+								if (mParticipante.getConmx().matches("No")){
+									if (mParticipante.getPbmc().matches("Si")){
+										labelHeader = labelHeader + "<small><font color='#11BDF7'>Tomar 2cc en tubo PBMC<br /></font></small>";
+										labelHeader = labelHeader + "<small><font color='red'>Tomar 1cc en tubo Rojo<br /></font></small>";
+										labelHeader = labelHeader + "<small><font color='#B941E0'>No tomar BHC<br /></font></small>";
+									}
+									else{
+										labelHeader = labelHeader + "<small><font color='red'>Tomar 2cc en tubo Rojo<br /></font></small>";
+									}
+									pendiente =true;
+								}
+								if (mParticipante.getConmxbhc().matches("No") && mParticipante.getPbmc().matches("No")){
+									if (mParticipante.getPaxgene().matches("Si")){
+										labelHeader = labelHeader + "<small><font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font></small>";
+									}
+									else{
+										labelHeader = labelHeader + "<small><font color='#B941E0'>Tomar 1cc para BHC<br /></font></small>";
+									}
+									pendiente =true;
+								}
+							}
+							else {
+								if (mParticipante.getConmx().matches("No")){
+									if (mParticipante.getPbmc().matches("Si")){
+										labelHeader = labelHeader + "<small><font color='#11BDF7'>Tomar 6cc en tubo PBMC<br /></font></small>";
+										labelHeader = labelHeader + "<small><font color='red'>Tomar 1cc en tubo Rojo<br /></font></small>";
+									}
+									else{
+										labelHeader = labelHeader + "<small><font color='red'>Tomar 6cc en tubo Rojo<br /></font></small>";
+									}
+									pendiente =true;
+								}
+								if (mParticipante.getConmxbhc().matches("No")){
+									if (mParticipante.getPaxgene().matches("Si")){
+										labelHeader = labelHeader + "<small><font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font></small>";
+									}
+									else{
+										labelHeader = labelHeader + "<small><font color='#B941E0'>Tomar 1cc para BHC<br /></font></small>";
+									}
+									pendiente =true;
+								}
+							}
+						}	
+						else if(mParticipante.getEstudio().equals("Influenza  Cohorte BB")){
+							if(mParticipante.getEdad()>=6 && mParticipante.getEdad()<24){
+								if (mParticipante.getConmx().matches("No")){
+									if (mParticipante.getPbmc().matches("Si")){
+										labelHeader = labelHeader + "<small><font color='#11BDF7'>Tomar 2cc en tubo PBMC<br /></font></small>";
+										labelHeader = labelHeader + "<small><font color='red'>Tomar 1cc en tubo Rojo<br /></font></small>";
+										labelHeader = labelHeader + "<small><font color='#B941E0'>No tomar BHC<br /></font></small>";
+									}
+									else{
+										labelHeader = labelHeader + "<small><font color='red'>Tomar 2cc en tubo Rojo<br /></font></small>";
+									}
+									pendiente =true;
+								}
+								if (mParticipante.getConmxbhc().matches("No") && mParticipante.getPbmc().matches("No")){
+									if (mParticipante.getPaxgene().matches("Si")){
+										labelHeader = labelHeader + "<small><font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font></small>";
+									}
+									else{
+										labelHeader = labelHeader + "<small><font color='#B941E0'>Tomar 1cc para BHC<br /></font></small>";
+									}
+									pendiente =true;
+								}
+							}
+							else {
+								if (mParticipante.getConmx().matches("No")){
+									if (mParticipante.getPbmc().matches("Si")){
+										labelHeader = labelHeader + "<small><font color='#11BDF7'>Tomar 6cc en tubo PBMC<br /></font></small>";
+										labelHeader = labelHeader + "<small><font color='red'>Tomar 1cc en tubo Rojo<br /></font></small>";
+									}
+									else{
+										labelHeader = labelHeader + "<small><font color='red'>Tomar 6cc en tubo Rojo<br /></font></small>";
+									}
+									pendiente =true;
+								}
+								if (mParticipante.getConmxbhc().matches("No")){
+									if (mParticipante.getPaxgene().matches("Si")){
+										labelHeader = labelHeader + "<small><font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font></small>";
+									}
+									else{
+										labelHeader = labelHeader + "<small><font color='#B941E0'>Tomar 1cc para BHC<br /></font></small>";
+									}
+									pendiente =true;
+								}
+							}
+						}	
+						else if(mParticipante.getEstudio().equals("Dengue")){
+							if (mParticipante.getConmx().matches("No")){
+								if (mParticipante.getPbmc().matches("Si")){
+									labelHeader = labelHeader + "<small><font color='#11BDF7'>Tomar 6cc en tubo PBMC<br /></font></small>";
+								}
+								else{
+									labelHeader = labelHeader + "<small><font color='red'>Tomar 6cc en tubo Rojo<br /></font></small>";
+								}
+								pendiente =true;
+							}
+							if (mParticipante.getConmxbhc().matches("No")){
+								if (mParticipante.getPaxgene().matches("Si")){
+									labelHeader = labelHeader + "<small><font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font></small>";
+								}
+								else{
+									labelHeader = labelHeader + "<small><font color='#B941E0'>Tomar 1cc para BHC<br /></font></small>";
+								}
+								pendiente =true;
+							}
+						}
+						else if(mParticipante.getEstudio().equals("Dengue  Influenza")){
+							if (mParticipante.getConmx().matches("No")){
+								if (mParticipante.getPbmc().matches("Si")){
+									labelHeader = labelHeader + "<small><font color='#11BDF7'>Tomar 6cc en tubo PBMC<br /></font></small>";
+									labelHeader = labelHeader + "<small><font color='red'>Tomar 1cc en tubo Rojo<br /></font></small>";
+								}
+								else{
+									labelHeader = labelHeader + "<small><font color='red'>Tomar 6cc en tubo Rojo<br /></font></small>";
+								}
+								pendiente =true;
+							}
+							if (mParticipante.getConmxbhc().matches("No")){
+								if (mParticipante.getPaxgene().matches("Si")){
+									labelHeader = labelHeader + "<small><font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font></small>";
+								}
+								else{
+									labelHeader = labelHeader + "<small><font color='#B941E0'>Tomar 1cc para BHC<br /></font></small>";
+								}
+								pendiente =true;
+							}
+						}
+						if (mParticipante.getConvalesciente().matches("Si")&& mParticipante.getEdad()>=24){
+							if (mParticipante.getConmx().matches("No")){
+								if (mParticipante.getPbmc().matches("Si")){
+									labelHeader = labelHeader + "<small><font color='#de3163'>Tomar 5cc de convaleciente<br /></font></small>";
+								}
+								else{
+									labelHeader = labelHeader + "<small><font color='#de3163'>Tomar 5cc de convaleciente<br /></font></small>";
+								}
+							}
+						}
+						if ((mParticipante.getRetoma()!=null && mParticipante.getVolRetoma()!=null)){
+							if ((mParticipante.getRetoma().matches("Si")) && mUser.getMuestra()){
+								labelHeader = labelHeader + "<small><font color='red'>" + getString(R.string.retoma) +": " + mParticipante.getVolRetoma() + "cc </font></small><br />";
+							}
+						}
+					}						
 				}
-				else{
-					if(mParticipante.getEstudio().equals("Cohorte BB")){
-						if (mParticipante.getEdad()>=6){
-							if (mParticipante.getConmx().matches("No")){
-								if (mParticipante.getPbmc().matches("Si")){
-									labelHeader = labelHeader + "<font color='#11BDF7'>Tomar 2cc en tubo PBMC<br /></font>";
-								}
-								else{
-									labelHeader = labelHeader + "<font color='red'>Tomar 2cc en tubo Rojo<br /></font>";
-								}
-								pendiente =true;
-							}
-							if (mParticipante.getConmxbhc().matches("No")){
-								if (mParticipante.getPaxgene().matches("Si")){
-									labelHeader = labelHeader + "<font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font>";
-								}
-								else{
-									labelHeader = labelHeader + "<font color='#B941E0'>Tomar 1cc para BHC<br /></font>";
-								}
-								pendiente =true;
-							}
-						}
-					}
-					else if(mParticipante.getEstudio().equals("Influenza")){
-						if(mParticipante.getEdad()>=6 && mParticipante.getEdad()<24){
-							if (mParticipante.getConmx().matches("No")){
-								if (mParticipante.getPbmc().matches("Si")){
-									labelHeader = labelHeader + "<font color='#11BDF7'>Tomar 2cc en tubo PBMC<br /></font>";
-									labelHeader = labelHeader + "<font color='red'>Tomar 1cc en tubo Rojo<br /></font>";
-									labelHeader = labelHeader + "<font color='#B941E0'>No tomar BHC<br /></font>";
-								}
-								else{
-									labelHeader = labelHeader + "<font color='red'>Tomar 2cc en tubo Rojo<br /></font>";
-								}
-								pendiente =true;
-							}
-							if (mParticipante.getConmxbhc().matches("No") && mParticipante.getPbmc().matches("No")){
-								if (mParticipante.getPaxgene().matches("Si")){
-									labelHeader = labelHeader + "<font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font>";
-								}
-								else{
-									labelHeader = labelHeader + "<font color='#B941E0'>Tomar 1cc para BHC<br /></font>";
-								}
-								pendiente =true;
-							}
-						}
-						else {
-							if (mParticipante.getConmx().matches("No")){
-								if (mParticipante.getPbmc().matches("Si")){
-									labelHeader = labelHeader + "<font color='#11BDF7'>Tomar 6cc en tubo PBMC<br /></font>";
-									labelHeader = labelHeader + "<font color='red'>Tomar 1cc en tubo Rojo<br /></font>";
-								}
-								else{
-									labelHeader = labelHeader + "<font color='red'>Tomar 6cc en tubo Rojo<br /></font>";
-								}
-								pendiente =true;
-							}
-							if (mParticipante.getConmxbhc().matches("No")){
-								if (mParticipante.getPaxgene().matches("Si")){
-									labelHeader = labelHeader + "<font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font>";
-								}
-								else{
-									labelHeader = labelHeader + "<font color='#B941E0'>Tomar 1cc para BHC<br /></font>";
-								}
-								pendiente =true;
-							}
-						}
-					}
-					else if(mParticipante.getEstudio().equals("Influenza  Cohorte BB")){
-						if(mParticipante.getEdad()>=6 && mParticipante.getEdad()<24){
-							if (mParticipante.getConmx().matches("No")){
-								if (mParticipante.getPbmc().matches("Si")){
-									labelHeader = labelHeader + "<font color='#11BDF7'>Tomar 2cc en tubo PBMC<br /></font>";
-									labelHeader = labelHeader + "<font color='red'>Tomar 1cc en tubo Rojo<br /></font>";
-									labelHeader = labelHeader + "<font color='#B941E0'>No tomar BHC<br /></font>";
-								}
-								else{
-									labelHeader = labelHeader + "<font color='red'>Tomar 2cc en tubo Rojo<br /></font>";
-								}
-								pendiente =true;
-							}
-							if (mParticipante.getConmxbhc().matches("No") && mParticipante.getPbmc().matches("No")){
-								if (mParticipante.getPaxgene().matches("Si")){
-									labelHeader = labelHeader + "<font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font>";
-								}
-								else{
-									labelHeader = labelHeader + "<font color='#B941E0'>Tomar 1cc para BHC<br /></font>";
-								}
-								pendiente =true;
-							}
-						}
-						else {
-							if (mParticipante.getConmx().matches("No")){
-								if (mParticipante.getPbmc().matches("Si")){
-									labelHeader = labelHeader + "<font color='#11BDF7'>Tomar 6cc en tubo PBMC<br /></font>";
-									labelHeader = labelHeader + "<font color='red'>Tomar 1cc en tubo Rojo<br /></font>";
-								}
-								else{
-									labelHeader = labelHeader + "<font color='red'>Tomar 6cc en tubo Rojo<br /></font>";
-								}
-								pendiente =true;
-							}
-							if (mParticipante.getConmxbhc().matches("No")){
-								if (mParticipante.getPaxgene().matches("Si")){
-									labelHeader = labelHeader + "<font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font>";
-								}
-								else{
-									labelHeader = labelHeader + "<font color='#B941E0'>Tomar 1cc para BHC<br /></font>";
-								}
-								pendiente =true;
-							}
-						}
-					}
-					else if(mParticipante.getEstudio().equals("Dengue")){
-						if (mParticipante.getConmx().matches("No")){
-							if (mParticipante.getPbmc().matches("Si")){
-								labelHeader = labelHeader + "<font color='#11BDF7'>Tomar 6cc en tubo PBMC<br /></font>";
-							}
-							else{
-								labelHeader = labelHeader + "<font color='red'>Tomar 6cc en tubo Rojo<br /></font>";
-							}
-							pendiente =true;
-						}
-						if (mParticipante.getConmxbhc().matches("No")){
-							if (mParticipante.getPaxgene().matches("Si")){
-								labelHeader = labelHeader + "<font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font>";
-							}
-							else{
-								labelHeader = labelHeader + "<font color='#B941E0'>Tomar 1cc para BHC<br /></font>";
-							}
-							pendiente =true;
-						}
-					}
-					else if(mParticipante.getEstudio().equals("Dengue  Influenza")){
-						if (mParticipante.getConmx().matches("No")){
-							if (mParticipante.getPbmc().matches("Si")){
-								labelHeader = labelHeader + "<font color='#11BDF7'>Tomar 6cc en tubo PBMC<br /></font>";
-								labelHeader = labelHeader + "<font color='red'>Tomar 1cc en tubo Rojo<br /></font>";
-							}
-							else{
-								labelHeader = labelHeader + "<font color='red'>Tomar 6cc en tubo Rojo<br /></font>";
-							}
-							pendiente =true;
-						}
-						if (mParticipante.getConmxbhc().matches("No")){
-							if (mParticipante.getPaxgene().matches("Si")){
-								labelHeader = labelHeader + "<font color='#32B507'>Tomar 1cc para BHC (Paxgene)<br /></font>";
-							}
-							else{
-								labelHeader = labelHeader + "<font color='#B941E0'>Tomar 1cc para BHC<br /></font>";
-							}
-							pendiente =true;
-						}
-					}
-					if (mParticipante.getConvalesciente().matches("Si")&& mParticipante.getEdad()>=24){
-						if (mParticipante.getConmx().matches("No")){
-							if (mParticipante.getPbmc().matches("Si")){
-								labelHeader = labelHeader + "<font color='#de3163'>Tomar 5cc de convaleciente<br /></font>";
-							}
-							else{
-								labelHeader = labelHeader + "<font color='#de3163'>Tomar 5cc de convaleciente<br /></font>";
-							}
-						}
-					}
-					if ((mParticipante.getRetoma()!=null && mParticipante.getVolRetoma()!=null)){
-						if ((mParticipante.getRetoma().matches("Si")) && mUser.getMuestra()){
-							labelHeader = labelHeader + "<medium><font color='red'>" + getString(R.string.retoma) +": " + mParticipante.getVolRetoma() + "cc </font></medium><br />";
-						}
-					}
+				
+				//Nuevo orden				
+
+				if (mParticipante.getEnCasa().matches("Si") && mUser.getEncuestaCasa()) {
+					labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.house_survey_missing) + "</font></small><br />";
+					pendiente=true;
+				}
+				if (mParticipante.getEncPart().matches("Si") && mUser.getEncuestaParticipante()) {
+					labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.part_survey_missing) + "</font></small><br />";
+					pendiente=true;
+				}
+				if (mParticipante.getConsFlu().matches("Si") && mUser.getConsentimiento()){
+					labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.consflu_missing) + "</font></small><br />";
+					pendiente=true;
+				}
+				if (mParticipante.getConsDeng().matches("Si") && mUser.getConsentimiento()) {
+					labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.consden_missing) + "</font></small><br />";
+					pendiente=true;
+				}
+				if (mParticipante.getZika().matches("Si") && mUser.getConsentimiento()) {
+					labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.zika_missing) + "</font></small><br />";
+					pendiente=true;
+				}
+				if (mParticipante.getEncLacMat().matches("Si") && mUser.getEncuestaLactancia()){
+					labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.maternal_survey_missing) + "</font></small><br />";
+					pendiente=true;
+				}
+				if (mParticipante.getPesoTalla().matches("Si") && mUser.getPesoTalla()){
+					labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.weigth_heigth_missing) + "</font></small><br />";
+					pendiente=true;
+				}
+				if (mParticipante.getDatosParto().matches("Si") && mUser.getDatosparto()){
+					labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.parto_missing) + "</font></small><br />";
+					pendiente=true;
+				}
+				if (mParticipante.getInfoVacuna().matches("Si") && mUser.getVacunas()){
+					labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.vaccines_missing) + "</font></small><br />";
+					pendiente=true;
+				}
+				if (mParticipante.getDatosVisita().matches("Si") && mUser.getVisitas()){
+					labelHeader = labelHeader + "<small><font color='blue'>Pediente datos casa</font></small><br />";
+					pendiente=true;
+				}
+				if ((mParticipante.getObsequio().matches("Si"))){
+					labelHeader = labelHeader + "<small><font color='blue'>" + getString(R.string.gift_missing) + "</font></small><br />";
+				}
+				if (mParticipante.getAdn().matches("Si")) {
+					labelHeader = labelHeader + "<small><font color='red'>Pendiente de ADN, Informar a LAB para toma.</font></small><br />";
 				}
 			}
+			else{
+				labelHeader = labelHeader + "<small><font color='blue'>No tiene procedimientos pendientes<br /></font></small>";
+			}				
 		}
 		textView.setText(Html.fromHtml(labelHeader));
 	}
@@ -530,6 +595,8 @@ public class MenuInfoActivity extends Activity {
 		    muestraItem = menu.findItem(R.id.SAMPLE);
 		    obsequioItem = menu.findItem(R.id.GIFT);
 		    zikaItem = menu.findItem(R.id.ZIKA);
+		    partoItem = menu.findItem(R.id.PARTO);
+		    datosCasaItem = menu.findItem(R.id.DAT_CASA);
 		    
 		}
 		return true;
@@ -611,6 +678,28 @@ public class MenuInfoActivity extends Activity {
 				toast.show();
 			}
 			return true;
+		
+		case R.id.DAT_CASA:
+			if(mUser.getVisitas()){
+				if(mParticipante.getDatosVisita().matches("Si")){
+					i = new Intent(getApplicationContext(),
+							NewDatosVisitaActivity.class);
+					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					i.putExtra(ConstantsDB.COD_CASA, mParticipante.getCodCasa());
+					i.putExtra(ConstantsDB.CODIGO, mParticipante.getCodigo());
+					i.putExtra(ConstantsDB.VIS_EXITO, visExitosa);
+					startActivity(i);
+				}
+				else{
+					Toast toast = Toast.makeText(getApplicationContext(),getString(R.string.e_error),Toast.LENGTH_LONG);
+					toast.show();
+				}
+			}
+			else{
+				Toast toast = Toast.makeText(getApplicationContext(),getString(R.string.perm_error),Toast.LENGTH_LONG);
+				toast.show();
+			}
+			return true;		
 			
 		case R.id.RECONSFLU:
 			if(mUser.getConsentimiento()){
@@ -721,9 +810,11 @@ public class MenuInfoActivity extends Activity {
 			return true;			
 		case R.id.VACC:
 			if(mUser.getVacunas()){
-				if(mParticipante.getInfoVacuna().matches("No")){
+				if(mParticipante.getInfoVacuna().matches("Si")){
 					i = new Intent(getApplicationContext(),
-							NewVaccActivity.class);
+							NewNewVaccActivity.class);
+					//i = new Intent(getApplicationContext(),
+					//		VacunaActivity.class);
 					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					i.putExtra(ConstantsDB.COD_CASA, mParticipante.getCodCasa());
 					i.putExtra(ConstantsDB.CODIGO, mParticipante.getCodigo());
@@ -742,7 +833,7 @@ public class MenuInfoActivity extends Activity {
 			return true;
 		case R.id.RECONS:
 			if(mUser.getConsentimiento()){
-				if(mParticipante.getReConsDeng().matches("Si")){
+				if(mParticipante.getConsDeng().matches("Si")){
 					i = new Intent(getApplicationContext(),
 							NewRec2015Activity.class);
 					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -830,6 +921,36 @@ public class MenuInfoActivity extends Activity {
 				toast.show();
 			}
 			return true;
+		case R.id.PARTO:
+			if(mUser.getDatosparto()){
+				if(mParticipante.getDatosParto().matches("Si")){
+					i = new Intent(getApplicationContext(),
+							NewDatosPartoBBActivity.class);
+					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					i.putExtra(ConstantsDB.COD_CASA, mParticipante.getCodCasa());
+					i.putExtra(ConstantsDB.CODIGO, mParticipante.getCodigo());
+					i.putExtra(ConstantsDB.VIS_EXITO, visExitosa);
+					startActivity(i);
+				}
+				else{
+					Toast toast = Toast.makeText(getApplicationContext(),getString(R.string.e_error),Toast.LENGTH_LONG);
+					toast.show();
+				}
+			}
+			else{
+				Toast toast = Toast.makeText(getApplicationContext(),getString(R.string.perm_error),Toast.LENGTH_LONG);
+				toast.show();
+			}
+			return true;
+		case R.id.DOC:	
+			i = new Intent(getApplicationContext(),
+					DocumentosActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			i.putExtra(ConstantsDB.COD_CASA, mParticipante.getCodCasa());
+			i.putExtra(ConstantsDB.CODIGO, mParticipante.getCodigo());
+			i.putExtra(ConstantsDB.VIS_EXITO, visExitosa);
+			startActivity(i);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -911,20 +1032,24 @@ public class MenuInfoActivity extends Activity {
 	    muestraItem.setVisible(false);
 	    obsequioItem.setVisible(false);
 	    zikaItem.setVisible(false);
+	    partoItem.setVisible(false);
+	    datosCasaItem.setVisible(false);
 		if ((mUser.getVisitas()&&!visExitosa)){
 			visitaItem.setVisible(true);
 		}
 		else{
+			if((mParticipante.getConmx().matches("No") || mParticipante.getConmxbhc().matches("No"))  && mUser.getMuestra()) muestraItem.setVisible(true);
+			if((mParticipante.getEnCasa().matches("Si") && mUser.getEncuestaCasa())) encCasaItem.setVisible(true);
+			if((mParticipante.getEncPart().matches("Si") && mUser.getEncuestaParticipante())) encPartItem.setVisible(true);
 			if ((mParticipante.getConsFlu().matches("Si") && mUser.getConsentimiento())) reConsFluItem.setVisible(true);
+			if ((mParticipante.getConsDeng().matches("Si") && mUser.getConsentimiento())) reConsDenItem.setVisible(true);
 		    if((mParticipante.getPesoTalla().matches("Si") && mUser.getPesoTalla())) pesoTallaItem.setVisible(true);
-		    if((mParticipante.getEnCasa().matches("Si") && mUser.getEncuestaCasa())) encCasaItem.setVisible(true);
-		    if((mParticipante.getEncPart().matches("Si") && mUser.getEncuestaParticipante())) encPartItem.setVisible(true);
 		    if((mParticipante.getEncLacMat().matches("Si") && mUser.getEncuestaLactancia())) encLactItem.setVisible(true);
-		    if((mParticipante.getInfoVacuna().matches("No") && mUser.getVacunas())) vacunaItem.setVisible(true);
-		    if ((mParticipante.getReConsDeng().matches("Si") && mUser.getConsentimiento())) reConsDenItem.setVisible(true);
+		    if((mParticipante.getInfoVacuna().matches("Si") && mUser.getVacunas())) vacunaItem.setVisible(true);
 		    if ((mParticipante.getZika().matches("Si") && mUser.getConsentimiento())) zikaItem.setVisible(true);
-		    if((mParticipante.getConmx().matches("No") || mParticipante.getConmxbhc().matches("No"))  && mUser.getMuestra()) muestraItem.setVisible(true);
 		    if ((mParticipante.getObsequio().matches("Si") && mUser.getObsequio())) obsequioItem.setVisible(true);
+		    if ((mParticipante.getDatosParto().matches("Si") && mUser.getDatosparto())) partoItem.setVisible(true);
+		    if ((mParticipante.getDatosVisita().matches("Si") && mUser.getVisitas())) datosCasaItem.setVisible(true);
 		    visitaItem.setVisible(false);
 		}
 	    return true;

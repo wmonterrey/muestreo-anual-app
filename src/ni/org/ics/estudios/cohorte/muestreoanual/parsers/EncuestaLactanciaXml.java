@@ -48,6 +48,11 @@ public class EncuestaLactanciaXml {
 	private Integer mesDioAlimSol;
 	
 	@Element(required=false)
+	private Integer otrorecurso1;
+	@Element(required=false)
+	private Integer otrorecurso2;
+	
+	@Element(required=false)
 	private String titulo1;
 	@Element(required=false)
 	private String titulo2;
@@ -364,6 +369,22 @@ public class EncuestaLactanciaXml {
 
 	public void setMeta(Meta meta) {
 		this.meta = meta;
+	}
+
+	public Integer getOtrorecurso1() {
+		return otrorecurso1;
+	}
+
+	public void setOtrorecurso1(Integer otrorecurso1) {
+		this.otrorecurso1 = otrorecurso1;
+	}
+
+	public Integer getOtrorecurso2() {
+		return otrorecurso2;
+	}
+
+	public void setOtrorecurso2(Integer otrorecurso2) {
+		this.otrorecurso2 = otrorecurso2;
 	}
 	
 	

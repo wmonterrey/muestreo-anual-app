@@ -199,6 +199,7 @@ public class NewVaccActivity extends AbstractAsyncActivity {
 			mVacuna.setFechaInf8(em.getFechaInf8());
 			mVacuna.setFechaInf9(em.getFechaInf8());
 			mVacuna.setFechaInf10(em.getFechaInf10());
+			mVacuna.setOtrorecurso1(em.getOtrorecurso1());
 			mVacuna.setMovilInfo(new MovilInfo(idInstancia,
 					instanceFilePath,
 					Constants.STATUS_NOT_SUBMITTED,

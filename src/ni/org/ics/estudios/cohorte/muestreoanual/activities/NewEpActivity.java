@@ -287,6 +287,9 @@ public class NewEpActivity extends AbstractAsyncActivity {
 			mEncuestaParticipante.setNombmama2(em.getNombmama2());
 			mEncuestaParticipante.setApellimama1(em.getApellimama1());
 			mEncuestaParticipante.setApellimama2(em.getApellimama2());
+			
+			mEncuestaParticipante.setOtrorecurso1(em.getOtrorecurso1());
+			mEncuestaParticipante.setOtrorecurso2(em.getOtrorecurso2());
 		
 			mEncuestaParticipante.setMovilInfo(new MovilInfo(idInstancia,
 					instanceFilePath,

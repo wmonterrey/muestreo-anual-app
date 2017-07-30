@@ -140,6 +140,11 @@ public class MuestraXml {
 	private Integer pinchazos;
 	
 	@Element(required=false)
+	private Integer otrorecurso1;
+	@Element(required=false)
+	private Integer otrorecurso2;
+	
+	@Element(required=false)
 	private String start;
 	@Element(required=false)
 	private String end;
@@ -732,6 +737,22 @@ public class MuestraXml {
 
 	public void setBhc(String bhc) {
 		this.bhc = bhc;
+	}
+
+	public Integer getOtrorecurso1() {
+		return otrorecurso1;
+	}
+
+	public void setOtrorecurso1(Integer otrorecurso1) {
+		this.otrorecurso1 = otrorecurso1;
+	}
+
+	public Integer getOtrorecurso2() {
+		return otrorecurso2;
+	}
+
+	public void setOtrorecurso2(Integer otrorecurso2) {
+		this.otrorecurso2 = otrorecurso2;
 	}
 	
 	

@@ -222,6 +222,8 @@ public class NewEcActivity extends AbstractAsyncActivity {
 			mEC.setGatoscasa(em.getGatoscasa());
 			mEC.setCerdos(em.getCerdos());
 			mEC.setCerdoscasa(em.getCerdoscasa());
+			mEC.setOtrorecurso1(em.getOtrorecurso1());
+			mEC.setOtrorecurso2(em.getOtrorecurso2());
 			mEC.setMovilInfo(new MovilInfo(idInstancia,
 					instanceFilePath,
 					Constants.STATUS_NOT_SUBMITTED,
@@ -245,21 +247,11 @@ public class NewEcActivity extends AbstractAsyncActivity {
 			for(Participante participante:mParticipantes){
 				if (participante.getCodCasa()!=9999){
 				participante.setEnCasa("No");
-				participante.setMovilInfo(new MovilInfo(idInstancia,
-						instanceFilePath,
-						Constants.STATUS_NOT_SUBMITTED,
-						ultimoCambio,
-						em.getStart(),
-						em.getEnd(),
-						em.getDeviceid(),
-						em.getSimserial(),
-						em.getPhonenumber(),
-						em.getToday(),
-						username,
-						false, em.getRecurso1(), em.getRecurso2()));
 				ca.actualizaParticipante(participante);
 				}
 			}
+			mParticipante.setEnCasa("No");
+			ca.actualizaParticipante(mParticipante);
 			ca.close();
 			showToast(getApplicationContext().getString(R.string.success),0);
 			Intent i = new Intent(getApplicationContext(),

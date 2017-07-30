@@ -297,7 +297,7 @@ public class NewRec2015Activity extends AbstractAsyncActivity {
 			ca.open();
 			ca.crearReConsentimiento2015(mReConsentimiento);
 			if (em.getVisExit().matches("1")){
-				mParticipante.setReConsDeng("No");
+				mParticipante.setConsDeng("No");
 				mParticipante.setMovilInfo(new MovilInfo(idInstancia,
 						instanceFilePath,
 						Constants.STATUS_NOT_SUBMITTED,

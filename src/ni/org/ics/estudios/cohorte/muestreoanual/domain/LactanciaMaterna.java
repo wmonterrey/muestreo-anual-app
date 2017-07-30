@@ -37,6 +37,24 @@ public class LactanciaMaterna implements Serializable{
 	private Integer edAlimSolidos;
 	private Integer mesDioAlimSol;
 	private MovilInfo movilInfo;
+	private Integer otrorecurso1;
+	private Integer otrorecurso2;
+
+	public Integer getOtrorecurso1() {
+		return otrorecurso1;
+	}
+
+	public void setOtrorecurso1(Integer otrorecurso1) {
+		this.otrorecurso1 = otrorecurso1;
+	}
+
+	public Integer getOtrorecurso2() {
+		return otrorecurso2;
+	}
+
+	public void setOtrorecurso2(Integer otrorecurso2) {
+		this.otrorecurso2 = otrorecurso2;
+	}
 
 	public LactanciaMaternaId getLmId() {
 		return lmId;

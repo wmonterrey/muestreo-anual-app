@@ -29,6 +29,8 @@ public class EncuestaCasaXml {
 	@Element(required=false)
 	private Integer cvivencasa6;
 	@Element(required=false)
+	private Integer cvivencasa7;
+	@Element(required=false)
 	private Integer ccuartos;
 	@Element(required=false)
 	private Integer grifo;
@@ -86,13 +88,20 @@ public class EncuestaCasaXml {
 	private Integer cerdoscasa;
 	
 	@Element(required=false)
+	private Integer otrorecurso1;
+	@Element(required=false)
+	private Integer otrorecurso2;
+	
+	@Element(required=false)
 	private String titulo1;
 	@Element(required=false)
 	private String titulo2;
 	@Element(required=false)
-	private String titulo3;
+	private String titulo5;
 	@Element(required=false)
 	private String titulo4;
+	@Element(required=false)
+	private String titulo6;
 	
 	@Element(required=false)
 	private String start;
@@ -471,6 +480,30 @@ public class EncuestaCasaXml {
 
 	public void setMeta(Meta meta) {
 		this.meta = meta;
+	}
+
+	public Integer getOtrorecurso1() {
+		return otrorecurso1;
+	}
+
+	public void setOtrorecurso1(Integer otrorecurso1) {
+		this.otrorecurso1 = otrorecurso1;
+	}
+
+	public Integer getOtrorecurso2() {
+		return otrorecurso2;
+	}
+
+	public void setOtrorecurso2(Integer otrorecurso2) {
+		this.otrorecurso2 = otrorecurso2;
+	}
+
+	public Integer getCvivencasa7() {
+		return cvivencasa7;
+	}
+
+	public void setCvivencasa7(Integer cvivencasa7) {
+		this.cvivencasa7 = cvivencasa7;
 	}
 
 	

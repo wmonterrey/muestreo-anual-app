@@ -33,7 +33,24 @@ public class PesoyTalla implements Serializable {
 	private Double difPeso;
 	private Double difTalla;
 	private MovilInfo movilInfo;
+	private Integer otrorecurso1;
+	private Integer otrorecurso2;
 
+	public Integer getOtrorecurso1() {
+		return otrorecurso1;
+	}
+
+	public void setOtrorecurso1(Integer otrorecurso1) {
+		this.otrorecurso1 = otrorecurso1;
+	}
+
+	public Integer getOtrorecurso2() {
+		return otrorecurso2;
+	}
+
+	public void setOtrorecurso2(Integer otrorecurso2) {
+		this.otrorecurso2 = otrorecurso2;
+	}
 
 	public Double getPeso1() {
 		return peso1;

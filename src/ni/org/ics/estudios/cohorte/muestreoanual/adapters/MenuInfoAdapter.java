@@ -28,10 +28,13 @@ public class MenuInfoAdapter extends ArrayAdapter<String> {
 	private final int numMuestras;
 	private final int numObsequios;
 	private final int numZikas;
+	private final int numPartos;
+	private final int numDatosCasa;
+	private final int numDocs;
 	public MenuInfoAdapter(Context context, int textViewResourceId,
 			String[] values, int recFlu, int visitas, int pyts
 			, int ecasa, int epart, int elact, int vacunas, int recDen
-			, int muestras, int obsequios, int zikas) {
+			, int muestras, int obsequios, int zikas, int partos, int datoscasas, int docs) {
 		super(context, textViewResourceId, values);
 		this.values = values;
 		this.numRecFlu=recFlu;
@@ -45,6 +48,9 @@ public class MenuInfoAdapter extends ArrayAdapter<String> {
 		this.numMuestras=muestras;
 		this.numObsequios=obsequios;
 		this.numZikas=zikas;
+		this.numPartos=partos;
+		this.numDatosCasa=datoscasas;
+		this.numDocs = docs;
 	}
 
 	@Override
@@ -159,6 +165,30 @@ public class MenuInfoAdapter extends ArrayAdapter<String> {
 				textView.setTextColor(Color.RED);
 			}
 			break;
+		case 13: 
+			img=getContext().getResources().getDrawable( R.drawable.ic_post);
+			textView.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null);
+			textView.setText(values[position] + "(" + numPartos + ")");
+			if (numPartos < 1){
+				textView.setTextColor(Color.RED);
+			}
+			break;	
+		case 14: 
+			img=getContext().getResources().getDrawable( R.drawable.ic_casa);
+			textView.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null);
+			textView.setText(values[position] + "(" + numDatosCasa + ")");
+			if (numDatosCasa < 1){
+				textView.setTextColor(Color.RED);
+			}
+			break;
+		case 15: 
+			img=getContext().getResources().getDrawable( R.drawable.ic_docs);
+			textView.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null);
+			textView.setText(values[position] + "(" + numDocs + ")");
+			if (numDocs < 1){
+				textView.setTextColor(Color.RED);
+			}
+			break;			
 		default:
 			img=getContext().getResources().getDrawable( R.drawable.ic_survey_casa);
 			textView.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null);

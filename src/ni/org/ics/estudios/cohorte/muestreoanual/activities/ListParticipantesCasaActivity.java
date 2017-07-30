@@ -144,6 +144,7 @@ public class ListParticipantesCasaActivity extends ListActivity{
 				i = new Intent(getApplicationContext(),
 						SelecPartActivity.class);
 				i.putExtra(Constants.MENU_INFO,false);
+				i.putExtra(Constants.MENU_ZIKA,false);
 				i.putExtra(ConstantsDB.COD_CASA,codCasa);
 				i.putExtra(ConstantsDB.CODIGO,codComun);
 				startActivity(i);

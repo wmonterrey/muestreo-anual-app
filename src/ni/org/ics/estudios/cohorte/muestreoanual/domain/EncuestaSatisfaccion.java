@@ -35,8 +35,16 @@ public class EncuestaSatisfaccion implements Serializable{
 	private Integer explPeligEnf;
 	private Integer expMedCuid;
 	private MovilInfo movilInfo;
-
+	private Integer otrorecurso1;
 	
+	public Integer getOtrorecurso1() {
+		return otrorecurso1;
+	}
+
+	public void setOtrorecurso1(Integer otrorecurso1) {
+		this.otrorecurso1 = otrorecurso1;
+	}
+
 	public Date getFechaEncuesta() {
 		return fechaEncuesta;
 	}

@@ -31,6 +31,7 @@ public class User {
 	private Boolean consentimiento=false;
 	private Boolean casazika=false;
 	private Boolean tamizajezika=false;
+	private Boolean datosparto=false;
 	private String usuario;
 	
 	
@@ -163,6 +164,13 @@ public class User {
 	}
 	public void setTamizajezika(Boolean tamizajezika) {
 		this.tamizajezika = tamizajezika;
+	}
+	
+	public Boolean getDatosparto() {
+		return datosparto;
+	}
+	public void setDatosparto(Boolean datosparto) {
+		this.datosparto = datosparto;
 	}
 	public String getUsuario() {
 		return usuario;

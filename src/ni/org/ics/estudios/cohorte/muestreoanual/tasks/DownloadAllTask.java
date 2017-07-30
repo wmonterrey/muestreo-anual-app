@@ -8,11 +8,14 @@ import java.util.ListIterator;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Authority;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.CodigosCasas;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoZika;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosPartoBB;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosVisitaTerreno;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaCasa;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaParticipante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaSatisfaccion;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.LactanciaMaterna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Muestra;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.NewVacuna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Obsequio;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Participante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.PesoyTalla;
@@ -60,7 +63,10 @@ public class DownloadAllTask extends DownloadTask {
 	private List<Muestra> mMuestras = null;
 	private List<Obsequio> mObsequios = null;
 	private List<Vacuna> mVacunas = null;
+	private List<NewVacuna> mNewVacunas = null;
+	private List<DatosPartoBB> mDatosPartoBBs = null;
 	private List<VisitaTerreno> mVisitasTerreno = null;
+	private List<DatosVisitaTerreno> mDatosVisitasTerreno = null;
 	private List<ReConsentimientoDen> mReconsentimientos = null;
 	private List<ReConsentimientoDen2015> mReconsentimientos2015 = null;
 	private List<ConsentimientoZika> mConsentimientosZika = null;
@@ -368,6 +374,62 @@ public class DownloadAllTask extends DownloadTask {
 				// close db and stream
 				ca.close();
 			}
+			
+			
+			try {
+				error = descargarNewVacunas();
+				if (error!=null){
+					return error;
+				}
+			} catch (Exception e) {
+				// Regresa error al descargar
+				e.printStackTrace();
+				return e.getLocalizedMessage();
+			}
+
+			if (mNewVacunas != null){
+				// open db and clean entries
+				ca.open();
+				ca.borrarNewVacuna();
+				// download and insert
+				try {
+					addNewVacunas(mNewVacunas);
+				} catch (Exception e) {
+					// Regresa error al insertar
+					e.printStackTrace();
+					return e.getLocalizedMessage();
+				}
+				// close db and stream
+				ca.close();
+			}
+			
+			
+			try {
+				error = descargarDatosPartoBB();
+				if (error!=null){
+					return error;
+				}
+			} catch (Exception e) {
+				// Regresa error al descargar
+				e.printStackTrace();
+				return e.getLocalizedMessage();
+			}
+
+			if (mDatosPartoBBs != null){
+				// open db and clean entries
+				ca.open();
+				ca.borrarDatosPartoBB();
+				// download and insert
+				try {
+					addDatosPartoBBs(mDatosPartoBBs);
+				} catch (Exception e) {
+					// Regresa error al insertar
+					e.printStackTrace();
+					return e.getLocalizedMessage();
+				}
+				// close db and stream
+				ca.close();
+			}
 
 			try {
 				error = descargarVisitas();
@@ -387,6 +449,33 @@ public class DownloadAllTask extends DownloadTask {
 				// download and insert
 				try {
 					addVisitas(mVisitasTerreno);
+				} catch (Exception e) {
+					// Regresa error al insertar
+					e.printStackTrace();
+					return e.getLocalizedMessage();
+				}
+				// close db and stream
+				ca.close();
+			}
+
+			try {
+				error = descargarDatosVisitasTerreno();
+				if (error!=null){
+					return error;
+				}
+			} catch (Exception e) {
+				// Regresa error al descargar
+				e.printStackTrace();
+				return e.getLocalizedMessage();
+			}
+
+			if (mDatosVisitasTerreno != null){
+				// open db and clean entries
+				ca.open();
+				ca.borrarTodasDatosVisitaTerrenos();
+				// download and insert
+				try {
+					addDatosVisitasTerreno(mDatosVisitasTerreno);
 				} catch (Exception e) {
 					// Regresa error al insertar
 					e.printStackTrace();
@@ -1072,6 +1161,35 @@ public class DownloadAllTask extends DownloadTask {
 		}
 
 	}
+	
+	
+	private void addNewVacunas(List<NewVacuna> vacunas) throws Exception {
+
+		int v = vacunas.size();
+
+		ListIterator<NewVacuna> iter = vacunas.listIterator();
+
+		while (iter.hasNext()){
+			ca.crearNewVacuna(iter.next());
+			publishProgress("Vacunas", Integer.valueOf(iter.nextIndex()).toString(), Integer
+					.valueOf(v).toString());
+		}
+
+	}
+
+	private void addDatosPartoBBs(List<DatosPartoBB> datosPartoBB) throws Exception {
+
+		int v = datosPartoBB.size();
+
+		ListIterator<DatosPartoBB> iter = datosPartoBB.listIterator();
+
+		while (iter.hasNext()){
+			ca.crearDatosPartoBB(iter.next());
+			publishProgress("DatosPartoBB", Integer.valueOf(iter.nextIndex()).toString(), Integer
+					.valueOf(v).toString());
+		}
+
+	}
 
 	private void addVisitas(List<VisitaTerreno> visitas) throws Exception {
 
@@ -1082,6 +1200,20 @@ public class DownloadAllTask extends DownloadTask {
 		while (iter.hasNext()){
 			ca.crearVisita(iter.next());
 			publishProgress("Visitas de Terreno", Integer.valueOf(iter.nextIndex()).toString(), Integer
+					.valueOf(v).toString());
+		}
+
+	}
+	
+	private void addDatosVisitasTerreno(List<DatosVisitaTerreno> visitas) throws Exception {
+
+		int v = visitas.size();
+
+		ListIterator<DatosVisitaTerreno> iter = visitas.listIterator();
+
+		while (iter.hasNext()){
+			ca.crearDatosVisita(iter.next());
+			publishProgress("Datos de visitas de Terreno", Integer.valueOf(iter.nextIndex()).toString(), Integer
 					.valueOf(v).toString());
 		}
 
@@ -1493,6 +1625,79 @@ public class DownloadAllTask extends DownloadTask {
 			return e.getLocalizedMessage();	
 		}
 	}
+	
+	
+	// url, username, password
+		protected String descargarNewVacunas() throws Exception {
+			try {
+				// The URL for making the GET request
+				final String urlRequest = url + "/movil/newvacunas";
+
+				// Set the Accept header for "application/json"
+				HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
+				HttpHeaders requestHeaders = new HttpHeaders();
+				List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
+				acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
+				requestHeaders.setAccept(acceptableMediaTypes);
+				requestHeaders.setAuthorization(authHeader);
+
+				// Populate the headers in an HttpEntity object to use for the request
+				HttpEntity<?> requestEntity = new HttpEntity<Object>(requestHeaders);
+
+				// Create a new RestTemplate instance
+				RestTemplate restTemplate = new RestTemplate();
+				restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+
+				// Perform the HTTP GET request
+				ResponseEntity<NewVacuna[]> responseEntity = restTemplate.exchange(urlRequest, HttpMethod.GET, requestEntity,
+						NewVacuna[].class);
+
+				// convert the array to a list and return it
+				mNewVacunas = Arrays.asList(responseEntity.getBody());
+				return null;
+
+			} catch (Exception e) {
+				Log.e(TAG, e.getMessage(), e);
+				return e.getLocalizedMessage();	
+			}
+		}
+		
+		
+		// url, username, password
+				protected String descargarDatosPartoBB() throws Exception {
+					try {
+						// The URL for making the GET request
+						final String urlRequest = url + "/movil/datospartobb";
+
+						// Set the Accept header for "application/json"
+						HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
+						HttpHeaders requestHeaders = new HttpHeaders();
+						List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
+						acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
+						requestHeaders.setAccept(acceptableMediaTypes);
+						requestHeaders.setAuthorization(authHeader);
+
+						// Populate the headers in an HttpEntity object to use for the request
+						HttpEntity<?> requestEntity = new HttpEntity<Object>(requestHeaders);
+
+						// Create a new RestTemplate instance
+						RestTemplate restTemplate = new RestTemplate();
+						restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+
+						// Perform the HTTP GET request
+						ResponseEntity<DatosPartoBB[]> responseEntity = restTemplate.exchange(urlRequest, HttpMethod.GET, requestEntity,
+								DatosPartoBB[].class);
+
+						// convert the array to a list and return it
+						mDatosPartoBBs = Arrays.asList(responseEntity.getBody());
+						return null;
+
+					} catch (Exception e) {
+						Log.e(TAG, e.getMessage(), e);
+						return e.getLocalizedMessage();	
+					}
+				}
+		
 
 
 
@@ -1530,6 +1735,42 @@ public class DownloadAllTask extends DownloadTask {
 			return e.getLocalizedMessage();	
 		}
 	}
+	
+	
+	// url, username, password
+		protected String descargarDatosVisitasTerreno() throws Exception {
+			try {
+				// The URL for making the GET request
+				final String urlRequest = url + "/movil/visitasn";
+
+				// Set the Accept header for "application/json"
+				HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
+				HttpHeaders requestHeaders = new HttpHeaders();
+				List<MediaType> acceptableMediaTypes = new ArrayList<MediaType>();
+				acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
+				requestHeaders.setAccept(acceptableMediaTypes);
+				requestHeaders.setAuthorization(authHeader);
+
+				// Populate the headers in an HttpEntity object to use for the request
+				HttpEntity<?> requestEntity = new HttpEntity<Object>(requestHeaders);
+
+				// Create a new RestTemplate instance
+				RestTemplate restTemplate = new RestTemplate();
+				restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+
+				// Perform the HTTP GET request
+				ResponseEntity<DatosVisitaTerreno[]> responseEntity = restTemplate.exchange(urlRequest, HttpMethod.GET, requestEntity,
+						DatosVisitaTerreno[].class);
+
+				// convert the array to a list and return it
+				mDatosVisitasTerreno = Arrays.asList(responseEntity.getBody());
+				return null;
+
+			} catch (Exception e) {
+				Log.e(TAG, e.getMessage(), e);
+				return e.getLocalizedMessage();	
+			}
+		}
 
 
 	// url, username, password

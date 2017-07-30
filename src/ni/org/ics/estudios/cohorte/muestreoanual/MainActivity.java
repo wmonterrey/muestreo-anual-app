@@ -9,11 +9,10 @@ import ni.org.ics.estudios.cohorte.muestreoanual.activities.MenuSupervisorActivi
 import ni.org.ics.estudios.cohorte.muestreoanual.activities.NewEsActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.activities.SelecPartActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.activities.UploadAllActivity;
-import ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.MenuZikaClusterActivity;
+import ni.org.ics.estudios.cohorte.muestreoanual.activities.UploadDocsActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.MenuPrincipalAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.database.CohorteAdapterEnvio;
 import ni.org.ics.estudios.cohorte.muestreoanual.database.CohorteAdapterGetObjects;
-import ni.org.ics.estudios.cohorte.muestreoanual.domain.User;
 import ni.org.ics.estudios.cohorte.muestreoanual.preferences.PreferencesActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.Constants;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.ConstantsDB;
@@ -44,6 +43,7 @@ public class MainActivity extends ListActivity {
 	private static final int EXIT = 1;
 	private static final int DOWNLOAD = 2;
 	private static final int UPLOAD = 3;
+	private static final int UPLOAD_DOCS = 6;
 	private static final int VERIFY = 4;
 	private static final int DOWNLOAD_USER = 5;
 	public static final int BARCODE_CAPTURE = 22;
@@ -120,6 +120,9 @@ public class MainActivity extends ListActivity {
 		case R.id.MENU_CARGA:
 			createDialog(UPLOAD);
 			return true;
+		case R.id.MENU_CARGA_DOCS:
+			createDialog(UPLOAD_DOCS);
+			return true;			
 		case R.id.MENU_EXIT:
 			createDialog(EXIT);
 			return true;
@@ -184,7 +187,7 @@ public class MainActivity extends ListActivity {
 			i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(i);
 			break;
-		case 4: 
+		/*case 4: 
 			CohorteAdapterGetObjects cat1 = new CohorteAdapterGetObjects();
 			cat1.open();
 			User usuario = cat1.getUser(username);
@@ -198,7 +201,7 @@ public class MainActivity extends ListActivity {
 			else{
 				showToast(getApplicationContext().getString(R.string.perm_error), 1);
 			}
-			break;
+			break;*/
 		default: 
 			String s = (String) getListAdapter().getItem(position);
 			Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
@@ -363,6 +366,28 @@ public class MainActivity extends ListActivity {
 			});
 			mSendShowing=true;
 			break;
+		case UPLOAD_DOCS:
+			builder.setTitle(this.getString(R.string.confirm));
+			builder.setMessage(this.getString(R.string.uploading_docs));
+			builder.setIcon(android.R.drawable.ic_menu_help);
+			builder.setPositiveButton(this.getString(R.string.yes), new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					mSendShowing=false;
+					Intent ie = new Intent(getApplicationContext(), UploadDocsActivity.class);
+					startActivityForResult(ie, UPDATE_SERVER);
+				}
+			});
+			builder.setNegativeButton(this.getString(R.string.no), new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					// Do nothing
+					dialog.dismiss();
+					mSendShowing=false;
+				}
+			});
+			mSendShowing=true;
+			break;			
 		default:
 			break;
 		}

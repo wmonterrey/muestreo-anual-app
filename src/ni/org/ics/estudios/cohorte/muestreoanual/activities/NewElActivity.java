@@ -202,6 +202,8 @@ public class NewElActivity extends AbstractAsyncActivity {
 			mLactanciaMaterna.setEdadLiqDistLeche(em.getEdadLiqDistLeche());
 			mLactanciaMaterna.setMesDioLiqDisPecho(em.getMesDioLiqDisPecho());
 			mLactanciaMaterna.setMesDioAlimSol(em.getMesDioAlimSol());
+			mLactanciaMaterna.setOtrorecurso1(em.getOtrorecurso1());
+			mLactanciaMaterna.setOtrorecurso2(em.getOtrorecurso2());
 
 			mLactanciaMaterna.setMovilInfo(new MovilInfo(idInstancia,
 					instanceFilePath,

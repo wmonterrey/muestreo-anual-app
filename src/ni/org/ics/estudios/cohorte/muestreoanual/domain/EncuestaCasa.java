@@ -27,6 +27,7 @@ public class EncuestaCasa implements Serializable{
 	private Integer cvivencasa4;
 	private Integer cvivencasa5;
 	private Integer cvivencasa6;
+	private Integer cvivencasa7;
 	private Integer ccuartos;
 	private Integer grifo;
 	private Integer grifoComSN;
@@ -56,7 +57,24 @@ public class EncuestaCasa implements Serializable{
 	private Integer cerdos;
 	private Integer cerdoscasa;
 	private MovilInfo movilInfo;
+	private Integer otrorecurso1;
+	private Integer otrorecurso2;
 
+	public Integer getOtrorecurso1() {
+		return otrorecurso1;
+	}
+
+	public void setOtrorecurso1(Integer otrorecurso1) {
+		this.otrorecurso1 = otrorecurso1;
+	}
+
+	public Integer getOtrorecurso2() {
+		return otrorecurso2;
+	}
+
+	public void setOtrorecurso2(Integer otrorecurso2) {
+		this.otrorecurso2 = otrorecurso2;
+	}
 
 	public EncuestaCasaId getEncCasaId() {
 		return encCasaId;
@@ -348,6 +366,15 @@ public class EncuestaCasa implements Serializable{
 		this.movilInfo = movilInfo;
 	}
 	
+	
+	public Integer getCvivencasa7() {
+		return cvivencasa7;
+	}
+
+	public void setCvivencasa7(Integer cvivencasa7) {
+		this.cvivencasa7 = cvivencasa7;
+	}
+
 	@Override
 	public String toString() {
 		return this.encCasaId.getCodCasa().toString();

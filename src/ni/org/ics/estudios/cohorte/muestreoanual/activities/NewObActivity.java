@@ -195,6 +195,7 @@ public class NewObActivity extends AbstractAsyncActivity {
 			mObsequio.setBarrio(em.getBarrio());
 			mObsequio.setDire(em.getDire());
 			mObsequio.setObservaciones(em.getObservaciones());
+			mObsequio.setOtrorecurso1(em.getOtrorecurso1());
 			mObsequio.setMovilInfo(new MovilInfo(idInstancia,
 					instanceFilePath,
 					Constants.STATUS_NOT_SUBMITTED,

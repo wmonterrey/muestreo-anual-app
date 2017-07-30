@@ -12,11 +12,14 @@ import ni.org.ics.estudios.cohorte.muestreoanual.domain.CambiosCasas;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.CodigosCasas;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoChik;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoZika;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosPartoBB;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosVisitaTerreno;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaCasa;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaParticipante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaSatisfaccion;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.LactanciaMaterna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Muestra;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.NewVacuna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Obsequio;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Participante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.PesoyTalla;
@@ -57,7 +60,10 @@ public class UploadAllTask extends UploadTask {
 	private List<PesoyTalla> mPyTs = new ArrayList<PesoyTalla>();
 	private List<Obsequio> mObsequios = new ArrayList<Obsequio>();
 	private List<Vacuna> mVacunas = new ArrayList<Vacuna>();
+	private List<NewVacuna> mNewVacunas = new ArrayList<NewVacuna>();
+	private List<DatosPartoBB> mDatosPartoBB = new ArrayList<DatosPartoBB>();
 	private List<VisitaTerreno> mVisitasTerreno = new ArrayList<VisitaTerreno>();
+	private List<DatosVisitaTerreno> mDatosVisitasTerreno = new ArrayList<DatosVisitaTerreno>();
 	private List<ReConsentimientoDen> mReconsentimientos = new ArrayList<ReConsentimientoDen>();
 	private List<ConsentimientoChik> mConsentimientoChiks = new ArrayList<ConsentimientoChik>();
 	private List<CambioEstudio> mCambiosEstudio = new ArrayList<CambioEstudio>();
@@ -166,9 +172,39 @@ public class UploadAllTask extends UploadTask {
 			e1.printStackTrace();
 			return e1.getLocalizedMessage();
 		}
+		
+		try {
+			error = cargarNewVacunas(url, username, password);
+			if (!error.matches("Datos recibidos!")){
+				return error;
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return e1.getLocalizedMessage();
+		}
+		
+		try {
+			error = cargarDatosPartoBB(url, username, password);
+			if (!error.matches("Datos recibidos!")){
+				return error;
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return e1.getLocalizedMessage();
+		}
 
 		try {
 			error = cargarVisitas(url, username, password);
+			if (!error.matches("Datos recibidos!")){
+				return error;
+			}
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return e1.getLocalizedMessage();
+		}
+		
+		try {
+			error = cargarDatosVisitasTerreno(url, username, password);
 			if (!error.matches("Datos recibidos!")){
 				return error;
 			}
@@ -817,6 +853,128 @@ public class UploadAllTask extends UploadTask {
 		mVacunas = ca.getListaVacunasSinEnviar();
 		ca.close();
 	}
+	
+	
+	/**Vacunas**/
+	// url, username, password
+	protected String cargarNewVacunas(String url, String username, 
+			String password) throws Exception {
+		try {
+			getNewVacunas();
+			if(mNewVacunas.size()>0){
+				saveNewVacunas(Constants.STATUS_SUBMITTED);
+				// La URL de la solicitud POST
+				final String urlRequest = url + "/movil/newvacunas";
+				NewVacuna[] envio = mNewVacunas.toArray(new NewVacuna[mNewVacunas.size()]);
+				HttpHeaders requestHeaders = new HttpHeaders();
+				HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
+				requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+				requestHeaders.setAuthorization(authHeader);
+				HttpEntity<NewVacuna[]> requestEntity = 
+						new HttpEntity<NewVacuna[]>(envio, requestHeaders);
+						RestTemplate restTemplate = new RestTemplate();
+						restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+						restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+						// Hace la solicitud a la red, pone la vivienda y espera un mensaje de respuesta del servidor
+						ResponseEntity<String> response = restTemplate.exchange(urlRequest, HttpMethod.POST, requestEntity,
+								String.class);
+						// Regresa la respuesta a mostrar al usuario
+						if (!response.getBody().matches("Datos recibidos!")) {
+							saveNewVacunas(Constants.STATUS_NOT_SUBMITTED);
+						}
+						return response.getBody();
+			}
+			else{
+				return "Datos recibidos!";
+			}
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage(), e);
+			saveNewVacunas(Constants.STATUS_NOT_SUBMITTED);
+			return e.getMessage();
+		}
+
+	}
+	
+	private void saveNewVacunas(String estado) {
+		CohorteAdapterEnvio actualizar = new CohorteAdapterEnvio();
+		actualizar.open();
+		int c = mNewVacunas.size();
+		for (NewVacuna vacuna : mNewVacunas) {
+			vacuna.getMovilInfo().setEstado(estado);
+			actualizar.updateNewVacSent(vacuna);
+			publishProgress("Actualizando Vacunas", Integer.valueOf(mNewVacunas.indexOf(vacuna)).toString(), Integer
+					.valueOf(c).toString());
+		}
+		actualizar.close();
+	}
+
+	private void getNewVacunas(){
+		CohorteAdapterGetObjects ca = new CohorteAdapterGetObjects();
+		ca.open();
+		mNewVacunas = ca.getListaNewVacunasSinEnviar();
+		ca.close();
+	}
+	
+	
+	/**Datos Parto BB**/
+	// url, username, password
+	protected String cargarDatosPartoBB(String url, String username, 
+			String password) throws Exception {
+		try {
+			getDatosPartoBB();
+			if(mDatosPartoBB.size()>0){
+				saveDatosPartoBB(Constants.STATUS_SUBMITTED);
+				// La URL de la solicitud POST
+				final String urlRequest = url + "/movil/datospartobb";
+				DatosPartoBB[] envio = mDatosPartoBB.toArray(new DatosPartoBB[mDatosPartoBB.size()]);
+				HttpHeaders requestHeaders = new HttpHeaders();
+				HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
+				requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+				requestHeaders.setAuthorization(authHeader);
+				HttpEntity<DatosPartoBB[]> requestEntity = 
+						new HttpEntity<DatosPartoBB[]>(envio, requestHeaders);
+						RestTemplate restTemplate = new RestTemplate();
+						restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+						restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+						// Hace la solicitud a la red, pone la vivienda y espera un mensaje de respuesta del servidor
+						ResponseEntity<String> response = restTemplate.exchange(urlRequest, HttpMethod.POST, requestEntity,
+								String.class);
+						// Regresa la respuesta a mostrar al usuario
+						if (!response.getBody().matches("Datos recibidos!")) {
+							saveDatosPartoBB(Constants.STATUS_NOT_SUBMITTED);
+						}
+						return response.getBody();
+			}
+			else{
+				return "Datos recibidos!";
+			}
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage(), e);
+			saveDatosPartoBB(Constants.STATUS_NOT_SUBMITTED);
+			return e.getMessage();
+		}
+
+	}
+	
+	private void saveDatosPartoBB(String estado) {
+		CohorteAdapterEnvio actualizar = new CohorteAdapterEnvio();
+		actualizar.open();
+		int c = mDatosPartoBB.size();
+		for (DatosPartoBB datosParto : mDatosPartoBB) {
+			datosParto.getMovilInfo().setEstado(estado);
+			actualizar.updateDatosPartoBB(datosParto);
+			publishProgress("Actualizando DatosPartoBB", Integer.valueOf(mDatosPartoBB.indexOf(datosParto)).toString(), Integer
+					.valueOf(c).toString());
+		}
+		actualizar.close();
+	}
+
+	private void getDatosPartoBB(){
+		CohorteAdapterGetObjects ca = new CohorteAdapterGetObjects();
+		ca.open();
+		mDatosPartoBB = ca.getListaDatosPartoBBSinEnviar();
+		ca.close();
+	}
 
 
 	/**Visitas**/
@@ -878,6 +1036,65 @@ public class UploadAllTask extends UploadTask {
 		mVisitasTerreno = ca.getListaVisitaTerrenosSinEnviar();
 		ca.close();
 	}
+	
+	// url, username, password
+		protected String cargarDatosVisitasTerreno(String url, String username, 
+				String password) throws Exception {
+			try {
+				getDatosVisitasTerreno();
+				if(mDatosVisitasTerreno.size()>0){
+					saveDatosVisitasTerreno(Constants.STATUS_SUBMITTED);
+					// La URL de la solicitud POST
+					final String urlRequest = url + "/movil/visitasn";
+					DatosVisitaTerreno[] envio = mDatosVisitasTerreno.toArray(new DatosVisitaTerreno[mDatosVisitasTerreno.size()]);
+					HttpHeaders requestHeaders = new HttpHeaders();
+					HttpAuthentication authHeader = new HttpBasicAuthentication(username, password);
+					requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+					requestHeaders.setAuthorization(authHeader);
+					HttpEntity<DatosVisitaTerreno[]> requestEntity = 
+							new HttpEntity<DatosVisitaTerreno[]>(envio, requestHeaders);
+							RestTemplate restTemplate = new RestTemplate();
+							restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+							restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+							// Hace la solicitud a la red, pone la vivienda y espera un mensaje de respuesta del servidor
+							ResponseEntity<String> response = restTemplate.exchange(urlRequest, HttpMethod.POST, requestEntity,
+									String.class);
+							// Regresa la respuesta a mostrar al usuario
+							if (!response.getBody().matches("Datos recibidos!")) {
+								saveDatosVisitasTerreno(Constants.STATUS_NOT_SUBMITTED);
+							}
+							return response.getBody();
+				}
+				else{
+					return "Datos recibidos!";
+				}
+			} catch (Exception e) {
+				Log.e(TAG, e.getMessage(), e);
+				saveDatosVisitasTerreno(Constants.STATUS_NOT_SUBMITTED);
+				return e.getMessage();
+			}
+
+		}
+		
+		private void saveDatosVisitasTerreno(String estado) {
+			CohorteAdapterEnvio actualizar = new CohorteAdapterEnvio();
+			actualizar.open();
+			int c = mDatosVisitasTerreno.size();
+			for (DatosVisitaTerreno visita : mDatosVisitasTerreno) {
+				visita.getMovilInfo().setEstado(estado);
+				actualizar.updateDatosVisitasSent(visita);
+				publishProgress("Actualizando Datos Visitas", Integer.valueOf(mDatosVisitasTerreno.indexOf(visita)).toString(), Integer
+						.valueOf(c).toString());
+			}
+			actualizar.close();
+		}
+		
+		private void getDatosVisitasTerreno(){
+			CohorteAdapterGetObjects ca = new CohorteAdapterGetObjects();
+			ca.open();
+			mDatosVisitasTerreno = ca.getListaDatosVisitaTerrenosSinEnviar();
+			ca.close();
+		}
 
 	/**cargar Reconsentimientos**/
 	// url, username, password

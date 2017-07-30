@@ -10,16 +10,19 @@ import ni.org.ics.estudios.cohorte.muestreoanual.adapters.CambioEstudioAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.CodigosCasasAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.ConsentimientoChikAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.ConsentimientoZikaAdapter;
+import ni.org.ics.estudios.cohorte.muestreoanual.adapters.DatosPartoBBAdapter;
+import ni.org.ics.estudios.cohorte.muestreoanual.adapters.DatosVisitaTerrenoAdapter;
+import ni.org.ics.estudios.cohorte.muestreoanual.adapters.DocumentosAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.EncuestaCasaAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.EncuestaParticipanteAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.EncuestaSatisfaccionAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.LactanciaMaternaAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.MuestraAdapter;
+import ni.org.ics.estudios.cohorte.muestreoanual.adapters.NewVacunaAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.ObsequioAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.PesoyTallaAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.Reconsentimiento2015Adapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.ReconsentimientoFlu2015Adapter;
-import ni.org.ics.estudios.cohorte.muestreoanual.adapters.VacunaAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.VisitaTerrenoAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.database.CohorteAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.database.CohorteAdapterEnvio;
@@ -28,17 +31,20 @@ import ni.org.ics.estudios.cohorte.muestreoanual.domain.CambioEstudio;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.CodigosCasas;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoChik;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoZika;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosPartoBB;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosVisitaTerreno;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.Documentos;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaCasa;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaParticipante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaSatisfaccion;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.LactanciaMaterna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Muestra;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.NewVacuna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Obsequio;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Participante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.PesoyTalla;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ReConsentimientoDen2015;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ReConsentimientoFlu2015;
-import ni.org.ics.estudios.cohorte.muestreoanual.domain.Vacuna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.VisitaTerreno;
 import ni.org.ics.estudios.cohorte.muestreoanual.preferences.PreferencesActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.Constants;
@@ -84,7 +90,7 @@ public class ListReviewActivity extends ListActivity {
 	ArrayAdapter<PesoyTalla> mPesoyTallaAdapter=null;
 	ArrayAdapter<Muestra> mMuestraAdapter=null;
 	ArrayAdapter<Obsequio> mObsequioAdapter=null;
-	ArrayAdapter<Vacuna> mVacunaAdapter=null;
+	ArrayAdapter<NewVacuna> mVacunaAdapter=null;
 	ArrayAdapter<VisitaTerreno> mVisitaTerrenoAdapter=null;
 	ArrayAdapter<ReConsentimientoDen2015> mReconsentimientoAdapter=null;
 	ArrayAdapter<ReConsentimientoFlu2015> mReconsentimientoFluAdapter=null;
@@ -93,6 +99,9 @@ public class ListReviewActivity extends ListActivity {
 	ArrayAdapter<CambioEstudio> mCambioEstudioAdapter=null;
 	ArrayAdapter<ConsentimientoZika> mConsentimientoZikaAdapter=null;
 	ArrayAdapter<EncuestaSatisfaccion> mEncuestasSAdapter=null;
+	ArrayAdapter<DatosPartoBB> mDatosPartoBBAdapter=null;
+	ArrayAdapter<DatosVisitaTerreno> mDatosVisitaTerrenoAdapter=null;
+	ArrayAdapter<Documentos> mDocumentosAdapter=null;
 
 	public static final int BARCODE_CAPTURE = 2;
 	
@@ -176,9 +185,22 @@ public class ListReviewActivity extends ListActivity {
 				if (mConsentimientoZikaAdapter != null) {
 					mConsentimientoZikaAdapter.getFilter().filter(s);
 				}
+				if (mDatosPartoBBAdapter != null) {
+					mDatosPartoBBAdapter.getFilter().filter(s);
+				}
 				if (mEncuestasSAdapter != null) {
 					mEncuestasSAdapter.getFilter().filter(s);
 				}
+				if (mDatosPartoBBAdapter != null) {
+					mDatosPartoBBAdapter.getFilter().filter(s);
+				}
+				if (mDatosVisitaTerrenoAdapter != null) {
+					mDatosVisitaTerrenoAdapter.getFilter().filter(s);
+				}
+				if (mDocumentosAdapter != null) {
+					mDocumentosAdapter.getFilter().filter(s);
+				}
+				
 			}
 
 			@Override
@@ -266,8 +288,8 @@ public class ListReviewActivity extends ListActivity {
 
 		if (titulo.matches(getString(R.string.info_vacc))){
 			
-			mVacunaAdapter = new VacunaAdapter(this, R.layout.list_item_review,
-					(ArrayList<Vacuna>) getIntent().getExtras().getSerializable(Constants.OBJECTO));
+			mVacunaAdapter = new NewVacunaAdapter(this, R.layout.list_item_review,
+					(ArrayList<NewVacuna>) getIntent().getExtras().getSerializable(Constants.OBJECTO));
 			setListAdapter(mVacunaAdapter);
 			showToast("Total = "+ mVacunaAdapter.getCount());
 		}
@@ -326,6 +348,30 @@ public class ListReviewActivity extends ListActivity {
 					(ArrayList<ConsentimientoZika>) getIntent().getExtras().getSerializable(Constants.OBJECTO));
 			setListAdapter(mConsentimientoZikaAdapter);
 			showToast("Total = "+ mConsentimientoZikaAdapter.getCount());
+		}
+		
+		if (titulo.matches(getString(R.string.datos_parto))){
+			
+			mDatosPartoBBAdapter = new DatosPartoBBAdapter(this, R.layout.list_item_review,
+					(ArrayList<DatosPartoBB>) getIntent().getExtras().getSerializable(Constants.OBJECTO));
+			setListAdapter(mDatosPartoBBAdapter);
+			showToast("Total = "+ mDatosPartoBBAdapter.getCount());
+		}
+		
+		if (titulo.matches(getString(R.string.datos_casa))){
+			
+			mDatosVisitaTerrenoAdapter = new DatosVisitaTerrenoAdapter(this, R.layout.list_item_review,
+					(ArrayList<DatosVisitaTerreno>) getIntent().getExtras().getSerializable(Constants.OBJECTO));
+			setListAdapter(mDatosVisitaTerrenoAdapter);
+			showToast("Total = "+ mDatosVisitaTerrenoAdapter.getCount());
+		}
+		
+		if (titulo.matches(getString(R.string.info_docs))){
+			
+			mDocumentosAdapter = new DocumentosAdapter(this, R.layout.list_item_review,
+					(ArrayList<Documentos>) getIntent().getExtras().getSerializable(Constants.OBJECTO));
+			setListAdapter(mDocumentosAdapter);
+			showToast("Total = "+ mDocumentosAdapter.getCount());
 		}
 		
 		if (titulo.matches(getString(R.string.main_survey))){
@@ -416,7 +462,7 @@ public class ListReviewActivity extends ListActivity {
 					ReviewActivity.class);
 		}
 		if (titulo.matches(getString(R.string.info_vacc))){
-			Vacuna vacuna = (Vacuna) getListAdapter().getItem(position);
+			NewVacuna vacuna = (NewVacuna) getListAdapter().getItem(position);
 			arguments.putString(Constants.TITLE, getString(R.string.info_gift));
 			if (vacuna!=null) arguments.putSerializable(Constants.OBJECTO , vacuna);
 			i = new Intent(getApplicationContext(),
@@ -469,6 +515,27 @@ public class ListReviewActivity extends ListActivity {
 			ConsentimientoZika cons = (ConsentimientoZika) getListAdapter().getItem(position);
 			arguments.putString(Constants.TITLE, getString(R.string.info_zika));
 			if (cons!=null) arguments.putSerializable(Constants.OBJECTO , cons);
+			i = new Intent(getApplicationContext(),
+					ReviewActivity.class);
+		}
+		if (titulo.matches(getString(R.string.datos_parto))){
+			DatosPartoBB datosParto = (DatosPartoBB) getListAdapter().getItem(position);
+			arguments.putString(Constants.TITLE, getString(R.string.datos_parto));
+			if (datosParto!=null) arguments.putSerializable(Constants.OBJECTO , datosParto);
+			i = new Intent(getApplicationContext(),
+					ReviewActivity.class);
+		}
+		if (titulo.matches(getString(R.string.datos_casa))){
+			DatosVisitaTerreno datosVisita = (DatosVisitaTerreno) getListAdapter().getItem(position);
+			arguments.putString(Constants.TITLE, getString(R.string.datos_casa));
+			if (datosVisita!=null) arguments.putSerializable(Constants.OBJECTO , datosVisita);
+			i = new Intent(getApplicationContext(),
+					ReviewActivity.class);
+		}
+		if (titulo.matches(getString(R.string.info_docs))){
+			Documentos documento = (Documentos) getListAdapter().getItem(position);
+			arguments.putString(Constants.TITLE, getString(R.string.info_docs));
+			if (documento!=null) arguments.putSerializable(Constants.OBJECTO , documento);
 			i = new Intent(getApplicationContext(),
 					ReviewActivity.class);
 		}

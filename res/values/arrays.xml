@@ -6,7 +6,8 @@
         <item>@string/main_report</item>
         <item>@string/main_super</item>
         <item>@string/main_survey</item>
-        <item>@string/zika_cluster</item>
+        <!-- <item>@string/zika_cluster</item>-->
+        
     </string-array>
     <string-array name="menu_info">
         <item>@string/info_participante</item>
@@ -22,6 +23,9 @@
         <item>@string/info_sample</item>
         <item>@string/info_gift</item>
         <item>@string/info_zika</item>
+        <item>@string/datos_parto</item>
+        <item>@string/datos_casa</item>
+        <item>@string/info_docs</item>
     </string-array>
     <string-array name="menu_review">
         <item>@string/info_reconflu</item>
@@ -36,6 +40,9 @@
         <item>@string/info_sample</item>
         <item>@string/info_gift</item>
         <item>@string/info_zika</item>
+        <item>@string/datos_parto</item>
+        <item>@string/datos_casa</item>
+        <item>@string/info_docs</item>
     </string-array>
 	<string-array name="menu_zika">
         <item>@string/zika_nuevo_tam</item>

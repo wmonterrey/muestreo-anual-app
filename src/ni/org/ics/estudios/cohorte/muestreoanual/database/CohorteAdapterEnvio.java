@@ -16,11 +16,15 @@ import ni.org.ics.estudios.cohorte.muestreoanual.domain.Casa;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.CodigosCasas;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoChik;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoZika;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosPartoBB;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosVisitaTerreno;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.Documentos;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaCasa;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaParticipante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaSatisfaccion;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.LactanciaMaterna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Muestra;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.NewVacuna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Obsequio;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Participante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.PesoyTalla;
@@ -201,6 +205,33 @@ public class CohorteAdapterEnvio {
 						ConstantsDB.FECHA_VACUNA + "=" + vacuna.getVacunaId().getFechaVacuna().getTime(), null) > 0;
 	}
 	
+	
+	/**
+	 * Actualiza la base de datos.
+	 * 
+	 * 
+	 */
+	public boolean updateNewVacSent(NewVacuna vacuna) {
+		ContentValues cv = new ContentValues();
+		cv.put(ConstantsDB.STATUS, vacuna.getMovilInfo().getEstado());
+		return mDb.update(ConstantsDB.NEWVAC_TABLE, cv, 
+				ConstantsDB.CODIGO + "=" + vacuna.getVacunaId().getCodigo() + " and " + 
+						ConstantsDB.fechaRegistroVacuna + "=" + vacuna.getVacunaId().getFechaRegistroVacuna().getTime(), null) > 0;
+	}
+	
+	/**
+	 * Actualiza la base de datos.
+	 * 
+	 * 
+	 */
+	public boolean updateDatosPartoBB(DatosPartoBB datosPartoBB) {
+		ContentValues cv = new ContentValues();
+		cv.put(ConstantsDB.STATUS, datosPartoBB.getMovilInfo().getEstado());
+		return mDb.update(ConstantsDB.DATOSPARTOBB_TABLE, cv, 
+				ConstantsDB.CODIGO + "=" + datosPartoBB.getDatosPartoId().getCodigo() + " and " + 
+						ConstantsDB.fechaDatosParto + "=" + datosPartoBB.getDatosPartoId().getFechaDatosParto().getTime(), null) > 0;
+	}	
+	
 	/**
 	 * Actualiza la base de datos.
 	 * 
@@ -210,6 +241,19 @@ public class CohorteAdapterEnvio {
 		ContentValues cv = new ContentValues();
 		cv.put(ConstantsDB.STATUS, visita.getMovilInfo().getEstado());
 		return mDb.update(ConstantsDB.VIS_TABLE, cv, 
+				ConstantsDB.CODIGO + "=" + visita.getVisitaId().getCodigo() + " and " + 
+						ConstantsDB.FECHA_VISITA + "=" + visita.getVisitaId().getFechaVisita().getTime(), null) > 0;
+	}
+	
+	/**
+	 * Actualiza la base de datos.
+	 * 
+	 * 
+	 */
+	public boolean updateDatosVisitasSent(DatosVisitaTerreno visita) {
+		ContentValues cv = new ContentValues();
+		cv.put(ConstantsDB.STATUS, visita.getMovilInfo().getEstado());
+		return mDb.update(ConstantsDB.DAT_VIS_TABLE, cv, 
 				ConstantsDB.CODIGO + "=" + visita.getVisitaId().getCodigo() + " and " + 
 						ConstantsDB.FECHA_VISITA + "=" + visita.getVisitaId().getFechaVisita().getTime(), null) > 0;
 	}
@@ -375,6 +419,19 @@ public class CohorteAdapterEnvio {
 		return mDb.update(ConstantsDB.NO_DATA_TABLE, cv, 
 				ConstantsDB.CODIGO + "=" + pinchazo.getRndId().getCodigo() + " and " + 
 						ConstantsDB.TODAY + "=" + pinchazo.getRndId().getFechaRegistro().getTime(), null) > 0;
+	}
+	
+	/**
+	 * Actualiza la base de datos.
+	 * 
+	 * 
+	 */
+	public boolean updateDocumentosSent(Documentos documento) {
+		ContentValues cv = new ContentValues();
+		cv.put(ConstantsDB.STATUS, documento.getEstado());
+		return mDb.update(ConstantsDB.DOCS_TABLE, cv, 
+				ConstantsDB.CODIGO + "=" + documento.getDocsId().getCodigo() + " and " + 
+						ConstantsDB.fechaDocumento + "=" + documento.getDocsId().getFechaDocumento().getTime(), null) > 0;
 	}
 	
 	/**
@@ -578,6 +635,34 @@ public class CohorteAdapterEnvio {
 		}
 		c.close();
 		c = mDb.query(true, ConstantsDB.CAMB_CASA_TABLE, null,
+				ConstantsDB.STATUS + "='"  + Constants.STATUS_NOT_SUBMITTED+ "'", null, null, null, null, null);
+		if (c != null && c.getCount()>0) {
+			c.close();
+			return true;
+		}
+		c.close();
+		c = mDb.query(true, ConstantsDB.NEWVAC_TABLE, null,
+				ConstantsDB.STATUS + "='"  + Constants.STATUS_NOT_SUBMITTED+ "'", null, null, null, null, null);
+		if (c != null && c.getCount()>0) {
+			c.close();
+			return true;
+		}
+		c.close();
+		c = mDb.query(true, ConstantsDB.DATOSPARTOBB_TABLE, null,
+				ConstantsDB.STATUS + "='"  + Constants.STATUS_NOT_SUBMITTED+ "'", null, null, null, null, null);
+		if (c != null && c.getCount()>0) {
+			c.close();
+			return true;
+		}
+		c.close();
+		c = mDb.query(true, ConstantsDB.DOCS_TABLE, null,
+				ConstantsDB.STATUS + "='"  + Constants.STATUS_NOT_SUBMITTED+ "'", null, null, null, null, null);
+		if (c != null && c.getCount()>0) {
+			c.close();
+			return true;
+		}
+		c.close();
+		c = mDb.query(true, ConstantsDB.DAT_VIS_TABLE, null,
 				ConstantsDB.STATUS + "='"  + Constants.STATUS_NOT_SUBMITTED+ "'", null, null, null, null, null);
 		if (c != null && c.getCount()>0) {
 			c.close();

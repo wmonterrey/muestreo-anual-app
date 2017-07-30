@@ -8,6 +8,7 @@ import java.util.Date;
 import ni.org.ics.estudios.cohorte.muestreoanual.MainActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.R;
 import ni.org.ics.estudios.cohorte.muestreoanual.activities.ReviewActivity;
+import ni.org.ics.estudios.cohorte.muestreoanual.activities.zikacluster.nuevos.NewSintomaIniClusterActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.adapters.zikacluster.MenuInfoZikaAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.database.CohorteAdapter;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.zikacluster.CasaZikaCluster;
@@ -84,6 +85,12 @@ public class MenuInfoZikaActivity extends Activity {
 				case 0:
 					i = new Intent(getApplicationContext(),
 							MiembrosClusterZikaActivity.class);
+					i.putExtra(ConstantsDB.CODIGO, codigo);
+					startActivity(i);
+					break;
+				case 1:
+					i = new Intent(getApplicationContext(),
+							NewSintomaIniClusterActivity.class);
 					i.putExtra(ConstantsDB.CODIGO, codigo);
 					startActivity(i);
 					break;

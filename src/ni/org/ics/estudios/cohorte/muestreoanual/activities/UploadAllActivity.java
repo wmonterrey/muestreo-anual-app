@@ -42,7 +42,7 @@ public class UploadAllActivity extends Activity implements UploadListener{
 		super.onCreate(savedInstanceState);
 
 		setTitle(getString(R.string.app_name) + " > "
-				+ getString(R.string.download));
+				+ getString(R.string.upload));
 
 		if (!FileUtils.storageReady()) {
 			Toast toast = Toast.makeText(getApplicationContext(),getString(R.string.error, R.string.storage_error),Toast.LENGTH_LONG);

@@ -52,6 +52,8 @@ public class ObsequioXml {
 	private String dire;
 	@Element(required=false)
 	private String observaciones;
+	@Element(required=false)
+	private Integer otrorecurso1;
 	
 	@Element(required=false)
 	private String start;
@@ -260,6 +262,14 @@ public class ObsequioXml {
 
 	public void setMeta(Meta meta) {
 		this.meta = meta;
+	}
+
+	public Integer getOtrorecurso1() {
+		return otrorecurso1;
+	}
+
+	public void setOtrorecurso1(Integer otrorecurso1) {
+		this.otrorecurso1 = otrorecurso1;
 	}
 
 	

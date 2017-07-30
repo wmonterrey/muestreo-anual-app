@@ -28,7 +28,7 @@ public class ConstantsDB {
 	
 	//Base de datos y tablas
 	public static final String DATABASE_NAME = "cohorte.sqlite3";
-	public static final int DATABASE_VERSION = 3;
+	public static final int DATABASE_VERSION = 15;
 	public static final String USER_TABLE = "usuarios";
 	public static final String ROLE_TABLE = "roles";
 	public static final String CASA_TABLE = "casas";
@@ -41,6 +41,7 @@ public class ConstantsDB {
 	public static final String OB_TABLE = "obsequios";
 	public static final String VAC_TABLE = "vacunas";
 	public static final String VIS_TABLE = "visitasterreno";
+	public static final String DAT_VIS_TABLE = "datosvisitasterreno";
 	public static final String RECONS_TABLE = "reconsentimientoden";
 	public static final String RECONS_TABLE_2015 = "reconsentimientoden2015";
 	public static final String RECONSFLU_TABLE_2015 = "reconsentimientoflu2015";
@@ -56,12 +57,16 @@ public class ConstantsDB {
 	public static final String NO_DATA_TABLE = "nodata";
 	public static final String COD_REL_TABLE = "codigos_casas";
 	public static final String CAMB_CASA_TABLE = "cambios_casas";
+	public static final String DATOSPARTOBB_TABLE = "partobb";
+	public static final String NEWVAC_TABLE = "nuevas_vacunas";
+	public static final String DOCS_TABLE = "documentacion";
 	
 	//Tablas ZIKA
 	public static final String TAM_ZIKA_TABLE = "tamizajes_zika";
 	public static final String CASA_ZIKA_TABLE = "casas_zika";
 	public static final String PART_ZIKA_TABLE = "participantes_zika";
 	public static final String SINT_ZIKA_TABLE = "sintomas_zika";
+	public static final String SINT_INIZIKA_TABLE = "sintomas_iniciales_zika";
 
 	//Campos roles
 	public static final String AUTH = "authority";
@@ -83,6 +88,7 @@ public class ConstantsDB {
 	public static final String U_CONS = "consentimiento";
 	public static final String U_CASAZIKA = "casazika";
 	public static final String U_TAMZIKA = "tamizajezika";
+	public static final String U_PARTO = "datosparto";
 
 	//Campos casa
 	public static final String COD_CASA = "codCasa";
@@ -158,6 +164,13 @@ public class ConstantsDB {
 	public static final String DIRE_FICHA1 = "direccion_ficha1";
 	public static final String RECONSDENG = "recons_deng";
 	public static final String CONPTO = "conpto";
+	public static final String NUMPERS = "cuantas_personas";
+	public static final String datosParto = "datosParto";
+	public static final String posZika = "posZika";
+	public static final String datosVisita = "datosVisita";
+	public static final String mi = "mi";
+	public static final String cand = "cand";
+	public static final String casaCHF = "casaCHF";
 	
 
 	//Campos encuesta casa
@@ -168,6 +181,7 @@ public class ConstantsDB {
 	public static final String CVIVEN4 = "cvivencasa4";
 	public static final String CVIVEN5 = "cvivencasa5";
 	public static final String CVIVEN6 = "cvivencasa6";
+	public static final String CVIVEN7 = "cvivencasa7";
 	public static final String CCUARTOS = "ccuartos";
 	public static final String GRIFO = "grifo";
 	public static final String GRIFOCOM = "grifocomsn";
@@ -404,6 +418,40 @@ public class ConstantsDB {
 	public static final String COORD_VIS = "coordenadas";
 	public static final String LAT_VIS = "latitud";
 	public static final String LON_VIS = "longitud";
+	//public static final String otraRelacionFam;
+	public static final String carnetSN = "carnetSN";
+	//public static final String telefonoClasif1;
+	//public static final String telefonoConv1;
+	//public static final String telefonoCel1;
+	public static final String telefonoEmpresa1 = "telefonoEmpresa1";
+	//public static final String telefono2SN;
+	//public static final String telefonoClasif2;
+	//public static final String telefonoConv2;
+	//public static final String telefonoCel2;
+	public static final String telefonoEmpresa2 = "telefonoEmpresa2";
+	//public static final String telefono3SN;
+	//public static final String telefonoClasif3;
+	//public static final String telefonoConv3;
+	//public static final String telefonoCel3;
+	public static final String telefonoEmpresa3 = "telefonoEmpresa3";
+	public static final String telefono4SN = "telefono4SN";
+	public static final String telefonoClasif4 = "telefonoClasif4";
+	public static final String telefonoConv4 = "telefonoConv4";
+	public static final String telefonoCel4 = "telefonoCel4";
+	public static final String telefonoEmpresa4 = "telefonoEmpresa4";
+	public static final String candidatoNI = "candidatoNI";
+	public static final String nombreCandNI1 = "nombreCandNI1";
+	public static final String nombreCandNI2 = "nombreCandNI2";
+	public static final String apellidoCandNI1 = "apellidoCandNI1";
+	public static final String apellidoCandNI2 = "apellidoCandNI2";
+	public static final String nombreptTutorCandNI = "nombreptTutorCandNI";
+	public static final String nombreptTutorCandNI2 = "nombreptTutorCandNI2";
+	public static final String apellidoptTutorCandNI = "apellidoptTutorCandNI";
+	public static final String apellidoptTutorCandNI2 = "apellidoptTutorCandNI2";
+	public static final String relacionFamCandNI = "relacionFamCandNI";
+	public static final String otraRelacionFamCandNI = "otraRelacionFamCandNI";
+	
+	
 
 	//Campos reconsentimiento
 	public static final String FECHA_CONS = "fecha_cons";
@@ -622,6 +670,42 @@ public class ConstantsDB {
 	public static final String otrorecurso1 = "otrorecurso1";
 	public static final String otrorecurso2 = "otrorecurso2";
 	
+	
+	//Campos tabla DatosParto
+	public static final String fechaDatosParto = "fechaDatosParto";
+	public static final String tipoParto = "tipoParto";
+	public static final String tiempoEmb_sndr = "tiempoEmb_sndr";
+	public static final String tiempoEmbSemana = "tiempoEmbSemana";
+	public static final String docMedTiempoEmb_sn = "docMedTiempoEmb_sn";
+	public static final String docMedTiempoEmb = "docMedTiempoEmb";
+	public static final String otroDocMedTiempoEmb = "otroDocMedTiempoEmb";
+	public static final String fum = "fum";
+	public static final String sg = "sg";
+	public static final String fumFueraRango_sn = "fumFueraRango_sn";
+	public static final String fumFueraRango_razon = "fumFueraRango_razon";
+	public static final String edadGest = "edadGest";
+	public static final String docMedEdadGest_sn = "docMedEdadGest_sn";
+	public static final String docMedEdadGest = "docMedEdadGest";
+	public static final String OtroDocMedEdadGest = "OtroDocMedEdadGest";
+	public static final String prematuro_sndr = "prematuro_sndr";
+	public static final String pesoBB_sndr = "pesoBB_sndr";
+	public static final String pesoBB = "pesoBB";
+	public static final String docMedPesoBB_sn = "docMedPesoBB_sn";
+	public static final String docMedPesoBB = "docMedPesoBB";
+	public static final String otroDocMedPesoBB = "otroDocMedPesoBB";
+	
+	//Campos nuevas vacunas
+	public static final String fechaRegistroVacuna = "fechaRegistroVacuna";
+	public static final String vacuna_sn = "vacuna_sn";
+	public static final String tvacunano = "tvacunano";
+	public static final String otroMotivoTvacunano = "otroMotivoTvacunano";
+	
+	//Campos documentacion
+	public static final String fechaDocumento = "fechaDocumento";
+	public static final String tipoDoc = "tipoDoc";
+	public static final String documento = "documento";
+	public static final String fechaRecepcion = "fechaRecepcion";	
+	
 	//Campos zika tabla tamizaje
 	public static final String idTamizaje = "idTamizaje";
 	public static final String fechaTamizaje = "fechaTamizaje";
@@ -688,12 +772,23 @@ public class ConstantsDB {
 	public static final String sint27 = "sint27";
 	public static final String sint28 = "sint28";
 
-	//Campos zika tabla participantes
+	//Campos zika tabla sintomas
 	public static final String idSintoma = "idSintoma";		
 	public static final String fechaSint = "fechaSint";	
 	public static final String diaSint = "diaSint";	
 	public static final String fiebre = "fiebre";	
 	public static final String astenia = "astenia";	
+	
+	//Campos zika tabla sintomas iniciales
+	//public static final String codigo = "codigo";		
+	public static final String fis = "fis";	
+	public static final String fif = "fif";	
+	public static final String sintInicial1 = "sintInicial1";	
+	public static final String sintInicial2 = "sintInicial2";
+	public static final String sintInicial3 = "sintInicial3";
+	public static final String sintInicial4 = "sintInicial4";
+	//public static final String otrorecurso1 = "otrorecurso1";
+	//public static final String otrorecurso2 = "otrorecurso2";
 	
 
 	public static final String CREATE_USER_TABLE = "create table "
@@ -714,6 +809,7 @@ public class ConstantsDB {
 			+ U_CONS + " boolean, "
 			+ U_CASAZIKA + " boolean, "
 			+ U_TAMZIKA + " boolean, "
+			+ U_PARTO + " boolean, "
 			+ "primary key (" + USERNAME + "));";
 
 	public static final String CREATE_ROLE_TABLE = "create table "
@@ -818,6 +914,13 @@ public class ConstantsDB {
 			+ telefono + " text, "
 			+ ZIKA  + " text, "
 			+ ADN  + " text, "
+			+ NUMPERS  + " integer, "
+			+ datosParto  + " text, "
+			+ posZika  + " text, "
+			+ datosVisita  + " text, "
+			+ mi  + " text, "
+			+ cand  + " text, "
+			+ casaCHF  + " text, "
 			+ ID_INSTANCIA + " integer not null," 
 			+ FILE_PATH + " text not null," 
 			+ STATUS + " text not null, "
@@ -844,6 +947,7 @@ public class ConstantsDB {
 			+ CVIVEN4  + " integer, "
 			+ CVIVEN5  + " integer, "
 			+ CVIVEN6  + " integer, "
+			+ CVIVEN7  + " integer, "
 			+ CCUARTOS  + " integer, "
 			+ GRIFO  + " integer, "
 			+ GRIFOCOM  + " integer, "
@@ -872,6 +976,8 @@ public class ConstantsDB {
 			+ GATOSCASA  + " integer, "
 			+ CERDOS  + " integer, "
 			+ CERDOSCASA  + " integer, "
+			+ otrorecurso1  + " integer, "
+			+ otrorecurso2  + " integer, "
 			+ ID_INSTANCIA + " integer not null," 
 			+ FILE_PATH + " text not null," 
 			+ STATUS + " text not null, "
@@ -994,6 +1100,8 @@ public class ConstantsDB {
 			+ nombmama2 + " text, "
 			+ apellimama1 + " text, "
 			+ apellimama2 + " text, "
+			+ otrorecurso1  + " integer, "
+			+ otrorecurso2  + " integer, "			
 			+ ID_INSTANCIA + " integer not null," 
 			+ FILE_PATH + " text not null," 
 			+ STATUS + " text not null, "
@@ -1030,6 +1138,8 @@ public class ConstantsDB {
 			+ MESLIQDP + " integer, "
 			+ EDADALIMS + " integer, "
 			+ MESALIMS + " integer, "
+			+ otrorecurso1  + " integer, "
+			+ otrorecurso2  + " integer, "			
 			+ ID_INSTANCIA + " integer not null," 
 			+ FILE_PATH + " text not null," 
 			+ STATUS + " text not null, "
@@ -1061,6 +1171,8 @@ public class ConstantsDB {
 			+ IMC3 + " real, "
 			+ DIFPESO + " real, "
 			+ DIFTALLA + " real, "
+			+ otrorecurso1  + " integer, "
+			+ otrorecurso2  + " integer, "			
 			+ ID_INSTANCIA + " integer not null," 
 			+ FILE_PATH + " text not null," 
 			+ STATUS + " text not null, "
@@ -1099,6 +1211,8 @@ public class ConstantsDB {
 			+ horaFinPax  + " text, "
 			+ codPax  + " text, "
 			+ terreno  + " text, "
+			+ otrorecurso1  + " integer, "
+			+ otrorecurso2  + " integer, "			
 			+ ID_INSTANCIA + " integer not null," 
 			+ FILE_PATH + " text not null," 
 			+ STATUS + " text not null, "
@@ -1128,7 +1242,8 @@ public class ConstantsDB {
 			+ CDOM  + " integer, "
 			+ BARRIO  + " integer, "
 			+ DIRECCION  + " text, "
-			+ OBS + " text, "			
+			+ OBS + " text, "
+			+ otrorecurso1  + " integer, "
 			+ ID_INSTANCIA + " integer not null," 
 			+ FILE_PATH + " text not null," 
 			+ STATUS + " text not null, "
@@ -1163,7 +1278,8 @@ public class ConstantsDB {
 			+ FECHAINF7  + " date, "
 			+ FECHAINF8  + " date, "
 			+ FECHAINF9  + " date, "
-			+ FECHAINF10  + " date, "		
+			+ FECHAINF10  + " date, "	
+			+ otrorecurso1  + " integer, "			
 			+ ID_INSTANCIA + " integer not null," 
 			+ FILE_PATH + " text not null," 
 			+ STATUS + " text not null, "
@@ -1189,6 +1305,32 @@ public class ConstantsDB {
 			+ ACOMP_VIS + " text, "
 			+ REL_VIS + " integer, "
 			+ ASENT_VIS + " integer, "
+			+ otrorecurso1  + " integer, "
+			+ otrorecurso2  + " integer, "
+			+ otraRelacionFam + " text, "
+			+ carnetSN + " text, "
+			+ ID_INSTANCIA + " integer not null," 
+			+ FILE_PATH + " text not null," 
+			+ STATUS + " text not null, "
+			+ WHEN_UPDATED + " text not null, " 
+			+ START  + " text, "
+			+ END  + " text, "
+			+ DEVICE_ID  + " text, "
+			+ SIM_SERIAL + " text, "
+			+ PHONE_NUMBER  + " text, "
+			+ TODAY  + " date, "
+			+ USUARIO  + " text, " 
+			+ DELETED  + " boolean, "
+			+ REC1    + " integer, " 
+			+ REC2    + " integer, "
+			+ "primary key (" + FECHA_VISITA + "," + CODIGO + "));";
+	
+	
+	public static final String CREATE_DAT_VIS_TABLE = "create table "
+			+ DAT_VIS_TABLE + " ("
+			+ CODIGO + " integer not null, " 
+			+ COD_CASA + " integer not null, " 
+			+ FECHA_VISITA  + " date not null, "
 			+ CDOM_VIS + " integer, "
 			+ BARRIO_VIS + " integer, "
 			+ MANZ_VIS + " integer, "
@@ -1196,6 +1338,40 @@ public class ConstantsDB {
 			+ COORD_VIS + " text, "
 			+ LAT_VIS + " real, "
 			+ LON_VIS + " real, "
+			+ otrorecurso1  + " integer, "
+			+ otrorecurso2  + " integer, "
+			+ telefonoClasif1 + " text, "
+			+ telefonoConv1 + " text, "
+			+ telefonoCel1 + " text, "
+			+ telefonoEmpresa1 + " text, "
+			+ telefono2SN + " text, "
+			+ telefonoClasif2 + " text, "
+			+ telefonoConv2 + " text, "
+			+ telefonoCel2 + " text, "
+			+ telefonoEmpresa2 + " text, "
+			+ telefono3SN + " text, "
+			+ telefonoClasif3 + " text, "
+			+ telefonoConv3 + " text, "
+			+ telefonoCel3 + " text, "
+			+ telefonoEmpresa3 + " text, "
+			+ telefono4SN + " text, "
+			+ telefonoClasif4 + " text, "
+			+ telefonoConv4 + " text, "
+			+ telefonoCel4 + " text, "
+			+ telefonoEmpresa4 + " text, "
+			+ candidatoNI + " text, "
+			+ nombreCandNI1 + " text, "
+			+ nombreCandNI2 + " text, "
+			+ apellidoCandNI1 + " text, "
+			+ apellidoCandNI2 + " text, "
+			+ nombreptTutorCandNI + " text, "
+			+ nombreptTutorCandNI2 + " text, "
+			+ apellidoptTutorCandNI + " text, "
+			+ apellidoptTutorCandNI2 + " text, "
+			+ relacionFamCandNI + " text, "
+			+ otraRelacionFamCandNI + " text, "
+			
+			
 			+ ID_INSTANCIA + " integer not null," 
 			+ FILE_PATH + " text not null," 
 			+ STATUS + " text not null, "
@@ -1459,6 +1635,7 @@ public class ConstantsDB {
 			+ DENCONIMP + " integer, "
 			+ EXPLPELIGENF + " integer, "
 			+ EXPMEDCUID + " integer, "
+			+ otrorecurso1  + " integer, "			
 			+ ID_INSTANCIA + " integer not null," 
 			+ FILE_PATH + " text not null," 
 			+ STATUS + " text not null, "
@@ -1858,5 +2035,111 @@ public class ConstantsDB {
 			+ REC1    + " integer, " 
 			+ REC2    + " integer, "
 			+ "primary key (" + idSintoma + "));";
+	
+	public static final String CREATE_SINT_INIZIKA_TABLE = "create table "
+			+ SINT_INIZIKA_TABLE + " ("
+			+ codigo + " integer not null," 
+			+ fis  + " date, "
+			+ fif  + " date, "
+			+ sintInicial1  + " text, "
+			+ sintInicial2  + " text, "
+			+ sintInicial3  + " text, "
+			+ sintInicial4  + " text, "
+			+ otrorecurso1  + " text, "
+			+ otrorecurso2  + " text, "
+			+ ID_INSTANCIA + " integer not null," 
+			+ FILE_PATH + " text not null," 
+			+ STATUS + " text not null, "
+			+ WHEN_UPDATED + " text not null, " 
+			+ START  + " text, "
+			+ END  + " text, "
+			+ DEVICE_ID  + " text, "
+			+ SIM_SERIAL + " text, "
+			+ PHONE_NUMBER  + " text, "
+			+ TODAY  + " date, "
+			+ USUARIO  + " text, " 
+			+ DELETED  + " boolean, "
+			+ REC1    + " integer, " 
+			+ REC2    + " integer, "
+			+ "primary key (" + codigo + "));";
+	
+	
+	public static final String CREATE_DATOSPARTOBB_TABLE = "create table "
+			+ DATOSPARTOBB_TABLE + " ("
+			+ CODIGO + " integer not null, " 
+			+ fechaDatosParto  + " date not null, "
+			+ tipoParto + " text, "
+			+ tiempoEmb_sndr + " text, "
+			+ tiempoEmbSemana + " integer, "
+			+ docMedTiempoEmb_sn + " text, "
+			+ docMedTiempoEmb + " text, "
+			+ otroDocMedTiempoEmb + " text, "
+			+ fum  + " date, "
+			+ sg  + " integer, "
+			+ fumFueraRango_sn + " text, "
+			+ fumFueraRango_razon + " text, "
+			+ edadGest + " integer, "
+			+ docMedEdadGest_sn + " text, "
+			+ docMedEdadGest + " text, "
+			+ OtroDocMedEdadGest + " text, "
+			+ prematuro_sndr + " text, "
+			+ pesoBB_sndr  + " text, "
+			+ pesoBB  + " text, "
+			+ docMedPesoBB_sn  + " text, "
+			+ docMedPesoBB  + " text, "
+			+ otroDocMedPesoBB  + " text, "
+			+ otrorecurso1  + " integer, "
+			+ otrorecurso2  + " integer, "
+			+ ID_INSTANCIA + " integer not null," 
+			+ FILE_PATH + " text not null," 
+			+ STATUS + " text not null, "
+			+ WHEN_UPDATED + " text not null, " 
+			+ START  + " text, "
+			+ END  + " text, "
+			+ DEVICE_ID  + " text, "
+			+ SIM_SERIAL + " text, "
+			+ PHONE_NUMBER  + " text, "
+			+ TODAY  + " date, "
+			+ USUARIO  + " text, " 
+			+ DELETED  + " boolean, "
+			+ REC1    + " integer, " 
+			+ REC2    + " integer, "
+			+ "primary key (" + fechaDatosParto + "," + CODIGO + "));";
+	
+	public static final String CREATE_NEWVAC_TABLE = "create table "
+			+ NEWVAC_TABLE + " ("
+			+ CODIGO + " integer not null, " 
+			+ fechaRegistroVacuna  + " date not null, "
+			+ vacuna_sn  + " text, "
+			+ tvacunano  + " text, "
+			+ otroMotivoTvacunano  + " text, "
+			+ otrorecurso1  + " integer, "
+			+ ID_INSTANCIA + " integer not null," 
+			+ FILE_PATH + " text not null," 
+			+ STATUS + " text not null, "
+			+ WHEN_UPDATED + " text not null, " 
+			+ START  + " text, "
+			+ END  + " text, "
+			+ DEVICE_ID  + " text, "
+			+ SIM_SERIAL + " text, "
+			+ PHONE_NUMBER  + " text, "
+			+ TODAY  + " date, "
+			+ USUARIO  + " text, " 
+			+ DELETED  + " boolean, "
+			+ REC1    + " integer, " 
+			+ REC2    + " integer, "
+			+ "primary key (" + fechaRegistroVacuna + "," + CODIGO + "));";	
+	
+	public static final String CREATE_DOCS_TABLE = "create table "
+			+ DOCS_TABLE + " ("
+			+ CODIGO + " integer not null, " 
+			+ fechaDocumento  + " date not null, "
+			+ tipoDoc  + " text, "
+			+ documento  + " blob, "
+			+ STATUS + " text not null, "
+			+ fechaRecepcion  + " date, "
+			+ USUARIO  + " text, " 
+			+ TODAY  + " date, "
+			+ "primary key (" + fechaDocumento + "," + CODIGO + "));";	
 
 }

@@ -24,6 +24,11 @@ import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoChik;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoChikId;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoZika;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ConsentimientoZikaId;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosPartoBB;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosPartoBBId;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosVisitaTerreno;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.DatosVisitaTerrenoId;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.Documentos;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaCasa;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaCasaId;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.EncuestaParticipante;
@@ -34,6 +39,8 @@ import ni.org.ics.estudios.cohorte.muestreoanual.domain.LactanciaMaternaId;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.MovilInfo;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Muestra;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.MuestraId;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.NewVacuna;
+import ni.org.ics.estudios.cohorte.muestreoanual.domain.NewVacunaId;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Obsequio;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.ObsequioId;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Participante;
@@ -62,6 +69,7 @@ import ni.org.ics.estudios.cohorte.muestreoanual.domain.Vacuna;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.VacunaId;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.VisitaTerreno;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.VisitaTerrenoId;
+import ni.org.ics.estudios.cohorte.muestreoanual.helpers.DocumentosHelper;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.Constants;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.ConstantsDB;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.FileUtils;
@@ -360,6 +368,13 @@ public class CohorteAdapterGetObjects {
 		mPart.setRetoma(participantes.getString(participantes.getColumnIndex(ConstantsDB.RETOMA)));
 		mPart.setVolRetoma(participantes.getDouble(participantes.getColumnIndex(ConstantsDB.VOLRETOMA)));
 		mPart.setTelefono(participantes.getString(participantes.getColumnIndex(ConstantsDB.telefono)));
+		if (participantes.getLong(participantes.getColumnIndex(ConstantsDB.NUMPERS)) > 0) mPart.setCuantasPers(participantes.getInt(participantes.getColumnIndex(ConstantsDB.NUMPERS)));
+		mPart.setDatosParto(participantes.getString(participantes.getColumnIndex(ConstantsDB.datosParto)));
+		mPart.setPosZika(participantes.getString(participantes.getColumnIndex(ConstantsDB.posZika)));
+		mPart.setDatosVisita(participantes.getString(participantes.getColumnIndex(ConstantsDB.datosVisita)));
+		mPart.setMi(participantes.getString(participantes.getColumnIndex(ConstantsDB.mi)));
+		mPart.setCand(participantes.getString(participantes.getColumnIndex(ConstantsDB.cand)));
+		mPart.setCasaCHF(participantes.getString(participantes.getColumnIndex(ConstantsDB.casaCHF)));
 		Boolean borrado = participantes.getInt(participantes.getColumnIndex(ConstantsDB.DELETED))>0;
 		mPart.setMovilInfo(new MovilInfo(participantes.getInt(participantes.getColumnIndex(ConstantsDB.ID_INSTANCIA)),
 				participantes.getString(participantes.getColumnIndex(ConstantsDB.FILE_PATH)),
@@ -484,6 +499,7 @@ public class CohorteAdapterGetObjects {
 		if(!enccasas.isNull(enccasas.getColumnIndex(ConstantsDB.CVIVEN4))) mEncCasa.setCvivencasa4(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.CVIVEN4)));
 		if(!enccasas.isNull(enccasas.getColumnIndex(ConstantsDB.CVIVEN5))) mEncCasa.setCvivencasa5(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.CVIVEN5)));
 		if(!enccasas.isNull(enccasas.getColumnIndex(ConstantsDB.CVIVEN6))) mEncCasa.setCvivencasa6(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.CVIVEN6)));
+		if(!enccasas.isNull(enccasas.getColumnIndex(ConstantsDB.CVIVEN7))) mEncCasa.setCvivencasa7(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.CVIVEN7)));
 		if(!enccasas.isNull(enccasas.getColumnIndex(ConstantsDB.CCUARTOS))) mEncCasa.setCcuartos(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.CCUARTOS)));
 		if(!enccasas.isNull(enccasas.getColumnIndex(ConstantsDB.GRIFO))) mEncCasa.setGrifo(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.GRIFO)));
 		if(!enccasas.isNull(enccasas.getColumnIndex(ConstantsDB.GRIFOCOM))) mEncCasa.setGrifoComSN(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.GRIFOCOM)));
@@ -512,6 +528,9 @@ public class CohorteAdapterGetObjects {
 		if(!enccasas.isNull(enccasas.getColumnIndex(ConstantsDB.GATOSCASA))) mEncCasa.setGatoscasa(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.GATOSCASA)));
 		if(!enccasas.isNull(enccasas.getColumnIndex(ConstantsDB.CERDOS))) mEncCasa.setCerdos(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.CERDOS)));
 		if(!enccasas.isNull(enccasas.getColumnIndex(ConstantsDB.CERDOSCASA))) mEncCasa.setCerdoscasa(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.CERDOSCASA)));
+		if(!enccasas.isNull(enccasas.getColumnIndex(ConstantsDB.otrorecurso1))) mEncCasa.setOtrorecurso1(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.otrorecurso1)));
+		if(!enccasas.isNull(enccasas.getColumnIndex(ConstantsDB.otrorecurso2))) mEncCasa.setOtrorecurso2(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.otrorecurso2)));
+		
 		Boolean borrado = enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.DELETED))>0;
 		mEncCasa.setMovilInfo(new MovilInfo(enccasas.getInt(enccasas.getColumnIndex(ConstantsDB.ID_INSTANCIA)),
 				enccasas.getString(enccasas.getColumnIndex(ConstantsDB.FILE_PATH)),
@@ -732,6 +751,8 @@ public class CohorteAdapterGetObjects {
 		mEncPart.setNombmama2(encparticipantess.getString(encparticipantess.getColumnIndex(ConstantsDB.nombmama2)));
 		mEncPart.setApellimama1(encparticipantess.getString(encparticipantess.getColumnIndex(ConstantsDB.apellimama1)));
 		mEncPart.setApellimama2(encparticipantess.getString(encparticipantess.getColumnIndex(ConstantsDB.apellimama2)));
+		if(!encparticipantess.isNull(encparticipantess.getColumnIndex(ConstantsDB.otrorecurso1))) mEncPart.setOtrorecurso1(encparticipantess.getInt(encparticipantess.getColumnIndex(ConstantsDB.otrorecurso1)));
+		if(!encparticipantess.isNull(encparticipantess.getColumnIndex(ConstantsDB.otrorecurso2))) mEncPart.setOtrorecurso2(encparticipantess.getInt(encparticipantess.getColumnIndex(ConstantsDB.otrorecurso2)));
 
 		
 		Boolean borrado = encparticipantess.getInt(encparticipantess.getColumnIndex(ConstantsDB.DELETED))>0;
@@ -871,6 +892,10 @@ public class CohorteAdapterGetObjects {
 		if(!lactanciasmaternas.isNull(lactanciasmaternas.getColumnIndex(ConstantsDB.MESLIQDL))) mLacMat.setMesDioLiqDisLeche(lactanciasmaternas.getInt(lactanciasmaternas.getColumnIndex(ConstantsDB.MESLIQDL)));
 		if(!lactanciasmaternas.isNull(lactanciasmaternas.getColumnIndex(ConstantsDB.EDADALIMS))) mLacMat.setEdAlimSolidos(lactanciasmaternas.getInt(lactanciasmaternas.getColumnIndex(ConstantsDB.EDADALIMS)));
 		if(!lactanciasmaternas.isNull(lactanciasmaternas.getColumnIndex(ConstantsDB.MESALIMS))) mLacMat.setMesDioAlimSol(lactanciasmaternas.getInt(lactanciasmaternas.getColumnIndex(ConstantsDB.MESALIMS)));
+		
+		if(!lactanciasmaternas.isNull(lactanciasmaternas.getColumnIndex(ConstantsDB.otrorecurso1))) mLacMat.setOtrorecurso1(lactanciasmaternas.getInt(lactanciasmaternas.getColumnIndex(ConstantsDB.otrorecurso1)));
+		if(!lactanciasmaternas.isNull(lactanciasmaternas.getColumnIndex(ConstantsDB.otrorecurso2))) mLacMat.setOtrorecurso2(lactanciasmaternas.getInt(lactanciasmaternas.getColumnIndex(ConstantsDB.otrorecurso2)));
+		
 		Boolean borrado = lactanciasmaternas.getInt(lactanciasmaternas.getColumnIndex(ConstantsDB.DELETED))>0;
 		mLacMat.setMovilInfo(new MovilInfo(lactanciasmaternas.getInt(lactanciasmaternas.getColumnIndex(ConstantsDB.ID_INSTANCIA)),
 				lactanciasmaternas.getString(lactanciasmaternas.getColumnIndex(ConstantsDB.FILE_PATH)),
@@ -1002,6 +1027,10 @@ public class CohorteAdapterGetObjects {
 
 		if(!pesajes.isNull(pesajes.getColumnIndex(ConstantsDB.DIFPESO))) mPyT.setDifPeso(pesajes.getDouble(pesajes.getColumnIndex(ConstantsDB.DIFPESO)));
 		if(!pesajes.isNull(pesajes.getColumnIndex(ConstantsDB.DIFTALLA))) mPyT.setDifTalla(pesajes.getDouble(pesajes.getColumnIndex(ConstantsDB.DIFTALLA)));
+		
+		if(!pesajes.isNull(pesajes.getColumnIndex(ConstantsDB.otrorecurso1))) mPyT.setOtrorecurso1(pesajes.getInt(pesajes.getColumnIndex(ConstantsDB.otrorecurso1)));
+		if(!pesajes.isNull(pesajes.getColumnIndex(ConstantsDB.otrorecurso2))) mPyT.setOtrorecurso2(pesajes.getInt(pesajes.getColumnIndex(ConstantsDB.otrorecurso2)));
+		
 		Boolean borrado = pesajes.getInt(pesajes.getColumnIndex(ConstantsDB.DELETED))>0;
 		mPyT.setMovilInfo(new MovilInfo(pesajes.getInt(pesajes.getColumnIndex(ConstantsDB.ID_INSTANCIA)),
 				pesajes.getString(pesajes.getColumnIndex(ConstantsDB.FILE_PATH)),
@@ -1106,6 +1135,56 @@ public class CohorteAdapterGetObjects {
 		return mMuestras;
 	}
 	
+	public ArrayList<DatosPartoBB> getListaDatosPartoBBHoy() throws SQLException {
+		Cursor datos = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");      
+	    Date dateWithoutTime = null;
+	    try {
+			dateWithoutTime = sdf.parse(sdf.format(new Date()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Timestamp timeStamp = new Timestamp(dateWithoutTime.getTime());
+		ArrayList<DatosPartoBB> mDatosPartoBBs = new ArrayList<DatosPartoBB>();
+		datos = mDb.query(true, ConstantsDB.DATOSPARTOBB_TABLE, null,
+				ConstantsDB.TODAY + "=" + timeStamp.getTime(), null, null, null, ConstantsDB.CODIGO + " , " +ConstantsDB.TODAY, null);
+		if (datos != null && datos.getCount() > 0) {
+			datos.moveToFirst();
+			mDatosPartoBBs.clear();
+			do{
+				mDatosPartoBBs.add(crearDatosPartoBB(datos));
+			} while (datos.moveToNext());
+		}
+		datos.close();
+		return mDatosPartoBBs;
+	}
+	
+	public ArrayList<Documentos> getListaDocumentosHoy() throws SQLException {
+		Cursor docs = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");      
+	    Date dateWithoutTime = null;
+	    try {
+			dateWithoutTime = sdf.parse(sdf.format(new Date()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Timestamp timeStamp = new Timestamp(dateWithoutTime.getTime());
+		ArrayList<Documentos> mDocumentos = new ArrayList<Documentos>();
+		docs = mDb.query(true, ConstantsDB.DOCS_TABLE, null,
+				ConstantsDB.TODAY + "=" + timeStamp.getTime(), null, null, null, ConstantsDB.CODIGO + " , " +ConstantsDB.TODAY, null);
+		if (docs != null && docs.getCount() > 0) {
+			docs.moveToFirst();
+			mDocumentos.clear();
+			do{
+				mDocumentos.add(DocumentosHelper.crearDocumentos2(docs));
+			} while (docs.moveToNext());
+		}
+		docs.close();
+		return mDocumentos;
+	}
+	
 	/**
 	 * Crea una Muestra
 	 * 
@@ -1142,6 +1221,9 @@ public class CohorteAdapterGetObjects {
 		if(!muestreo.isNull(muestreo.getColumnIndex(ConstantsDB.horaFinPax))) mMuestra.setHoraFinPax(muestreo.getString(muestreo.getColumnIndex(ConstantsDB.horaFinPax)));
 		if(!muestreo.isNull(muestreo.getColumnIndex(ConstantsDB.codPax))) mMuestra.setCodPax(muestreo.getString(muestreo.getColumnIndex(ConstantsDB.codPax)));
 		if(!muestreo.isNull(muestreo.getColumnIndex(ConstantsDB.terreno))) mMuestra.setTerreno(muestreo.getString(muestreo.getColumnIndex(ConstantsDB.terreno)));
+		
+		if(!muestreo.isNull(muestreo.getColumnIndex(ConstantsDB.otrorecurso1))) mMuestra.setOtrorecurso1(muestreo.getInt(muestreo.getColumnIndex(ConstantsDB.otrorecurso1)));
+		if(!muestreo.isNull(muestreo.getColumnIndex(ConstantsDB.otrorecurso2))) mMuestra.setOtrorecurso2(muestreo.getInt(muestreo.getColumnIndex(ConstantsDB.otrorecurso2)));
 		
 		Boolean borrado = muestreo.getInt(muestreo.getColumnIndex(ConstantsDB.DELETED))>0;
 		mMuestra.setMovilInfo(new MovilInfo(muestreo.getInt(muestreo.getColumnIndex(ConstantsDB.ID_INSTANCIA)),
@@ -1295,6 +1377,7 @@ public class CohorteAdapterGetObjects {
 		if(!entregas.isNull(entregas.getColumnIndex(ConstantsDB.BARRIO))) mObsequio.setBarrio(entregas.getInt(entregas.getColumnIndex(ConstantsDB.BARRIO)));
 		if(!entregas.isNull(entregas.getColumnIndex(ConstantsDB.DIRECCION))) mObsequio.setDire(entregas.getString(entregas.getColumnIndex(ConstantsDB.DIRECCION)));
 		if(!entregas.isNull(entregas.getColumnIndex(ConstantsDB.OBS))) mObsequio.setObservaciones(entregas.getString(entregas.getColumnIndex(ConstantsDB.OBS)));
+		if(!entregas.isNull(entregas.getColumnIndex(ConstantsDB.otrorecurso1))) mObsequio.setOtrorecurso1(entregas.getInt(entregas.getColumnIndex(ConstantsDB.otrorecurso1)));
 		Boolean borrado = entregas.getInt(entregas.getColumnIndex(ConstantsDB.DELETED))>0;
 		mObsequio.setMovilInfo(new MovilInfo(entregas.getInt(entregas.getColumnIndex(ConstantsDB.ID_INSTANCIA)),
 				entregas.getString(entregas.getColumnIndex(ConstantsDB.FILE_PATH)),
@@ -1333,6 +1416,49 @@ public class CohorteAdapterGetObjects {
 		}
 		vacunas.close();
 		return mVacunas;
+	}
+	
+	/**
+	 * Obtiene Lista todas las vacunas sin enviar
+	 * 
+	 * @return lista con Vacuna
+	 */
+	public List<NewVacuna> getListaNewVacunasSinEnviar() throws SQLException {
+		Cursor vacunas = null;
+		List<NewVacuna> mNewVacunas = new ArrayList<NewVacuna>();
+		vacunas = mDb.query(true, ConstantsDB.NEWVAC_TABLE, null,
+				ConstantsDB.STATUS + "= '" + Constants.STATUS_NOT_SUBMITTED+ "'", null, null, null, null, null);
+		if (vacunas != null && vacunas.getCount() > 0) {
+			vacunas.moveToFirst();
+			mNewVacunas.clear();
+			do{
+				mNewVacunas.add(crearNewVacuna(vacunas));
+			} while (vacunas.moveToNext());
+		}
+		vacunas.close();
+		return mNewVacunas;
+	}
+	
+	
+	/**
+	 * Obtiene Lista todas las DatosPartoBB sin enviar
+	 * 
+	 * @return lista con DatosPartoBB
+	 */
+	public List<DatosPartoBB> getListaDatosPartoBBSinEnviar() throws SQLException {
+		Cursor datosPartoBB = null;
+		List<DatosPartoBB> mDatosPartoBB = new ArrayList<DatosPartoBB>();
+		datosPartoBB = mDb.query(true, ConstantsDB.DATOSPARTOBB_TABLE, null,
+				ConstantsDB.STATUS + "= '" + Constants.STATUS_NOT_SUBMITTED+ "'", null, null, null, null, null);
+		if (datosPartoBB != null && datosPartoBB.getCount() > 0) {
+			datosPartoBB.moveToFirst();
+			mDatosPartoBB.clear();
+			do{
+				mDatosPartoBB.add(crearDatosPartoBB(datosPartoBB));
+			} while (datosPartoBB.moveToNext());
+		}
+		datosPartoBB.close();
+		return mDatosPartoBB;
 	}
 
 	/**
@@ -1396,6 +1522,32 @@ public class CohorteAdapterGetObjects {
 		vacunas.close();
 		return mVacunas;
 	}
+	
+	
+	public ArrayList<NewVacuna> getListaNewVacunasHoy() throws SQLException {
+		Cursor vacunas = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");      
+	    Date dateWithoutTime = null;
+	    try {
+			dateWithoutTime = sdf.parse(sdf.format(new Date()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Timestamp timeStamp = new Timestamp(dateWithoutTime.getTime());
+		ArrayList<NewVacuna> mVacunas = new ArrayList<NewVacuna>();
+		vacunas = mDb.query(true, ConstantsDB.NEWVAC_TABLE, null,
+				ConstantsDB.TODAY + "=" + timeStamp.getTime(), null, null, null, ConstantsDB.CODIGO + " , " +ConstantsDB.TODAY, null);
+		if (vacunas != null && vacunas.getCount() > 0) {
+			vacunas.moveToFirst();
+			mVacunas.clear();
+			do{
+				mVacunas.add(crearNewVacuna(vacunas));
+			} while (vacunas.moveToNext());
+		}
+		vacunas.close();
+		return mVacunas;
+	}
 
 	/**
 	 * Crea una Vacuna
@@ -1425,6 +1577,7 @@ public class CohorteAdapterGetObjects {
 		if(vacunacion.getLong(vacunacion.getColumnIndex(ConstantsDB.FECHAINF8))>0) mVac.setFechaInf8(new Date(vacunacion.getLong(vacunacion.getColumnIndex(ConstantsDB.FECHAINF8))));
 		if(vacunacion.getLong(vacunacion.getColumnIndex(ConstantsDB.FECHAINF9))>0) mVac.setFechaInf9(new Date(vacunacion.getLong(vacunacion.getColumnIndex(ConstantsDB.FECHAINF9))));
 		if(vacunacion.getLong(vacunacion.getColumnIndex(ConstantsDB.FECHAINF10))>0) mVac.setFechaInf10(new Date(vacunacion.getLong(vacunacion.getColumnIndex(ConstantsDB.FECHAINF10))));
+		if(!vacunacion.isNull(vacunacion.getColumnIndex(ConstantsDB.otrorecurso1))) mVac.setOtrorecurso1(vacunacion.getInt(vacunacion.getColumnIndex(ConstantsDB.otrorecurso1)));
 		Boolean borrado = vacunacion.getInt(vacunacion.getColumnIndex(ConstantsDB.DELETED))>0;
 		mVac.setMovilInfo(new MovilInfo(vacunacion.getInt(vacunacion.getColumnIndex(ConstantsDB.ID_INSTANCIA)),
 				vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.FILE_PATH)),
@@ -1441,6 +1594,95 @@ public class CohorteAdapterGetObjects {
 				vacunacion.getInt(vacunacion.getColumnIndex(ConstantsDB.REC1)),
 				vacunacion.getInt(vacunacion.getColumnIndex(ConstantsDB.REC2))));
 		return mVac;
+	}
+	
+	
+	/**
+	 * Crea una NewVacuna
+	 * 
+	 * @return NewVacuna
+	 */
+	public NewVacuna crearNewVacuna(Cursor vacunacion){
+		Date fecha = new Date(vacunacion.getLong(vacunacion.getColumnIndex(ConstantsDB.TODAY)));
+		NewVacuna mVac = new NewVacuna();
+		NewVacunaId vacunaId = new NewVacunaId();
+		vacunaId.setCodigo(vacunacion.getInt(vacunacion.getColumnIndex(ConstantsDB.CODIGO)));
+		vacunaId.setFechaRegistroVacuna(new Date(vacunacion.getLong(vacunacion.getColumnIndex(ConstantsDB.fechaRegistroVacuna))));
+
+		mVac.setVacunaId(vacunaId);
+		mVac.setVacuna_sn(vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.vacuna_sn)));
+		mVac.setTvacunano(vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.tvacunano)));
+		mVac.setOtroMotivoTvacunano(vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.otroMotivoTvacunano)));
+		if(!vacunacion.isNull(vacunacion.getColumnIndex(ConstantsDB.otrorecurso1))) mVac.setOtrorecurso1(vacunacion.getInt(vacunacion.getColumnIndex(ConstantsDB.otrorecurso1)));
+		Boolean borrado = vacunacion.getInt(vacunacion.getColumnIndex(ConstantsDB.DELETED))>0;
+		mVac.setMovilInfo(new MovilInfo(vacunacion.getInt(vacunacion.getColumnIndex(ConstantsDB.ID_INSTANCIA)),
+				vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.FILE_PATH)),
+				vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.STATUS)),
+				vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.WHEN_UPDATED)),
+				vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.START)),
+				vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.END)),
+				vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.DEVICE_ID)),
+				vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.SIM_SERIAL)),
+				vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.PHONE_NUMBER)),
+				fecha,
+				vacunacion.getString(vacunacion.getColumnIndex(ConstantsDB.USUARIO)),
+				borrado,
+				vacunacion.getInt(vacunacion.getColumnIndex(ConstantsDB.REC1)),
+				vacunacion.getInt(vacunacion.getColumnIndex(ConstantsDB.REC2))));
+		return mVac;
+	}
+	
+	
+	/**
+	 * Crea una DatosPartoBB
+	 * 
+	 * @return DatosPartoBB
+	 */
+	public DatosPartoBB crearDatosPartoBB(Cursor cursorDatosPartoBB){
+		DatosPartoBB mDatosPartoBB = new DatosPartoBB();
+		DatosPartoBBId mDatosPartoBBId = new DatosPartoBBId();
+		mDatosPartoBBId.setCodigo(cursorDatosPartoBB.getInt(cursorDatosPartoBB.getColumnIndex(ConstantsDB.codigo)));
+		mDatosPartoBBId.setFechaDatosParto(new Date(cursorDatosPartoBB.getLong(cursorDatosPartoBB.getColumnIndex(ConstantsDB.fechaDatosParto))));
+		mDatosPartoBB.setDatosPartoId(mDatosPartoBBId);
+		mDatosPartoBB.setTipoParto(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.tipoParto)));
+		mDatosPartoBB.setTiempoEmb_sndr(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.tiempoEmb_sndr)));
+		if(!cursorDatosPartoBB.isNull(cursorDatosPartoBB.getColumnIndex(ConstantsDB.tiempoEmbSemana))) mDatosPartoBB.setTiempoEmbSemana(cursorDatosPartoBB.getInt(cursorDatosPartoBB.getColumnIndex(ConstantsDB.tiempoEmbSemana)));
+		mDatosPartoBB.setDocMedTiempoEmb_sn(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.docMedTiempoEmb_sn)));
+		mDatosPartoBB.setDocMedTiempoEmb(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.docMedTiempoEmb)));
+		mDatosPartoBB.setOtroDocMedTiempoEmb(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.otroDocMedTiempoEmb)));
+		if(!cursorDatosPartoBB.isNull(cursorDatosPartoBB.getColumnIndex(ConstantsDB.fum))) mDatosPartoBB.setFum(new Date(cursorDatosPartoBB.getLong(cursorDatosPartoBB.getColumnIndex(ConstantsDB.fum))));
+		if(!cursorDatosPartoBB.isNull(cursorDatosPartoBB.getColumnIndex(ConstantsDB.sg))) mDatosPartoBB.setSg(cursorDatosPartoBB.getInt(cursorDatosPartoBB.getColumnIndex(ConstantsDB.sg)));
+		mDatosPartoBB.setFumFueraRango_sn(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.fumFueraRango_sn)));
+		mDatosPartoBB.setFumFueraRango_razon(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.fumFueraRango_razon)));
+		if(!cursorDatosPartoBB.isNull(cursorDatosPartoBB.getColumnIndex(ConstantsDB.edadGest))) mDatosPartoBB.setEdadGest(cursorDatosPartoBB.getInt(cursorDatosPartoBB.getColumnIndex(ConstantsDB.edadGest)));
+		mDatosPartoBB.setDocMedEdadGest_sn(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.docMedEdadGest_sn)));
+		mDatosPartoBB.setDocMedEdadGest(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.docMedEdadGest)));
+		mDatosPartoBB.setOtroDocMedEdadGest(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.OtroDocMedEdadGest)));
+		mDatosPartoBB.setPrematuro_sndr(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.prematuro_sndr)));
+		mDatosPartoBB.setPesoBB_sndr(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.pesoBB_sndr)));
+		mDatosPartoBB.setPesoBB(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.pesoBB)));
+		mDatosPartoBB.setDocMedPesoBB_sn(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.docMedPesoBB_sn)));
+		mDatosPartoBB.setDocMedPesoBB(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.docMedPesoBB)));
+		mDatosPartoBB.setOtroDocMedPesoBB(cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.otroDocMedPesoBB)));
+		if(!cursorDatosPartoBB.isNull(cursorDatosPartoBB.getColumnIndex(ConstantsDB.otrorecurso1))) mDatosPartoBB.setOtrorecurso1(cursorDatosPartoBB.getInt(cursorDatosPartoBB.getColumnIndex(ConstantsDB.otrorecurso1)));
+		if(!cursorDatosPartoBB.isNull(cursorDatosPartoBB.getColumnIndex(ConstantsDB.otrorecurso2))) mDatosPartoBB.setOtrorecurso2(cursorDatosPartoBB.getInt(cursorDatosPartoBB.getColumnIndex(ConstantsDB.otrorecurso2)));
+		Date fecha = new Date(cursorDatosPartoBB.getLong(cursorDatosPartoBB.getColumnIndex(ConstantsDB.TODAY)));
+		Boolean borrado = cursorDatosPartoBB.getInt(cursorDatosPartoBB.getColumnIndex(ConstantsDB.DELETED))>0;
+		mDatosPartoBB.setMovilInfo(new MovilInfo(cursorDatosPartoBB.getInt(cursorDatosPartoBB.getColumnIndex(ConstantsDB.ID_INSTANCIA)),
+				cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.FILE_PATH)),
+				cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.STATUS)),
+				cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.WHEN_UPDATED)),
+				cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.START)),
+				cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.END)),
+				cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.DEVICE_ID)),
+				cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.SIM_SERIAL)),
+				cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.PHONE_NUMBER)),
+				fecha,
+				cursorDatosPartoBB.getString(cursorDatosPartoBB.getColumnIndex(ConstantsDB.USUARIO)),
+				borrado,
+				cursorDatosPartoBB.getInt(cursorDatosPartoBB.getColumnIndex(ConstantsDB.REC1)),
+				cursorDatosPartoBB.getInt(cursorDatosPartoBB.getColumnIndex(ConstantsDB.REC2))));
+		return mDatosPartoBB;
 	}
 
 	
@@ -1527,6 +1769,91 @@ public class CohorteAdapterGetObjects {
 		visitas.close();
 		return mVisitaTerrenos;
 	}
+	
+	/**
+	 * Obtiene Lista todas las visitas sin enviar
+	 * 
+	 * @return lista con VisitaTerreno
+	 */
+	public List<DatosVisitaTerreno> getListaDatosVisitaTerrenosSinEnviar() throws SQLException {
+		Cursor visitas = null;
+		List<DatosVisitaTerreno> mVisitaTerrenos = new ArrayList<DatosVisitaTerreno>();
+		visitas = mDb.query(true, ConstantsDB.DAT_VIS_TABLE, null,
+				ConstantsDB.STATUS + "= '" + Constants.STATUS_NOT_SUBMITTED+ "'", null, null, null, null, null);
+		if (visitas != null && visitas.getCount() > 0) {
+			visitas.moveToFirst();
+			mVisitaTerrenos.clear();
+			do{
+				mVisitaTerrenos.add(crearDatosVisitaTerreno(visitas));
+			} while (visitas.moveToNext());
+		}
+		visitas.close();
+		return mVisitaTerrenos;
+	}
+	
+	
+	/**
+	 * Obtiene Lista todas los DatosVisitaTerreno de un codigo
+	 * 
+	 * @return lista con DatosVisitaTerreno
+	 */
+	public ArrayList<DatosVisitaTerreno> getListaDatosVisitaTerreno(Integer codigo) throws SQLException {
+		Cursor visitas = null;
+		ArrayList<DatosVisitaTerreno> mVisitaTerrenos = new ArrayList<DatosVisitaTerreno>();
+		visitas = mDb.query(true, ConstantsDB.DAT_VIS_TABLE, null,
+				ConstantsDB.CODIGO + "=" + codigo, null, null, null, null, null);
+		if (visitas != null && visitas.getCount() > 0) {
+			visitas.moveToFirst();
+			mVisitaTerrenos.clear();
+			do{
+				mVisitaTerrenos.add(crearDatosVisitaTerreno(visitas));
+			} while (visitas.moveToNext());
+		}
+		visitas.close();
+		return mVisitaTerrenos;
+	}
+	
+	
+	public ArrayList<DatosVisitaTerreno> getListaDatosVisitaTerreno() throws SQLException {
+		Cursor visitas = null;
+		ArrayList<DatosVisitaTerreno> mVisitaTerrenos = new ArrayList<DatosVisitaTerreno>();
+		visitas = mDb.query(true, ConstantsDB.DAT_VIS_TABLE, null,
+				null, null, null, null, ConstantsDB.CODIGO + " , " +ConstantsDB.TODAY, null);
+		if (visitas != null && visitas.getCount() > 0) {
+			visitas.moveToFirst();
+			mVisitaTerrenos.clear();
+			do{
+				mVisitaTerrenos.add(crearDatosVisitaTerreno(visitas));
+			} while (visitas.moveToNext());
+		}
+		visitas.close();
+		return mVisitaTerrenos;
+	}
+	
+	public ArrayList<DatosVisitaTerreno> getListaDatosVisitaTerrenoHoy() throws SQLException {
+		Cursor visitas = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");      
+	    Date dateWithoutTime = null;
+	    try {
+			dateWithoutTime = sdf.parse(sdf.format(new Date()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Timestamp timeStamp = new Timestamp(dateWithoutTime.getTime());
+		ArrayList<DatosVisitaTerreno> mVisitaTerrenos = new ArrayList<DatosVisitaTerreno>();
+		visitas = mDb.query(true, ConstantsDB.DAT_VIS_TABLE, null,
+				ConstantsDB.TODAY + "=" + timeStamp.getTime(), null, null, null, ConstantsDB.CODIGO + " , " +ConstantsDB.TODAY, null);
+		if (visitas != null && visitas.getCount() > 0) {
+			visitas.moveToFirst();
+			mVisitaTerrenos.clear();
+			do{
+				mVisitaTerrenos.add(crearDatosVisitaTerreno(visitas));
+			} while (visitas.moveToNext());
+		}
+		visitas.close();
+		return mVisitaTerrenos;
+	}
 
 	/**
 	 * Crea una VisitaTerreno
@@ -1539,13 +1866,48 @@ public class CohorteAdapterGetObjects {
 		VisitaTerrenoId visitasId = new VisitaTerrenoId();
 		visitasId.setCodigo(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.CODIGO)));
 		visitasId.setFechaVisita(new Date(visitascampo.getLong(visitascampo.getColumnIndex(ConstantsDB.FECHA_VISITA))));
-
 		mVisitaCasa.setVisitaId(visitasId);
 		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.VISITASN))) mVisitaCasa.setVisitaSN(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.VISITASN)));
 		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.MOTNOVIS))) mVisitaCasa.setMotNoVisita(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.MOTNOVIS)));
 		mVisitaCasa.setAcomp(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.ACOMP_VIS)));
 		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.REL_VIS))) mVisitaCasa.setRelacionFam(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.REL_VIS)));
 		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.ASENT_VIS))) mVisitaCasa.setAsentimiento(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.ASENT_VIS)));
+		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.otrorecurso1))) mVisitaCasa.setOtrorecurso1(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.otrorecurso1)));
+		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.otrorecurso2))) mVisitaCasa.setOtrorecurso2(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.otrorecurso2)));
+		mVisitaCasa.setOtraRelacionFam(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.otraRelacionFam)));
+		mVisitaCasa.setCarnetSN(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.carnetSN)));
+		Boolean borrado = visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.DELETED))>0;
+		mVisitaCasa.setMovilInfo(new MovilInfo(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.ID_INSTANCIA)),
+				visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.FILE_PATH)),
+				visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.STATUS)),
+				visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.WHEN_UPDATED)),
+				visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.START)),
+				visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.END)),
+				visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.DEVICE_ID)),
+				visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.SIM_SERIAL)),
+				visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.PHONE_NUMBER)),
+				fecha,
+				visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.USUARIO)),
+				borrado,
+				visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.REC1)),
+				visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.REC2))));
+		return mVisitaCasa;
+	}
+	
+	/**
+	 * Crea una DatosVisitaTerreno
+	 * 
+	 * @return DatosVisitaTerreno
+	 */
+	public DatosVisitaTerreno crearDatosVisitaTerreno(Cursor visitascampo){
+		Date fecha = new Date(visitascampo.getLong(visitascampo.getColumnIndex(ConstantsDB.TODAY)));
+		DatosVisitaTerreno mVisitaCasa = new DatosVisitaTerreno();
+		DatosVisitaTerrenoId visitasId = new DatosVisitaTerrenoId();
+		visitasId.setCodigo(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.CODIGO)));
+		visitasId.setFechaVisita(new Date(visitascampo.getLong(visitascampo.getColumnIndex(ConstantsDB.FECHA_VISITA))));
+
+		mVisitaCasa.setVisitaId(visitasId);
+		mVisitaCasa.setCodCasa(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.COD_CASA)));
 		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.CDOM_VIS))) mVisitaCasa.setcDom(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.CDOM_VIS)));
 		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.BARRIO_VIS))) mVisitaCasa.setBarrio(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.BARRIO_VIS)));
 		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.MANZ_VIS)))mVisitaCasa.setManzana(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.MANZ_VIS)));
@@ -1553,6 +1915,38 @@ public class CohorteAdapterGetObjects {
 		mVisitaCasa.setCoordenadas(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.COORD_VIS)));
 		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.LAT_VIS))) mVisitaCasa.setLatitud(visitascampo.getDouble(visitascampo.getColumnIndex(ConstantsDB.LAT_VIS)));
 		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.LON_VIS))) mVisitaCasa.setLongitud(visitascampo.getDouble(visitascampo.getColumnIndex(ConstantsDB.LON_VIS)));
+		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.otrorecurso1))) mVisitaCasa.setOtrorecurso1(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.otrorecurso1)));
+		if(!visitascampo.isNull(visitascampo.getColumnIndex(ConstantsDB.otrorecurso2))) mVisitaCasa.setOtrorecurso2(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.otrorecurso2)));
+		mVisitaCasa.setTelefonoClasif1(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoClasif1)));
+		mVisitaCasa.setTelefonoConv1(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoConv1)));
+		mVisitaCasa.setTelefonoCel1(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoCel1)));
+		mVisitaCasa.setTelefonoEmpresa1(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoEmpresa1)));
+		mVisitaCasa.setTelefono2SN(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefono2SN)));
+		mVisitaCasa.setTelefonoClasif2(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoClasif2)));
+		mVisitaCasa.setTelefonoConv2(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoConv2)));
+		mVisitaCasa.setTelefonoCel2(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoCel2)));
+		mVisitaCasa.setTelefonoEmpresa2(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoEmpresa2)));
+		mVisitaCasa.setTelefono3SN(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefono3SN)));
+		mVisitaCasa.setTelefonoClasif3(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoClasif3)));
+		mVisitaCasa.setTelefonoConv3(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoConv3)));
+		mVisitaCasa.setTelefonoCel3(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoCel3)));
+		mVisitaCasa.setTelefonoEmpresa3(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoEmpresa3)));
+		mVisitaCasa.setTelefono4SN(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefono4SN)));
+		mVisitaCasa.setTelefonoClasif4(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoClasif4)));
+		mVisitaCasa.setTelefonoConv4(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoConv4)));
+		mVisitaCasa.setTelefonoCel4(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoCel4)));
+		mVisitaCasa.setTelefonoEmpresa4(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.telefonoEmpresa4)));
+		mVisitaCasa.setCandidatoNI(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.candidatoNI)));
+		mVisitaCasa.setNombreCandNI1(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.nombreCandNI1)));
+		mVisitaCasa.setNombreCandNI2(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.nombreCandNI2)));
+		mVisitaCasa.setApellidoCandNI1(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.apellidoCandNI1)));
+		mVisitaCasa.setApellidoCandNI2(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.apellidoCandNI2)));
+		mVisitaCasa.setNombreptTutorCandNI(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.nombreptTutorCandNI)));
+		mVisitaCasa.setNombreptTutorCandNI2(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.nombreptTutorCandNI2)));
+		mVisitaCasa.setApellidoptTutorCandNI(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.apellidoptTutorCandNI)));
+		mVisitaCasa.setApellidoptTutorCandNI2(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.apellidoptTutorCandNI2)));
+		mVisitaCasa.setRelacionFamCandNI(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.relacionFamCandNI)));
+		mVisitaCasa.setOtraRelacionFamCandNI(visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.otraRelacionFamCandNI)));
 		Boolean borrado = visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.DELETED))>0;
 		mVisitaCasa.setMovilInfo(new MovilInfo(visitascampo.getInt(visitascampo.getColumnIndex(ConstantsDB.ID_INSTANCIA)),
 				visitascampo.getString(visitascampo.getColumnIndex(ConstantsDB.FILE_PATH)),
@@ -2199,6 +2593,44 @@ public class CohorteAdapterGetObjects {
 	}
 	
 	
+	/**
+	 * Obtiene Lista todas las Documentos sin enviar
+	 * 
+	 * @return lista con Documentos
+	 */
+	public List<Documentos> getDocumentosSinEnviar() throws SQLException {
+		Cursor docs = null;
+		List<Documentos> mDocumentos = new ArrayList<Documentos>();
+		//docs = mDb.rawQuery("SELECT codigo,fechaDocumento,tipoDoc,username,estado,fechaRecepcion,fecha_registro FROM documentacion where "+ ConstantsDB.STATUS + "= '" + Constants.STATUS_NOT_SUBMITTED+ "'" , null);
+		docs = mDb.rawQuery("SELECT codigo,fechaDocumento,tipoDoc,username,estado,fechaRecepcion,fecha_registro FROM documentacion", null);
+		if (docs != null && docs.getCount() > 0) {
+			docs.moveToFirst();
+			mDocumentos.clear();
+			do{
+				mDocumentos.add(DocumentosHelper.crearDocumentos2(docs));
+			} while (docs.moveToNext());
+		}
+		docs.close();
+		return mDocumentos;
+	}
+	
+	/**
+	 * Obtiene una Documentos de la base de datos
+	 * 
+	 * @return Documentos
+	 */
+	public Documentos getDocumentos(String filtro) throws SQLException {
+		Documentos mDocumentos = null;
+		Cursor cursorDocumentos = mDb.rawQuery("SELECT codigo,fechaDocumento,documento,tipoDoc,username,estado,fechaRecepcion,fecha_registro FROM documentacion where " + filtro , null);
+		if (cursorDocumentos != null && cursorDocumentos.getCount() > 0) {
+			cursorDocumentos.moveToFirst();
+			mDocumentos=DocumentosHelper.crearDocumentos(cursorDocumentos);
+		}
+		if (!cursorDocumentos.isClosed()) cursorDocumentos.close();
+		return mDocumentos;
+	}
+	
+	
 	
 	/**
 	 * Obtiene Lista todas las TempRojoBhc sin enviar
@@ -2369,6 +2801,7 @@ public class CohorteAdapterGetObjects {
 		mEncSat.setDenConImp(encsats.getInt(encsats.getColumnIndex(ConstantsDB.DENCONIMP)));
 		mEncSat.setExplPeligEnf(encsats.getInt(encsats.getColumnIndex(ConstantsDB.EXPLPELIGENF)));
 		mEncSat.setExpMedCuid(encsats.getInt(encsats.getColumnIndex(ConstantsDB.EXPMEDCUID)));
+		if(!encsats.isNull(encsats.getColumnIndex(ConstantsDB.otrorecurso1))) mEncSat.setOtrorecurso1(encsats.getInt(encsats.getColumnIndex(ConstantsDB.otrorecurso1)));
 		Boolean borrado = encsats.getInt(encsats.getColumnIndex(ConstantsDB.DELETED))>0;
 		mEncSat.setMovilInfo(new MovilInfo(encsats.getInt(encsats.getColumnIndex(ConstantsDB.ID_INSTANCIA)),
 				encsats.getString(encsats.getColumnIndex(ConstantsDB.FILE_PATH)),
@@ -2413,6 +2846,7 @@ public class CohorteAdapterGetObjects {
 			Boolean consentimiento = usuarios.getInt(usuarios.getColumnIndex(ConstantsDB.U_CONS))>0;
 			Boolean tamizajezika = usuarios.getInt(usuarios.getColumnIndex(ConstantsDB.U_TAMZIKA))>0;
 			Boolean casazika = usuarios.getInt(usuarios.getColumnIndex(ConstantsDB.U_CASAZIKA))>0;
+			Boolean datosparto = usuarios.getInt(usuarios.getColumnIndex(ConstantsDB.U_PARTO))>0;
 			mUser.setEncuestaCasa(enCasa);
 			mUser.setEncuestaParticipante(enPart);
 			mUser.setEncuestaLactancia(enLact);
@@ -2425,6 +2859,7 @@ public class CohorteAdapterGetObjects {
 			mUser.setConsentimiento(consentimiento);
 			mUser.setTamizajezika(tamizajezika);
 			mUser.setCasazika(casazika);
+			mUser.setDatosparto(datosparto);
 		}
 		usuarios.close();
 		return mUser;

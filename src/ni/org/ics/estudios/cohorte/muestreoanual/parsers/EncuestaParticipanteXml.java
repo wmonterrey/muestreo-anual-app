@@ -221,6 +221,11 @@ public class EncuestaParticipanteXml {
 	private String apellimama2;
 	
 	@Element(required=false)
+	private Integer otrorecurso1;
+	@Element(required=false)
+	private Integer otrorecurso2;
+	
+	@Element(required=false)
 	private String titulo1;
 	@Element(required=false)
 	private String titulo2;
@@ -1309,6 +1314,30 @@ public class EncuestaParticipanteXml {
 	public void setReserved_name_for_field_list_labels_75(
 			String reserved_name_for_field_list_labels_75) {
 		this.reserved_name_for_field_list_labels_75 = reserved_name_for_field_list_labels_75;
+	}
+
+	public Integer getRash_Dias() {
+		return rash_Dias;
+	}
+
+	public void setRash_Dias(Integer rash_Dias) {
+		this.rash_Dias = rash_Dias;
+	}
+
+	public Integer getOtrorecurso1() {
+		return otrorecurso1;
+	}
+
+	public void setOtrorecurso1(Integer otrorecurso1) {
+		this.otrorecurso1 = otrorecurso1;
+	}
+
+	public Integer getOtrorecurso2() {
+		return otrorecurso2;
+	}
+
+	public void setOtrorecurso2(Integer otrorecurso2) {
+		this.otrorecurso2 = otrorecurso2;
 	}
 
 	

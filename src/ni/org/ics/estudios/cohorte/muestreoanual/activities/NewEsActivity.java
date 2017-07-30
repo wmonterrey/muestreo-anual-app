@@ -184,6 +184,7 @@ public class NewEsActivity extends AbstractAsyncActivity {
 			mEncSat.setDenConImp(es.getDenConImp());
 			mEncSat.setExplPeligEnf(es.getExplPeligEnf());
 			mEncSat.setExpMedCuid(es.getExpMedCuid());
+			mEncSat.setOtrorecurso1(es.getOtrorecurso1());
 			
 			mEncSat.setMovilInfo(new MovilInfo(idInstancia,
 					instanceFilePath,

@@ -12,7 +12,7 @@ import ni.org.ics.estudios.cohorte.muestreoanual.domain.MovilInfo;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.Participante;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.VisitaTerreno;
 import ni.org.ics.estudios.cohorte.muestreoanual.domain.VisitaTerrenoId;
-import ni.org.ics.estudios.cohorte.muestreoanual.parsers.TerrenoXml;
+import ni.org.ics.estudios.cohorte.muestreoanual.parsers.VisitaParticipanteXml;
 import ni.org.ics.estudios.cohorte.muestreoanual.preferences.PreferencesActivity;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.Constants;
 import ni.org.ics.estudios.cohorte.muestreoanual.utils.ConstantsDB;
@@ -179,8 +179,8 @@ public class NewVisitaActivity extends AbstractAsyncActivity {
 		File source = new File(instanceFilePath);
 		try {
 			boolean modPart = false;
-			TerrenoXml em = new TerrenoXml();
-			em = serializer.read(TerrenoXml.class, source);
+			VisitaParticipanteXml em = new VisitaParticipanteXml();
+			em = serializer.read(VisitaParticipanteXml.class, source);
 			VisitaTerrenoId vtId = new VisitaTerrenoId();
 			vtId.setCodigo(codigo);
 			vtId.setFechaVisita(new Date());
@@ -190,35 +190,12 @@ public class NewVisitaActivity extends AbstractAsyncActivity {
 			mVisitaTerreno.setAcomp(em.getAcomp());
 			mVisitaTerreno.setRelacionFam(em.getRelacionFam());
 			mVisitaTerreno.setAsentimiento(em.getAsentimiento());
-			mVisitaTerreno.setcDom(em.getcDom());
-			mVisitaTerreno.setBarrio(em.getBarrio());
-			mVisitaTerreno.setManzana(em.getManzana());
-			mVisitaTerreno.setDireccion(em.getDireccion());
-			mVisitaTerreno.setCoordenadas(em.getCoordenadas());
-			if (em.getCoordenadas()!=null){
-				String[] data = em.getCoordenadas().split("\\s+");
-				mVisitaTerreno.setLatitud(Double.valueOf(data[0]));
-				mVisitaTerreno.setLongitud(Double.valueOf(data[1]));
-				mParticipante.setLatitud(Double.valueOf(data[0]));
-				mParticipante.setLongitud(Double.valueOf(data[1]));
-				mParticipante.setMovilInfo(new MovilInfo(idInstancia,
-						instanceFilePath,
-						Constants.STATUS_NOT_SUBMITTED,
-						ultimoCambio,
-						em.getStart(),
-						em.getEnd(),
-						em.getDeviceid(),
-						em.getSimserial(),
-						em.getPhonenumber(),
-						em.getToday(),
-						username,
-						false, em.getRecurso1(), em.getRecurso2()));
-				modPart = true;
-			}
-			else{
-				mVisitaTerreno.setLatitud(null);
-				mVisitaTerreno.setLongitud(null);
-			}
+			
+			mVisitaTerreno.setOtrorecurso1(em.getOtrorecurso1());
+			mVisitaTerreno.setOtrorecurso2(em.getOtrorecurso2());
+			
+			mVisitaTerreno.setOtraRelacionFam(em.getOtraRelacionFam());
+			mVisitaTerreno.setCarnetSN(em.getCarnetSN());
 			mVisitaTerreno.setMovilInfo(new MovilInfo(idInstancia,
 					instanceFilePath,
 					Constants.STATUS_NOT_SUBMITTED,
@@ -284,7 +261,7 @@ public class NewVisitaActivity extends AbstractAsyncActivity {
 					"_id","jrFormId","displayName"};
 			//cursor que busca el formulario
 			Cursor c = getContentResolver().query(Constants.CONTENT_URI, projection,
-					"jrFormId = 'terreno' and displayName = 'Terreno'", null, null);
+					"jrFormId = 'VisitaParticipante' and displayName = 'VisitaParticipante'", null, null);
 			c.moveToFirst();
 			//captura el id del formulario
 			Integer id = Integer.parseInt(c.getString(0));
@@ -296,11 +273,9 @@ public class NewVisitaActivity extends AbstractAsyncActivity {
 			Uri formUri = ContentUris.withAppendedId(Constants.CONTENT_URI,id);
 			//Arranca la actividad ODK Collect en busca de resultado
 			Intent odkA =  new Intent(Intent.ACTION_EDIT,formUri);
-			String valores[] = new String[4];
-			valores[0] = "punto";
-			valores[1] = mParticipante.getConPto();
-			valores[2] = "edad";
-			valores[3] = mParticipante.getEdad().toString();
+			String valores[] = new String[2];
+			valores[0] = "edad";
+			valores[1] = mParticipante.getEdad().toString();
 			odkA.putExtra("vc", valores);
 			startActivityForResult(odkA,VISITA);
 		}

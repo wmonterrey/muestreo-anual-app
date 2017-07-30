@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
-    <issue id="InflateParams">
+    <issue id="InflateParams" severity="ignore">
+        <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/MenuInfoActivity.java" />
         <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/CambioEstudioAdapter.java" />
         <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/ConsentimientoChikAdapter.java" />
         <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/adapters/ConsentimientoZikaAdapter.java" />
@@ -17,7 +18,7 @@
     <issue id="OldTargetApi">
         <ignore path="AndroidManifest.xml" />
     </issue>
-    <issue id="SimpleDateFormat">
+    <issue id="SimpleDateFormat" severity="ignore">
         <ignore path="src/ni/org/ics/estudios/cohorte/bebe/domain/Participante.java" />
         <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/ListBHCsActivity.java" />
         <ignore path="src/ni/org/ics/estudios/cohorte/muestreoanual/activities/ListPinchazosActivity.java" />

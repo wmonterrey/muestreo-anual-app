@@ -55,6 +55,11 @@ public class PyTXml {
 	@Element(required=false)
 	private Double difTalla;
 	
+	@Element(required=false)
+	private Integer otrorecurso1;
+	@Element(required=false)
+	private Integer otrorecurso2;
+	
 	
 	@Element(required=false)
 	private String start;
@@ -326,6 +331,22 @@ public class PyTXml {
 
 	public void setTitulo_final_pt(String titulo_final_pt) {
 		this.titulo_final_pt = titulo_final_pt;
+	}
+
+	public Integer getOtrorecurso1() {
+		return otrorecurso1;
+	}
+
+	public void setOtrorecurso1(Integer otrorecurso1) {
+		this.otrorecurso1 = otrorecurso1;
+	}
+
+	public Integer getOtrorecurso2() {
+		return otrorecurso2;
+	}
+
+	public void setOtrorecurso2(Integer otrorecurso2) {
+		this.otrorecurso2 = otrorecurso2;
 	}
 
 
